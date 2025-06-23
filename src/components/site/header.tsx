@@ -26,7 +26,7 @@ export default function Header() {
         <div className="mr-4 flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Mountain className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline">VisionFolio</span>
+            <span className="font-bold font-headline">Ganesh Tidke</span>
           </Link>
           <nav className="hidden gap-6 text-sm md:flex">
             {navLinks.map((link) => (
@@ -54,7 +54,7 @@ export default function Header() {
             <SheetContent side="left">
               <Link href="/" className="mr-6 flex items-center space-x-2">
                 <Mountain className="h-6 w-6 text-primary" />
-                <span className="font-bold font-headline">VisionFolio</span>
+                <span className="font-bold font-headline">Ganesh Tidke</span>
               </Link>
               <div className="mt-6 grid gap-4">
                 {navLinks.map((link) => (
