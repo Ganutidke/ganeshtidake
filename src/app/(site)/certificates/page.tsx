@@ -3,7 +3,6 @@ import { getCertificates } from '@/lib/actions/certificate.actions';
 import PagePlaceholder from '@/components/site/page-placeholder';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
-import Link from 'next/link';
 import { format } from 'date-fns';
 import { ExternalLink } from 'lucide-react';
 
@@ -20,7 +19,7 @@ export default async function CertificatesPage() {
   }
 
   return (
-    <div className="container py-16">
+    <div className="container max-w-7xl mx-auto px-4 py-16">
       <div className="text-center">
         <h1 className="font-headline text-4xl font-bold text-primary">Certificates & Achievements</h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -30,7 +29,7 @@ export default async function CertificatesPage() {
 
       <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {certificates.map((cert) => (
-          <Card key={cert._id as string} className="group relative flex flex-col overflow-hidden">
+          <Card key={cert._id as string} className="group relative flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-primary/20 hover:shadow-lg">
             <CardHeader className="p-0">
               <div className="relative h-48 w-full bg-muted">
                 <Image

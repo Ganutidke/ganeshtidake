@@ -1,12 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Briefcase, Zap, Newspaper } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Briefcase, Zap, Newspaper, GraduationCap } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getIntro } from '@/lib/actions/intro.actions';
 import { getAbout } from '@/lib/actions/about.actions';
 import { getProjects } from '@/lib/actions/project.actions';
 import { getBlogs } from '@/lib/actions/blog.actions';
+import { getEducationHistory } from '@/lib/actions/education.actions';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 
@@ -14,10 +15,11 @@ export default async function HomePage() {
   const intro = await getIntro();
   const about = await getAbout();
   const projects = (await getProjects()).slice(0, 4);
-  const blogs = (await getBlogs()).slice(0, 4);
+  const blogs = (await getBlogs()).slice(0, 3);
+  const educationHistory = (await getEducationHistory()).slice(0, 2);
 
   return (
-    <div className="flex flex-col gap-24 sm:gap-32">
+    <div className="container max-w-7xl mx-auto px-4 flex flex-col gap-24 sm:gap-32">
       {/* Hero Section */}
       <section className="grid grid-cols-1 gap-8 pt-12 md:pt-20">
         <div>
@@ -101,9 +103,9 @@ export default async function HomePage() {
                 Explore more <ArrowRight className="h-4 w-4"/>
             </Link>
 
-            <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
+            <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {projects.map((project) => (
-                <Card key={project._id as string} className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all">
+                <Card key={project._id as string} className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
                   <Link href={`/projects/${project.slug}`} className="absolute inset-0 z-10" aria-label={project.title}></Link>
                    <div className="relative h-48 w-full overflow-hidden">
                         <Image
@@ -133,29 +135,57 @@ export default async function HomePage() {
         </section>
       )}
 
-       {/* Latest Articles (Blog) */}
-       {blogs.length > 0 && (
-          <section>
-              <div className="flex items-center justify-between">
-                <h2 className="flex items-center gap-2 text-2xl font-bold text-primary">
-                    <Newspaper className="h-6 w-6"/> Latest Article.
-                </h2>
-                <Link href="/blog" className="flex items-center gap-1 text-sm text-primary hover:underline">
-                    View all articles <ArrowRight className="h-4 w-4"/>
-                </Link>
-              </div>
-              <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-2">
-                {blogs.map((blog) => (
-                   <Link key={blog._id as string} href={`/blog/${blog.slug}`} className="group block p-4 -mx-4 rounded-lg hover:bg-card">
-                      <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">{blog.title}</h3>
-                      <p className="text-muted-foreground text-sm mt-1">
-                        {format(new Date(blog.createdAt), 'MMMM d, yyyy')}
-                      </p>
-                  </Link>
-                ))}
-              </div>
-          </section>
-        )}
+       {/* Latest Articles & Education */}
+       <section className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {/* Latest Articles (Blog) */}
+            {blogs.length > 0 && (
+            <div className="lg:col-span-2">
+                <div className="flex items-center justify-between mb-8">
+                    <h2 className="flex items-center gap-2 text-2xl font-bold text-primary">
+                        <Newspaper className="h-6 w-6"/> Latest Articles
+                    </h2>
+                    <Link href="/blog" className="flex items-center gap-1 text-sm text-primary hover:underline">
+                        View all articles <ArrowRight className="h-4 w-4"/>
+                    </Link>
+                </div>
+                <div className="grid grid-cols-1 gap-x-8 gap-y-4">
+                    {blogs.map((blog) => (
+                    <Link key={blog._id as string} href={`/blog/${blog.slug}`} className="group block p-4 -mx-4 rounded-lg hover:bg-card transition-colors">
+                        <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">{blog.title}</h3>
+                        <p className="text-muted-foreground text-sm mt-1">
+                            {format(new Date(blog.createdAt), 'MMMM d, yyyy')}
+                        </p>
+                    </Link>
+                    ))}
+                </div>
+            </div>
+            )}
+            
+            {/* Education */}
+            {educationHistory.length > 0 && (
+                <div className="lg:col-span-1">
+                     <h2 className="flex items-center gap-2 text-2xl font-bold text-primary mb-8">
+                        <GraduationCap className="h-6 w-6"/> Education
+                    </h2>
+                    <div className="space-y-6">
+                        {educationHistory.map((edu) => (
+                            <div key={edu._id as string}>
+                                <h3 className="font-bold text-foreground">{edu.school}</h3>
+                                <p className="text-muted-foreground text-sm">{edu.degree}, {edu.fieldOfStudy}</p>
+                                <p className="text-muted-foreground text-xs mt-1">
+                                    {format(new Date(edu.startDate), 'MMM yyyy')} - {edu.endDate ? format(new Date(edu.endDate), 'MMM yyyy') : 'Present'}
+                                </p>
+                            </div>
+                        ))}
+                         <Button asChild variant="link" className="p-0 text-primary">
+                            <Link href="/education">
+                                View Full Journey <ArrowRight className="ml-2 h-4 w-4" />
+                            </Link>
+                        </Button>
+                    </div>
+                </div>
+            )}
+       </section>
 
       {/* Keep In Touch */}
       <section className="text-center">
@@ -165,7 +195,7 @@ export default async function HomePage() {
             </p>
              <div className="mt-8 flex justify-center gap-4">
                  <Button asChild variant="outline">
-                    <Link href="#" target="_blank">
+                    <Link href="/contact">
                         <Linkedin /> LinkedIn
                     </Link>
                 </Button>

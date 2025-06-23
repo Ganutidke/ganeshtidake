@@ -21,7 +21,7 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <div className="container py-16">
+    <div className="container max-w-7xl mx-auto px-4 py-16">
       <div className="text-center">
         <h1 className="font-headline text-4xl font-bold text-primary">My Projects</h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
@@ -31,15 +31,15 @@ export default async function ProjectsPage() {
 
       <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
-          <Card key={project._id as string} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-primary/20 hover:shadow-lg">
+          <Card key={project._id as string} className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-primary/20 hover:shadow-lg hover:-translate-y-1">
             <CardHeader className="p-0">
                <Link href={`/projects/${project.slug}`} className="block">
-                  <div className="relative h-48 w-full">
+                  <div className="relative h-48 w-full group">
                     <Image
                       src={project.coverImage.url}
                       alt={project.title}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                 </Link>
@@ -51,7 +51,7 @@ export default async function ProjectsPage() {
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
               </div>
-              <p className="text-muted-foreground flex-grow">
+              <p className="text-muted-foreground flex-grow line-clamp-3">
                 {project.description}
               </p>
               <div className="mt-4 flex items-center gap-2">

@@ -17,7 +17,7 @@ export default async function AboutPage() {
   }
 
   return (
-    <div className="container py-16">
+    <div className="container max-w-7xl mx-auto px-4 py-16">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
         <div className="md:col-span-1 flex flex-col items-center text-center">
           <div className="relative h-64 w-64 rounded-full shadow-lg overflow-hidden border-4 border-primary/50">
