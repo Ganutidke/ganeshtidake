@@ -7,16 +7,19 @@ import * as z from 'zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Loader2, Image as ImageIcon } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 import type { IBlog } from '@/models/blog.model';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { createBlog, updateBlog } from '@/lib/actions/blog.actions';
 import { fileToBase64 } from '@/lib/utils';
+import { Separator } from '../ui/separator';
 
 const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long.' }),
@@ -41,6 +44,8 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
       tags: blog?.tags?.join(', ') || '',
     },
   });
+  
+  const contentValue = form.watch('content');
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -57,7 +62,6 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
         const imageBase64 = values.coverImage ? await fileToBase64(values.coverImage) : undefined;
         
         if (blog) {
-          // Update existing blog
           await updateBlog(blog._id as string, {
             title: values.title,
             content: values.content,
@@ -66,7 +70,6 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
           });
           toast({ title: 'Success', description: 'Blog post updated successfully.' });
         } else {
-          // Create new blog
           if (!imageBase64) {
              toast({ variant: 'destructive', title: 'Error', description: 'Cover image is required.' });
              return;
@@ -94,7 +97,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-8">
             <Card>
               <CardContent className="p-6 space-y-6">
                 <FormField
@@ -110,21 +113,38 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Content (Markdown supported)</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Write your blog post here..." className="min-h-[400px]" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </CardContent>
             </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Content</CardTitle>
+                    <CardDescription>Use markdown for formatting. A live preview is shown below.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                        control={form.control}
+                        name="content"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Markdown</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder="Write your blog post here..." className="min-h-[400px]" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                        <div>
+                            <FormLabel>Preview</FormLabel>
+                            <div className="prose prose-invert prose-sm max-w-none rounded-md border p-4 h-[400px] overflow-auto">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentValue}</ReactMarkdown>
+                            </div>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
           </div>
           <div className="lg:col-span-1">
             <Card>
@@ -168,10 +188,10 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
                       <FormControl>
                         <Input placeholder="react, nextjs, development" {...field} />
                       </FormControl>
-                      <FormDescription>
-                        Comma-separated tags.
-                      </FormDescription>
                       <FormMessage />
+                       <CardDescription>
+                        Comma-separated tags.
+                      </CardDescription>
                     </FormItem>
                   )}
                 />

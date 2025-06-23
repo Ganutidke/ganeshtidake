@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
 import Project, { IProject } from '@/models/project.model';
 import cloudinary from '@/lib/cloudinary';
+import { slugify } from '@/lib/utils';
 
 export interface ProjectParams {
   title: string;
@@ -29,6 +30,7 @@ export async function createProject(data: ProjectParams) {
 
     const newProject = new Project({
       ...data,
+      slug: slugify(data.title),
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
       coverImage: {
         url: uploadResponse.secure_url,
@@ -64,15 +66,19 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
         public_id: uploadResponse.public_id,
       };
     }
-
-    await Project.findByIdAndUpdate(id, { 
+    
+    const updateData = {
       ...data,
+      slug: slugify(data.title),
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
-      coverImage 
-    }, { new: true });
+      coverImage,
+    };
+
+    await Project.findByIdAndUpdate(id, updateData, { new: true });
 
     revalidatePath('/admin/projects');
     revalidatePath('/projects');
+    revalidatePath(`/projects/${updateData.slug}`);
   } catch (error: any) {
     console.error('Error updating project:', error);
     throw new Error(`Failed to update project: ${error.message}`);
@@ -100,6 +106,18 @@ export async function getProjectById(id: string): Promise<IProject | null> {
     return null;
   }
 }
+
+export async function getProjectBySlug(slug: string): Promise<IProject | null> {
+  try {
+    await connectDB();
+    const project = await Project.findOne({ slug }).lean();
+    return project ? JSON.parse(JSON.stringify(project)) : null;
+  } catch (error) {
+    console.error('Error fetching project by slug:', error);
+    return null;
+  }
+}
+
 
 export async function deleteProject(id: string) {
   try {

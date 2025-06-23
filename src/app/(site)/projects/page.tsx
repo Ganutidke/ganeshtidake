@@ -33,17 +33,21 @@ export default async function ProjectsPage() {
         {projects.map((project) => (
           <Card key={project._id as string} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-primary/20 hover:shadow-lg">
             <CardHeader className="p-0">
-              <div className="relative h-48 w-full">
-                <Image
-                  src={project.coverImage.url}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+               <Link href={`/projects/${project.slug}`} className="block">
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={project.coverImage.url}
+                      alt={project.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </Link>
             </CardHeader>
             <CardContent className="p-6 flex-grow flex flex-col">
-              <CardTitle className="font-headline mb-2">{project.title}</CardTitle>
+              <CardTitle className="font-headline mb-2">
+                 <Link href={`/projects/${project.slug}`} className="hover:text-primary transition-colors">{project.title}</Link>
+              </CardTitle>
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
               </div>

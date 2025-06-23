@@ -9,7 +9,8 @@ import { getAbout } from '@/lib/actions/about.actions';
 import { getProjects } from '@/lib/actions/project.actions';
 import { getBlogs } from '@/lib/actions/blog.actions';
 import { getCertificates } from '@/lib/actions/certificate.actions';
-import { Badge } from '@/components/ui/badge';
+import { getEducationHistory } from '@/lib/actions/education.actions';
+import { format } from 'date-fns';
 
 export default async function HomePage() {
   const intro = await getIntro();
@@ -17,10 +18,12 @@ export default async function HomePage() {
   const projects = await getProjects();
   const blogs = await getBlogs();
   const certificates = await getCertificates();
+  const educationHistory = await getEducationHistory();
 
   const highlightedProjects = projects.slice(0, 3);
   const blogTeasers = blogs.slice(0, 3);
   const highlightedCerts = certificates.slice(0, 3);
+  const recentEducation = educationHistory.slice(0, 2);
 
   return (
     <div className="flex flex-col">
@@ -87,17 +90,21 @@ export default async function HomePage() {
               {highlightedProjects.map((project) => (
                 <Card key={project._id as string} className="flex flex-col transform overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-primary/20 hover:shadow-lg">
                   <CardHeader className="p-0">
-                    <div className="relative h-48 w-full">
-                      <Image
-                        src={project.coverImage.url}
-                        alt={project.title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                    <Link href={`/projects/${project.slug}`} className="block">
+                      <div className="relative h-48 w-full">
+                        <Image
+                          src={project.coverImage.url}
+                          alt={project.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </Link>
                   </CardHeader>
                   <CardContent className="p-6 flex-grow flex flex-col">
-                    <CardTitle className="font-headline mb-2">{project.title}</CardTitle>
+                    <CardTitle className="font-headline mb-2">
+                       <Link href={`/projects/${project.slug}`} className="hover:text-primary transition-colors">{project.title}</Link>
+                    </CardTitle>
                     <p className="text-muted-foreground line-clamp-3 flex-grow">{project.description}</p>
                     <div className="mt-4 flex items-center gap-2">
                         {project.repositoryUrl && (
@@ -170,9 +177,46 @@ export default async function HomePage() {
           </section>
         )}
 
+      {/* Education Preview */}
+      {recentEducation.length > 0 && (
+        <section className="py-20 md:py-24">
+          <div className="container mx-auto px-4">
+            <h2 className="text-center font-headline text-3xl font-bold text-primary">My Education</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">
+              A brief overview of my academic background.
+            </p>
+            <div className="mt-12 max-w-3xl mx-auto space-y-8">
+              {recentEducation.map((edu) => (
+                <Card key={edu._id as string}>
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <CardTitle className="font-headline text-xl text-primary">{edu.degree}</CardTitle>
+                        <p className="font-semibold">{edu.school}</p>
+                        <p className="text-muted-foreground">{edu.fieldOfStudy}</p>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <p className="text-sm font-semibold text-secondary">
+                          {format(new Date(edu.startDate), 'yyyy')} - {edu.endDate ? format(new Date(edu.endDate), 'yyyy') : 'Present'}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            <div className="mt-12 text-center">
+              <Button asChild size="lg">
+                <Link href="/education">View Full Education</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Certificates / Achievements */}
       {highlightedCerts.length > 0 && (
-        <section className="py-20 md:py-24">
+        <section className="bg-card py-20 md:py-24">
           <div className="container mx-auto px-4">
             <h2 className="text-center font-headline text-3xl font-bold text-primary">Certificates & Achievements</h2>
             <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">
@@ -204,7 +248,7 @@ export default async function HomePage() {
       )}
 
       {/* Call to Action */}
-      <section className="bg-card py-16">
+      <section className="py-16">
         <div className="container mx-auto px-4 text-center">
             <h2 className="font-headline text-3xl font-bold text-primary">Interested in working with me?</h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
