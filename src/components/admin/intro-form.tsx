@@ -32,7 +32,7 @@ type FormValues = z.infer<typeof formSchema>;
 export default function IntroForm({ intro }: { intro?: IIntro }) {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-  const [imagePreview, setImagePreview] = useState<string | null>(intro?.heroImage.url || null);
+  const [imagePreview, setImagePreview] = useState<string | null>(intro?.heroImage?.url || null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
