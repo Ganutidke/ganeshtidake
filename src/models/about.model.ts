@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IAbout extends Document {
   bio: string;
-  skills: string[];
+  skills: string;
   profilePicture: {
     url: string;
     public_id: string;
@@ -12,7 +12,7 @@ export interface IAbout extends Document {
 const AboutSchema: Schema = new Schema(
   {
     bio: { type: String, required: true },
-    skills: [{ type: String }],
+    skills: { type: String },
     profilePicture: {
       url: { type: String, required: true },
       public_id: { type: String, required: true },

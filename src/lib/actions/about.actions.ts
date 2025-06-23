@@ -45,7 +45,7 @@ export async function updateAbout(data: UpdateAboutParams) {
 
     const updateData = {
       bio: data.bio,
-      skills: data.skills.split(',').map(skill => skill.trim()).filter(Boolean),
+      skills: data.skills,
       ...(profilePicture && { profilePicture }),
     };
 

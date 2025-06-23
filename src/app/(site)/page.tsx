@@ -18,6 +18,21 @@ export default async function HomePage() {
   const blogs = (await getBlogs()).slice(0, 3);
   const educationHistory = (await getEducationHistory()).slice(0, 2);
 
+  const getSkillCategories = (skillsString?: string) => {
+    if (typeof skillsString !== 'string' || !skillsString) {
+      return [];
+    }
+    return skillsString.split('\n').filter(Boolean).map(line => {
+      const [category, skillsStr] = line.split(':');
+      if (!category || !skillsStr) return null;
+      const skills = skillsStr.split(',').map(s => s.trim()).filter(Boolean);
+      return { category: category.trim(), skills };
+    }).filter((category): category is { category: string; skills: string[] } => category !== null);
+  }
+
+  const skillCategories = getSkillCategories(about?.skills);
+
+
   return (
     <div className="container max-w-7xl mx-auto px-4 flex flex-col gap-24 sm:gap-32">
       {/* Hero Section */}
@@ -32,28 +47,36 @@ export default async function HomePage() {
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
             {intro?.subheadline ?? 'A self-taught developer with an interest in Computer Science.'}
           </p>
-          <div className="mt-6 flex flex-col sm:flex-row gap-4">
-              <div className="flex items-center gap-3 text-muted-foreground">
-                <Briefcase className="h-5 w-5 text-primary"/>
-                <span>Frontend Engineer</span>
-              </div>
-          </div>
+          {intro?.role && (
+            <div className="mt-6 flex flex-col sm:flex-row gap-4">
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Briefcase className="h-5 w-5 text-primary"/>
+                  <span>{intro.role}</span>
+                </div>
+            </div>
+          )}
           <div className="mt-8 flex gap-4">
-            <Button asChild variant="outline">
-              <Link href="#" target="_blank">
-                <Github /> Github
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="#" target="_blank">
-                <Linkedin /> LinkedIn
-              </Link>
-            </Button>
+            {intro?.githubUrl && (
+              <Button asChild variant="outline">
+                <Link href={intro.githubUrl} target="_blank">
+                  <Github /> Github
+                </Link>
+              </Button>
+            )}
+            {intro?.linkedinUrl && (
+              <Button asChild variant="outline">
+                <Link href={intro.linkedinUrl} target="_blank">
+                  <Linkedin /> LinkedIn
+                </Link>
+              </Button>
+            )}
+            {intro?.email && (
              <Button asChild variant="outline">
-              <Link href="mailto:ganeshtidke1@example.com">
+              <Link href={`mailto:${intro.email}`}>
                 <Mail /> Email
               </Link>
             </Button>
+            )}
           </div>
         </div>
       </section>
@@ -93,6 +116,28 @@ export default async function HomePage() {
             </div>
         </section>
       )}
+
+      {/* Skills Section */}
+      {skillCategories && skillCategories.length > 0 && (
+        <section>
+          <h2 className="text-2xl font-bold text-primary text-center">My Skills</h2>
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {skillCategories.map((category) => (
+              <Card key={category.category} className="bg-card/50">
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold text-foreground mb-4">{category.category}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {category.skills.map((skill) => (
+                      <Badge key={skill} variant="secondary">{skill}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
+
 
       {/* Creative Works (Projects) */}
       {projects.length > 0 && (
@@ -148,14 +193,25 @@ export default async function HomePage() {
                         View all articles <ArrowRight className="h-4 w-4"/>
                     </Link>
                 </div>
-                <div className="grid grid-cols-1 gap-x-8 gap-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {blogs.map((blog) => (
-                    <Link key={blog._id as string} href={`/blog/${blog.slug}`} className="group block p-4 -mx-4 rounded-lg hover:bg-card transition-colors">
-                        <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">{blog.title}</h3>
-                        <p className="text-muted-foreground text-sm mt-1">
-                            {format(new Date(blog.createdAt), 'MMMM d, yyyy')}
-                        </p>
-                    </Link>
+                      <Card key={blog._id as string} className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
+                          <Link href={`/blog/${blog.slug}`} className="absolute inset-0 z-10" aria-label={blog.title}></Link>
+                          <div className="relative h-40 w-full overflow-hidden">
+                              <Image
+                                src={blog.coverImage.url}
+                                alt={blog.title}
+                                fill
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                          </div>
+                          <CardContent className="p-4">
+                            <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">{blog.title}</h3>
+                            <p className="text-muted-foreground text-sm mt-1">
+                                {format(new Date(blog.createdAt), 'MMMM d, yyyy')}
+                            </p>
+                          </CardContent>
+                      </Card>
                     ))}
                 </div>
             </div>
@@ -194,16 +250,20 @@ export default async function HomePage() {
               I'm currently open for new opportunities. Feel free to get in touch and talk more about your projects.
             </p>
              <div className="mt-8 flex justify-center gap-4">
-                 <Button asChild variant="outline">
-                    <Link href="/contact">
-                        <Linkedin /> LinkedIn
-                    </Link>
-                </Button>
-                <Button asChild>
-                    <a href="mailto:ganeshtidke1@example.com">
-                        <Mail /> Email
-                    </a>
-                </Button>
+                 {intro?.linkedinUrl && (
+                  <Button asChild variant="outline">
+                      <Link href={intro.linkedinUrl} target="_blank">
+                          <Linkedin /> LinkedIn
+                      </Link>
+                  </Button>
+                 )}
+                 {intro?.email && (
+                  <Button asChild>
+                      <a href={`mailto:${intro.email}`}>
+                          <Mail /> Email
+                      </a>
+                  </Button>
+                 )}
             </div>
       </section>
     </div>

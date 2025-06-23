@@ -10,7 +10,7 @@ import { Loader2, Image as ImageIcon } from 'lucide-react';
 
 import type { IIntro } from '@/models/intro.model';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -21,6 +21,10 @@ const formSchema = z.object({
   headline: z.string().min(5, { message: 'Headline must be at least 5 characters.' }),
   subheadline: z.string().min(10, { message: 'Subheadline must be at least 10 characters.' }),
   heroImage: z.instanceof(File).optional(),
+  role: z.string().min(2, { message: 'Role is required.' }),
+  githubUrl: z.string().url('Must be a valid URL.').optional().or(z.literal('')),
+  linkedinUrl: z.string().url('Must be a valid URL.').optional().or(z.literal('')),
+  email: z.string().email('Must be a valid email.').optional().or(z.literal('')),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -35,6 +39,10 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
     defaultValues: {
       headline: intro?.headline || '',
       subheadline: intro?.subheadline || '',
+      role: intro?.role || '',
+      githubUrl: intro?.githubUrl || '',
+      linkedinUrl: intro?.linkedinUrl || '',
+      email: intro?.email || '',
     },
   });
 
@@ -95,6 +103,58 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                       <FormLabel>Subheadline</FormLabel>
                       <FormControl>
                         <Input placeholder="e.g. A passionate Full-Stack Developer..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. Frontend Engineer" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="githubUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>GitHub URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://github.com/your-username" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="linkedinUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>LinkedIn URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://linkedin.com/in/your-username" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="your.email@example.com" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

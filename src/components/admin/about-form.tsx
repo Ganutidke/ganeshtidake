@@ -10,7 +10,7 @@ import { Loader2, Image as ImageIcon } from 'lucide-react';
 
 import type { IAbout } from '@/models/about.model';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -35,7 +35,7 @@ export default function AboutForm({ about }: { about?: IAbout }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       bio: about?.bio || '',
-      skills: about?.skills?.join(', ') || '',
+      skills: about?.skills || '',
     },
   });
 
@@ -95,8 +95,11 @@ export default function AboutForm({ about }: { about?: IAbout }) {
                     <FormItem>
                       <FormLabel>Skills</FormLabel>
                       <FormControl>
-                        <Input placeholder="React, Next.js, TypeScript" {...field} />
+                        <Textarea placeholder="Frontend: React, Next.js, ..." className="min-h-[150px]" {...field} />
                       </FormControl>
+                      <CardDescription>
+                        Enter skills categorized by line. Format: Category Name: Skill1, Skill2, ...
+                      </CardDescription>
                       <FormMessage />
                     </FormItem>
                   )}

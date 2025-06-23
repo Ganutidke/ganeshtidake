@@ -10,6 +10,10 @@ export interface UpdateIntroParams {
   headline: string;
   subheadline: string;
   heroImage?: string; // base64
+  role?: string;
+  githubUrl?: string;
+  linkedinUrl?: string;
+  email?: string;
 }
 
 export async function getIntro(): Promise<IIntro | null> {
@@ -46,6 +50,10 @@ export async function updateIntro(data: UpdateIntroParams) {
     const updateData = {
       headline: data.headline,
       subheadline: data.subheadline,
+      role: data.role,
+      githubUrl: data.githubUrl,
+      linkedinUrl: data.linkedinUrl,
+      email: data.email,
       ...(heroImage && { heroImage }),
     };
 

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { getAbout } from '@/lib/actions/about.actions';
 import PagePlaceholder from '@/components/site/page-placeholder';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default async function AboutPage() {
   const about = await getAbout();
@@ -15,6 +16,20 @@ export default async function AboutPage() {
       />
     );
   }
+
+  const getSkillCategories = (skillsString?: string) => {
+    if (typeof skillsString !== 'string' || !skillsString) {
+      return [];
+    }
+    return skillsString.split('\n').filter(Boolean).map(line => {
+      const [category, skillsStr] = line.split(':');
+      if (!category || !skillsStr) return null;
+      const skills = skillsStr.split(',').map(s => s.trim()).filter(Boolean);
+      return { category: category.trim(), skills };
+    }).filter((category): category is { category: string; skills: string[] } => category !== null);
+  }
+
+  const skillCategories = getSkillCategories(about.skills);
 
   return (
     <div className="container max-w-7xl mx-auto px-4 py-16">
@@ -29,14 +44,6 @@ export default async function AboutPage() {
             />
           </div>
           <h1 className="font-headline text-4xl font-bold text-primary mt-6">Ganesh Tidke</h1>
-          <div className="mt-6">
-            <h2 className="text-2xl font-bold font-headline text-secondary">Skills</h2>
-            <div className="flex flex-wrap gap-2 mt-4 justify-center">
-              {about.skills.map((skill) => (
-                <Badge key={skill} variant="secondary">{skill}</Badge>
-              ))}
-            </div>
-          </div>
         </div>
         <div className="md:col-span-2">
            <h2 className="text-3xl font-bold font-headline text-primary mb-4">About Me</h2>
@@ -45,6 +52,27 @@ export default async function AboutPage() {
            </div>
         </div>
       </div>
+      
+      {skillCategories && skillCategories.length > 0 && (
+        <div className="mt-16">
+          <h2 className="text-3xl font-bold font-headline text-primary text-center mb-8">My Skills</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {skillCategories.map((category) => (
+              <Card key={category.category}>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold text-foreground mb-4">{category.category}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {category.skills.map((skill) => (
+                      <Badge key={skill} variant="secondary">{skill}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

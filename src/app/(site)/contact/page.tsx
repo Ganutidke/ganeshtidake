@@ -1,7 +1,9 @@
 import ContactForm from '@/components/site/contact-form';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { getIntro } from '@/lib/actions/intro.actions';
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const intro = await getIntro();
   return (
     <div className="container max-w-7xl mx-auto px-4 py-16">
       <div className="text-center">
@@ -15,18 +17,20 @@ export default function ContactPage() {
         <div>
           <h2 className="text-2xl font-bold font-headline text-primary mb-6">Contact Information</h2>
           <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="mt-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <Mail className="h-6 w-6" />
+            {intro?.email && (
+              <div className="flex items-start gap-4">
+                <div className="mt-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Mail className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Email</h3>
+                  <p className="text-muted-foreground">Drop me a line anytime!</p>
+                  <a href={`mailto:${intro.email}`} className="text-secondary hover:underline">
+                    {intro.email}
+                  </a>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold">Email</h3>
-                <p className="text-muted-foreground">Drop me a line anytime!</p>
-                <a href="mailto:ganeshtidke1@example.com" className="text-secondary hover:underline">
-                  ganeshtidke1@example.com
-                </a>
-              </div>
-            </div>
+            )}
             <div className="flex items-start gap-4">
               <div className="mt-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
                 <Phone className="h-6 w-6" />

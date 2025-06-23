@@ -7,6 +7,10 @@ export interface IIntro extends Document {
     url: string;
     public_id: string;
   };
+  role?: string;
+  githubUrl?: string;
+  linkedinUrl?: string;
+  email?: string;
 }
 
 const IntroSchema: Schema = new Schema(
@@ -17,6 +21,10 @@ const IntroSchema: Schema = new Schema(
       url: { type: String, required: true },
       public_id: { type: String, required: true },
     },
+    role: { type: String },
+    githubUrl: { type: String },
+    linkedinUrl: { type: String },
+    email: { type: String },
   },
   { timestamps: true }
 );
