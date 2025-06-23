@@ -6,8 +6,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useRouter } from 'next/navigation';
-import { Loader2, Calendar as CalendarIcon } from 'lucide-react';
+import { Loader2, Calendar as CalendarIcon, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
+import Link from 'next/link';
 
 import type { IEducation } from '@/models/education.model';
 import { Button } from '@/components/ui/button';
@@ -43,7 +44,7 @@ export default function EducationForm({ education }: { education?: IEducation })
       school: education?.school || '',
       degree: education?.degree || '',
       fieldOfStudy: education?.fieldOfStudy || '',
-      startDate: education?.startDate ? new Date(education.startDate) : new Date(),
+      startDate: education?.startDate ? new Date(education.startDate) : undefined,
       endDate: education?.endDate ? new Date(education.endDate) : undefined,
       description: education?.description || '',
     },
@@ -97,7 +98,7 @@ export default function EducationForm({ education }: { education?: IEducation })
                         </Button>
                     </FormControl></PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus captionLayout="dropdown-nav" fromYear={1980} toYear={new Date().getFullYear()} />
+                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} captionLayout="dropdown-nav" fromYear={1980} toYear={new Date().getFullYear()} initialFocus />
                     </PopoverContent>
                   </Popover><FormMessage />
                 </FormItem>
@@ -112,7 +113,7 @@ export default function EducationForm({ education }: { education?: IEducation })
                         </Button>
                     </FormControl></PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus captionLayout="dropdown-nav" fromYear={1980} toYear={new Date().getFullYear() + 10} />
+                      <Calendar mode="single" selected={field.value} onSelect={field.onChange} captionLayout="dropdown-nav" fromYear={1980} toYear={new Date().getFullYear() + 10} initialFocus />
                     </PopoverContent>
                   </Popover><FormMessage />
                 </FormItem>
@@ -125,10 +126,18 @@ export default function EducationForm({ education }: { education?: IEducation })
             )}/>
           </CardContent>
         </Card>
-        <Button type="submit" disabled={isPending}>
-          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {education ? 'Update' : 'Create'} Entry
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {education ? 'Update' : 'Create'} Entry
+          </Button>
+           <Button variant="outline" asChild>
+              <Link href="/admin/education">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+              </Link>
+            </Button>
+        </div>
       </form>
     </Form>
   );
