@@ -1,8 +1,15 @@
+
 import PageHeader from '@/components/admin/page-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Book, Newspaper, Award } from 'lucide-react';
+import { getProjects } from '@/lib/actions/project.actions';
+import { getBlogs } from '@/lib/actions/blog.actions';
+import { getCertificates } from '@/lib/actions/certificate.actions';
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  const projects = await getProjects();
+  const blogs = await getBlogs();
+  const certificates = await getCertificates();
   return (
     <div>
       <PageHeader title="Dashboard" description="Overview of your portfolio content." />
@@ -13,7 +20,7 @@ export default function AdminDashboard() {
             <Book className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{projects.length}</div>
             <p className="text-xs text-muted-foreground">
               Manage your projects
             </p>
@@ -25,7 +32,7 @@ export default function AdminDashboard() {
             <Newspaper className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{blogs.length}</div>
             <p className="text-xs text-muted-foreground">
               Share your thoughts and ideas
             </p>
@@ -37,7 +44,7 @@ export default function AdminDashboard() {
             <Award className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{certificates.length}</div>
             <p className="text-xs text-muted-foreground">
               Showcase your achievements
             </p>

@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 export const metadata: Metadata = {
   title: 'Ganesh Tidke | Portfolio',
   description: 'The portfolio of Ganesh Tidke, a passionate Full-Stack Developer creating modern and responsive web applications.',
+  icons: false,
 };
 
 export default function RootLayout({
