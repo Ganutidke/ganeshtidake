@@ -39,19 +39,24 @@ export default function AdminSidebar() {
         </Link>
       </div>
       <nav className="flex-1 space-y-1 p-4">
-        {adminNavLinks.map((link) => (
-          <Button
-            key={link.href}
-            asChild
-            variant={pathname === link.href ? 'secondary' : 'ghost'}
-            className="w-full justify-start"
-          >
-            <Link href={link.href}>
-              <link.icon className="mr-2 h-4 w-4" />
-              {link.label}
-            </Link>
-          </Button>
-        ))}
+        {adminNavLinks.map((link) => {
+          const isActive = link.href === '/admin' 
+            ? pathname === link.href 
+            : pathname.startsWith(link.href);
+          return (
+            <Button
+              key={link.href}
+              asChild
+              variant={isActive ? 'secondary' : 'ghost'}
+              className="w-full justify-start"
+            >
+              <Link href={link.href}>
+                <link.icon className="mr-2 h-4 w-4" />
+                {link.label}
+              </Link>
+            </Button>
+          )
+        })}
       </nav>
     </aside>
   );
