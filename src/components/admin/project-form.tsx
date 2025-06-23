@@ -8,11 +8,13 @@ import * as z from 'zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Loader2, Image as ImageIcon } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 import type { IProject } from '@/models/project.model';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
@@ -46,6 +48,8 @@ export default function ProjectForm({ project }: { project?: IProject }) {
       liveUrl: project?.liveUrl || '',
     },
   });
+
+  const descriptionValue = form.watch('description');
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -93,14 +97,11 @@ export default function ProjectForm({ project }: { project?: IProject }) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-8">
             <Card>
               <CardContent className="p-6 space-y-6">
                 <FormField control={form.control} name="title" render={({ field }) => (
                     <FormItem><FormLabel>Title</FormLabel><FormControl><Input placeholder="Project Title" {...field} /></FormControl><FormMessage /></FormItem>
-                )}/>
-                <FormField control={form.control} name="description" render={({ field }) => (
-                    <FormItem><FormLabel>Description</FormLabel><FormControl><Textarea placeholder="Describe your project..." className="min-h-[200px]" {...field} /></FormControl><FormMessage /></FormItem>
                 )}/>
                  <FormField control={form.control} name="repositoryUrl" render={({ field }) => (
                     <FormItem><FormLabel>Repository URL</FormLabel><FormControl><Input placeholder="https://github.com/user/repo" {...field} /></FormControl><FormMessage /></FormItem>
@@ -109,6 +110,35 @@ export default function ProjectForm({ project }: { project?: IProject }) {
                     <FormItem><FormLabel>Live URL</FormLabel><FormControl><Input placeholder="https://my-project.com" {...field} /></FormControl><FormMessage /></FormItem>
                 )}/>
               </CardContent>
+            </Card>
+             <Card>
+                <CardHeader>
+                    <CardTitle>Project Description</CardTitle>
+                    <CardDescription>Use markdown for formatting. A live preview is shown below.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Markdown</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder="Describe your project..." className="min-h-[400px]" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                        <div>
+                            <FormLabel>Preview</FormLabel>
+                            <div className="prose prose-invert prose-sm max-w-none rounded-md border p-4 h-[400px] overflow-auto">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{descriptionValue}</ReactMarkdown>
+                            </div>
+                        </div>
+                    </div>
+                </CardContent>
             </Card>
           </div>
           <div className="lg:col-span-1">
@@ -142,7 +172,7 @@ export default function ProjectForm({ project }: { project?: IProject }) {
                     <FormItem>
                       <FormLabel>Tags</FormLabel>
                       <FormControl><Input placeholder="react, nextjs, tailwind" {...field} /></FormControl>
-                      <FormDescription>Comma-separated tags.</FormDescription>
+                      <CardDescription>Comma-separated tags.</CardDescription>
                       <FormMessage />
                     </FormItem>
                   )}/>

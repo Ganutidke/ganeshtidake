@@ -1,6 +1,10 @@
+
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Metadata } from 'next';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 import { getProjectBySlug, getProjects } from '@/lib/actions/project.actions';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -56,7 +60,7 @@ export default async function ProjectDetailPage({ params }: Props) {
   }
 
   return (
-    <article className="max-w-4xl mx-auto py-12">
+    <article className="max-w-4xl mx-auto py-12 px-4">
       <div className="space-y-4 text-center">
         <h1 className="font-headline text-4xl font-extrabold tracking-tight lg:text-5xl text-foreground">
           {project.title}
@@ -77,13 +81,14 @@ export default async function ProjectDetailPage({ params }: Props) {
       </div>
 
       <div className="prose prose-invert prose-lg mx-auto max-w-none 
-          prose-headings:text-foreground prose-a:text-primary hover:prose-a:text-primary/80
+          prose-headings:text-foreground prose-headings:font-headline
+          prose-a:text-primary hover:prose-a:text-primary/80
           prose-strong:text-foreground
           prose-blockquote:border-l-primary
           prose-code:bg-muted prose-code:text-foreground prose-code:p-1 prose-code:rounded-md
           prose-pre:bg-muted
           ">
-        <p>{project.description}</p>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{project.description}</ReactMarkdown>
       </div>
 
       <div className="mt-8 flex justify-center gap-4">
