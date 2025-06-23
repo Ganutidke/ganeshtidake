@@ -7,8 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Loader2, Image as ImageIcon, Calendar as CalendarIcon } from 'lucide-react';
+import { Loader2, Image as ImageIcon, Calendar as CalendarIcon, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
+import Link from 'next/link';
 
 import type { ICertificate } from '@/models/certificate.model';
 import { Button } from '@/components/ui/button';
@@ -183,10 +184,18 @@ export default function CertificateForm({ certificate }: { certificate?: ICertif
             </Card>
           </div>
         </div>
-        <Button type="submit" disabled={isPending}>
-          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {certificate ? 'Update' : 'Create'} Certificate
-        </Button>
+        <div className="flex items-center gap-4">
+            <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {certificate ? 'Update' : 'Create'} Certificate
+            </Button>
+             <Button variant="outline" asChild>
+              <Link href="/admin/certificates">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+              </Link>
+            </Button>
+        </div>
       </form>
     </Form>
   );
