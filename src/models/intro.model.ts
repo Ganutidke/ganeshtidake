@@ -21,10 +21,10 @@ const IntroSchema: Schema = new Schema(
       url: { type: String, required: true },
       public_id: { type: String, required: true },
     },
-    role: { type: String },
-    githubUrl: { type: String },
-    linkedinUrl: { type: String },
-    email: { type: String },
+    role: { type: String, default: 'Full Stack devloper' },
+    githubUrl: { type: String, default: 'https://github.com/Ganutidke' },
+    linkedinUrl: { type: String, default: 'https://www.linkedin.com/in/ganeshtidake/' },
+    email: { type: String, default: 'ganeshtidake519@gmail.com' },
   },
   { timestamps: true }
 );

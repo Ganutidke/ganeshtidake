@@ -50,10 +50,10 @@ export async function updateIntro(data: UpdateIntroParams) {
     const updateData = {
       headline: data.headline,
       subheadline: data.subheadline,
-      role: data.role,
-      githubUrl: data.githubUrl,
-      linkedinUrl: data.linkedinUrl,
-      email: data.email,
+      role: data.role || 'Full Stack devloper',
+      githubUrl: data.githubUrl || 'https://github.com/Ganutidke',
+      linkedinUrl: data.linkedinUrl || 'https://www.linkedin.com/in/ganeshtidake/',
+      email: data.email || 'ganeshtidake519@gmail.com',
       ...(heroImage && { heroImage }),
     };
 
