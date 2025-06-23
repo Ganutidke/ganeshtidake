@@ -57,12 +57,12 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   return (
-    <article className="container max-w-4xl py-12">
+    <article className="max-w-4xl mx-auto py-12">
       <div className="space-y-4 text-center">
         <div className="flex flex-wrap justify-center gap-2">
             {blog.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
         </div>
-        <h1 className="font-headline text-4xl font-extrabold tracking-tight lg:text-5xl text-primary">
+        <h1 className="font-headline text-4xl font-extrabold tracking-tight lg:text-5xl text-foreground">
           {blog.title}
         </h1>
         <p className="text-muted-foreground">
@@ -81,8 +81,8 @@ export default async function BlogPostPage({ params }: Props) {
       </div>
 
       <div className="prose prose-invert prose-lg mx-auto max-w-none 
-          prose-headings:text-primary prose-headings:font-headline
-          prose-a:text-secondary hover:prose-a:text-secondary/80
+          prose-headings:text-foreground prose-headings:font-headline
+          prose-a:text-primary hover:prose-a:text-primary/80
           prose-strong:text-foreground
           prose-blockquote:border-l-primary
           prose-code:bg-muted prose-code:text-foreground prose-code:p-1 prose-code:rounded-md
