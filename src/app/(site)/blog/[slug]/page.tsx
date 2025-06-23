@@ -1,12 +1,16 @@
+
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { Metadata } from 'next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 import { getBlogBySlug, getBlogs } from '@/lib/actions/blog.actions';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 type Props = {
   params: { slug: string };
@@ -57,7 +61,16 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   return (
-    <article className="max-w-4xl mx-auto py-12">
+    <article className="max-w-4xl mx-auto py-12 px-4">
+      <div className="mb-8">
+        <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
+          <Link href="/blog">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Blog
+          </Link>
+        </Button>
+      </div>
+
       <div className="space-y-4 text-center">
         <div className="flex flex-wrap justify-center gap-2">
             {blog.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}

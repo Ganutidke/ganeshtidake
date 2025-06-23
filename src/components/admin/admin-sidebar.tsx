@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -12,10 +13,17 @@ import {
   Home,
   User,
   Mountain,
-  Mail
+  Mail,
 } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarRail,
+} from '@/components/ui/sidebar';
 
 const adminNavLinks = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -33,33 +41,49 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden h-screen w-64 flex-col border-r bg-background md:flex">
-      <div className="flex h-14 items-center border-b px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <Mountain className="h-6 w-6 text-primary" />
-          <span className="font-headline">Ganesh Tidke</span>
+    <Sidebar collapsible="icon" className="border-r">
+      <SidebarRail />
+      <SidebarHeader>
+        <Link
+          href="/"
+          className="flex items-center gap-2 font-semibold text-primary"
+        >
+          <Mountain className="h-6 w-6 shrink-0" />
+          <span className="group-data-[collapsible=icon]:hidden font-headline">
+            Ganesh Tidke
+          </span>
         </Link>
-      </div>
-      <nav className="flex-1 space-y-1 p-4">
-        {adminNavLinks.map((link) => {
-          const isActive = link.href === '/admin' 
-            ? pathname === link.href 
-            : pathname.startsWith(link.href);
-          return (
-            <Button
-              key={link.href}
-              asChild
-              variant={isActive ? 'secondary' : 'ghost'}
-              className="w-full justify-start"
-            >
-              <Link href={link.href}>
-                <link.icon className="mr-2 h-4 w-4" />
-                {link.label}
-              </Link>
-            </Button>
-          )
-        })}
-      </nav>
-    </aside>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarMenu>
+          {adminNavLinks.map((link) => {
+            const isActive =
+              link.href === '/admin'
+                ? pathname === link.href
+                : pathname.startsWith(link.href);
+            return (
+              <SidebarMenuItem key={link.href}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  tooltip={{
+                    children: link.label,
+                    side: 'right',
+                    align: 'center',
+                  }}
+                >
+                  <Link href={link.href}>
+                    <link.icon />
+                    <span className="group-data-[collapsible=icon]:hidden">
+                      {link.label}
+                    </span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
+      </SidebarContent>
+    </Sidebar>
   );
 }

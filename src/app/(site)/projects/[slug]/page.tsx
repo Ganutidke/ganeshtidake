@@ -9,7 +9,7 @@ import { getProjectBySlug, getProjects } from '@/lib/actions/project.actions';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Github, ExternalLink } from 'lucide-react';
+import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
 
 type Props = {
   params: { slug: string };
@@ -61,6 +61,14 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   return (
     <article className="max-w-4xl mx-auto py-12 px-4">
+      <div className="mb-8">
+        <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
+          <Link href="/projects">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to All Projects
+          </Link>
+        </Button>
+      </div>
       <div className="space-y-4 text-center">
         <h1 className="font-headline text-4xl font-extrabold tracking-tight lg:text-5xl text-foreground">
           {project.title}
