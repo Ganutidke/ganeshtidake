@@ -3,9 +3,11 @@
 
 import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
-import Project, { type IProject, type PopulatedProject } from '@/models/project.model';
+import Project from '@/models/project.model';
+import ProjectCategory from '@/models/project-category.model';
 import cloudinary from '@/lib/cloudinary';
 import { slugify } from '@/lib/utils';
+import type { PopulatedProject } from '@/models/project.model';
 
 export interface ProjectParams {
   title: string;
@@ -97,7 +99,10 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
 export async function getProjects(): Promise<PopulatedProject[]> {
   try {
     await connectDB();
-    const projects = await Project.find().sort({ createdAt: -1 }).populate('category').lean();
+    const projects = await Project.find().sort({ createdAt: -1 }).populate({
+        path: 'category',
+        model: ProjectCategory
+    }).lean();
     return JSON.parse(JSON.stringify(projects));
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -105,10 +110,13 @@ export async function getProjects(): Promise<PopulatedProject[]> {
   }
 }
 
-export async function getProjectById(id: string): Promise<IProject | null> {
+export async function getProjectById(id: string): Promise<PopulatedProject | null> {
   try {
     await connectDB();
-    const project = await Project.findById(id).lean();
+    const project = await Project.findById(id).populate({
+        path: 'category',
+        model: ProjectCategory
+    }).lean();
     return project ? JSON.parse(JSON.stringify(project)) : null;
   } catch (error) {
     console.error('Error fetching project by id:', error);
@@ -119,7 +127,10 @@ export async function getProjectById(id: string): Promise<IProject | null> {
 export async function getProjectBySlug(slug: string): Promise<PopulatedProject | null> {
   try {
     await connectDB();
-    const project = await Project.findOne({ slug }).populate('category').lean();
+    const project = await Project.findOne({ slug }).populate({
+        path: 'category',
+        model: ProjectCategory
+    }).lean();
     return project ? JSON.parse(JSON.stringify(project)) : null;
   } catch (error) {
     console.error('Error fetching project by slug:', error);
@@ -146,5 +157,3 @@ export async function deleteProject(id: string) {
     throw new Error(`Failed to delete project: ${error.message}`);
   }
 }
-
-    

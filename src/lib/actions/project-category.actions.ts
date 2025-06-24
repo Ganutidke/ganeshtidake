@@ -4,6 +4,7 @@
 import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
 import ProjectCategory, { IProjectCategory } from '@/models/project-category.model';
+import Project from '@/models/project.model';
 
 export async function createProjectCategory(name: string) {
   try {
@@ -34,6 +35,10 @@ export async function deleteProjectCategory(id: string) {
   try {
     await connectDB();
     // Note: You might want to check if any projects are using this category before deleting.
+    const projectCount = await Project.countDocuments({ category: id });
+    if (projectCount > 0) {
+      throw new Error('Cannot delete category because it is being used by one or more projects.');
+    }
     await ProjectCategory.findByIdAndDelete(id);
     revalidatePath('/admin/projects/categories');
     revalidatePath('/admin/projects/*');

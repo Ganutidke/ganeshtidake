@@ -1,7 +1,5 @@
-
 import mongoose, { Schema, Document } from 'mongoose';
-import '@/models/project-category.model'; // Ensures ProjectCategory model is registered
-import type { IProjectCategory } from '@/models/project-category.model';
+import type { IProjectCategory } from './project-category.model';
 
 export interface IProject extends Document {
   title: string;
@@ -12,7 +10,7 @@ export interface IProject extends Document {
     url: string;
     public_id: string;
   };
-  category: IProjectCategory['_id'];
+  category: mongoose.Types.ObjectId | IProjectCategory;
   repositoryUrl?: string;
   liveUrl?: string;
 }

@@ -11,7 +11,7 @@ import { Loader2, Image as ImageIcon } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-import type { IProject } from '@/models/project.model';
+import type { PopulatedProject } from '@/models/project.model';
 import type { IProjectCategory } from '@/models/project-category.model';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -36,7 +36,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface ProjectFormProps {
-    project?: IProject;
+    project?: PopulatedProject;
     categories: IProjectCategory[];
 }
 
@@ -52,7 +52,7 @@ export default function ProjectForm({ project, categories }: ProjectFormProps) {
       title: project?.title || '',
       description: project?.description || '',
       tags: project?.tags?.join(', ') || '',
-      categoryId: project?.category?.toString() || '',
+      categoryId: project?.category?._id?.toString() || '',
       repositoryUrl: project?.repositoryUrl || '',
       liveUrl: project?.liveUrl || '',
     },
