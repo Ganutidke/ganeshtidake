@@ -47,14 +47,14 @@ const navVariants = {
   hidden: {
     opacity: 0,
     y: -20,
-    scaleX: 0.9,
+    scaleX: 0.5,
   },
   visible: {
     opacity: 1,
     y: 0,
     scaleX: 1,
     transition: {
-      duration: 0.5,
+      duration: 0.7,
       delay: 0.15,
       ease: [0.16, 1, 0.3, 1],
     },
