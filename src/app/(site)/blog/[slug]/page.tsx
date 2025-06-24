@@ -1,7 +1,7 @@
 
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getBlogBySlug, getBlogs } from '@/lib/actions/blog.actions';
+import { getBlogBySlug, getBlogs, incrementBlogViews } from '@/lib/actions/blog.actions';
 import BlogPostClient from '@/components/site/blog-post-client';
 import type { IBlog } from '@/models/blog.model';
 import { getIntro } from '@/lib/actions/intro.actions';
@@ -54,6 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
+  await incrementBlogViews(params.slug);
   const blog: IBlog | null = await getBlogBySlug(params.slug);
 
   if (!blog) {

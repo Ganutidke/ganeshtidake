@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -33,15 +33,20 @@ export default function BlogPostClient({ blog }: { blog: IBlog }) {
           <h1 className="font-headline text-4xl font-extrabold tracking-tight lg:text-5xl text-foreground">
             {blog.title}
           </h1>
-          <p className="text-muted-foreground">
-            {format(new Date(blog.createdAt), 'MMMM d, yyyy')}
-          </p>
+          <div className="flex items-center justify-center gap-4 text-muted-foreground">
+            <p>{format(new Date(blog.createdAt), 'MMMM d, yyyy')}</p>
+            <span className="text-muted-foreground">&middot;</span>
+            <p className="flex items-center gap-1.5">
+              <Eye className="h-4 w-4" />
+              {blog.views.toLocaleString()} views
+            </p>
+          </div>
         </div>
 
         <div className="relative my-8 h-64 md:h-96 w-full">
           <Image
-            src={blog.coverImage.url}
-            alt={blog.title}
+            src={project.coverImage.url}
+            alt={project.title}
             fill
             className="rounded-lg object-cover shadow-lg"
             priority

@@ -1,10 +1,11 @@
+
 'use client';
 
 import { useState, useTransition } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
-import { Edit, Trash, ExternalLink } from 'lucide-react';
+import { Edit, Trash, ExternalLink, Eye } from 'lucide-react';
 
 import type { IBlog } from '@/models/blog.model';
 import {
@@ -61,6 +62,7 @@ export default function BlogsList({ blogs }: { blogs: IBlog[] }) {
             <TableHead className="w-[80px]">Image</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Tags</TableHead>
+            <TableHead className="hidden md:table-cell">Views</TableHead>
             <TableHead className="hidden md:table-cell">Created At</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -81,6 +83,12 @@ export default function BlogsList({ blogs }: { blogs: IBlog[] }) {
               <TableCell>
                 <div className="flex flex-wrap gap-1">
                   {blog.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                </div>
+              </TableCell>
+              <TableCell className="hidden md:table-cell">
+                <div className="flex items-center gap-1.5">
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                  <span>{blog.views?.toLocaleString() ?? 0}</span>
                 </div>
               </TableCell>
               <TableCell className="hidden md:table-cell">

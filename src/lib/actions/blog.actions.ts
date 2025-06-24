@@ -165,3 +165,13 @@ export async function deleteBlog(id: string) {
     throw new Error(`Failed to delete blog: ${error.message}`);
   }
 }
+
+export async function incrementBlogViews(slug: string) {
+  try {
+    await connectDB();
+    await Blog.findOneAndUpdate({ slug }, { $inc: { views: 1 } });
+  } catch (error: any) {
+    console.error('Error incrementing blog views:', error);
+    // Fail silently to not disrupt user experience
+  }
+}

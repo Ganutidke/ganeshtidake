@@ -11,6 +11,7 @@ export interface IBlog extends Document {
   };
   content: string;
   tags: string[];
+  views: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -26,6 +27,7 @@ const BlogSchema: Schema = new Schema(
     },
     content: { type: String, required: true },
     tags: [{ type: String }],
+    views: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
