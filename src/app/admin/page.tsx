@@ -1,17 +1,21 @@
 
 import PageHeader from '@/components/admin/page-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Book, Newspaper, Award, Images } from 'lucide-react';
+import { Book, Newspaper, Award, Images, Briefcase, HelpCircle } from 'lucide-react';
 import { getProjects } from '@/lib/actions/project.actions';
 import { getBlogs } from '@/lib/actions/blog.actions';
 import { getCertificates } from '@/lib/actions/certificate.actions';
 import { getImages } from '@/lib/actions/gallery.actions';
+import { getExperienceHistory } from '@/lib/actions/experience.actions';
+import { getFaqs } from '@/lib/actions/faq.actions';
 
 export default async function AdminDashboard() {
   const projects = await getProjects();
   const blogs = await getBlogs();
   const certificates = await getCertificates();
   const galleryImages = await getImages();
+  const experiences = await getExperienceHistory();
+  const faqs = await getFaqs();
 
   return (
     <div>
@@ -24,9 +28,6 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{projects.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Manage your projects
-            </p>
           </CardContent>
         </Card>
         <Card>
@@ -36,9 +37,15 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{blogs.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Share your thoughts and ideas
-            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Experience</CardTitle>
+            <Briefcase className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{experiences.length}</div>
           </CardContent>
         </Card>
         <Card>
@@ -48,9 +55,6 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{certificates.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Showcase your achievements
-            </p>
           </CardContent>
         </Card>
         <Card>
@@ -60,9 +64,15 @@ export default async function AdminDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{galleryImages.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Manage your gallery
-            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">FAQs</CardTitle>
+            <HelpCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{faqs.length}</div>
           </CardContent>
         </Card>
       </div>

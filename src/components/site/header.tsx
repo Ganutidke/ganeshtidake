@@ -19,9 +19,11 @@ const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/projects', label: 'Projects' },
   { href: '/blog', label: 'Blog' },
+  { href: '/experience', label: 'Experience' },
   { href: '/certificates', label: 'Certificates' },
   { href: '/education', label: 'Education' },
   { href: '/gallery', label: 'Gallery' },
+  { href: '/faq', label: 'FAQ' },
   { href: '/contact', label: 'Contact' },
 ];
 

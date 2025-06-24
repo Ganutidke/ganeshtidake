@@ -16,6 +16,8 @@ import {
   Mail,
   LayoutGrid,
   Images,
+  Briefcase,
+  HelpCircle,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -34,9 +36,11 @@ const adminNavLinks = [
   { href: '/admin/projects', label: 'Projects', icon: Book },
   { href: '/admin/projects/categories', label: 'Categories', icon: LayoutGrid },
   { href: '/admin/blogs', label: 'Blogs', icon: Newspaper },
-  { href: '/admin/certificates', label: 'Certificates', icon: Award },
+  { href: '/admin/experience', label: 'Experience', icon: Briefcase },
   { href: '/admin/education', label: 'Education', icon: GraduationCap },
+  { href: '/admin/certificates', label: 'Certificates', icon: Award },
   { href: '/admin/gallery', label: 'Gallery', icon: Images },
+  { href: '/admin/faq', label: 'FAQ', icon: HelpCircle },
   { href: '/admin/messages', label: 'Messages', icon: Mail },
   { href: '/admin/seo', label: 'SEO Helper', icon: Lightbulb },
 ];

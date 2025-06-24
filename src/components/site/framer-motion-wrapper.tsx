@@ -1,3 +1,4 @@
+
 'use client';
 import { motion, useInView, useAnimation, type Variants } from 'framer-motion';
 import { useRef, useEffect } from 'react';
@@ -10,8 +11,8 @@ interface Props {
 }
 
 const defaultVariants: Variants = {
-  hidden: { opacity: 0, y: 75 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 50, scale: 0.98 },
+  visible: { opacity: 1, y: 0, scale: 1 },
 };
 
 export default function FramerMotionWrapper({
@@ -36,7 +37,7 @@ export default function FramerMotionWrapper({
         variants={variants}
         initial="hidden"
         animate={mainControls}
-        transition={{ duration: 0.5, delay: delay }}
+        transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1.0] }}
       >
         {children}
       </motion.div>

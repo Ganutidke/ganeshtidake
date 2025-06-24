@@ -6,6 +6,8 @@ import '@/models/about.model';
 import '@/models/blog.model';
 import '@/models/certificate.model';
 import '@/models/education.model';
+import '@/models/experience.model';
+import '@/models/faq.model';
 import '@/models/intro.model';
 import '@/models/message.model';
 import '@/models/project-category.model';
