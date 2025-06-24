@@ -1,11 +1,14 @@
 'use server';
 
-import 'server-only';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 const secretKey = process.env.SESSION_SECRET;
+
+if (!secretKey) {
+    throw new Error('SESSION_SECRET environment variable is not set. Please check your .env file.');
+}
+
 const key = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload: any) {
@@ -45,5 +48,4 @@ export async function getSession() {
 
 export async function deleteSession() {
   cookies().delete('session');
-  redirect('/login');
 }
