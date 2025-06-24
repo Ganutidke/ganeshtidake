@@ -1,19 +1,22 @@
 
 import PageHeader from '@/components/admin/page-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Book, Newspaper, Award } from 'lucide-react';
+import { Book, Newspaper, Award, Images } from 'lucide-react';
 import { getProjects } from '@/lib/actions/project.actions';
 import { getBlogs } from '@/lib/actions/blog.actions';
 import { getCertificates } from '@/lib/actions/certificate.actions';
+import { getImages } from '@/lib/actions/gallery.actions';
 
 export default async function AdminDashboard() {
   const projects = await getProjects();
   const blogs = await getBlogs();
   const certificates = await getCertificates();
+  const galleryImages = await getImages();
+
   return (
     <div>
       <PageHeader title="Dashboard" description="Overview of your portfolio content." />
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
@@ -47,6 +50,18 @@ export default async function AdminDashboard() {
             <div className="text-2xl font-bold">{certificates.length}</div>
             <p className="text-xs text-muted-foreground">
               Showcase your achievements
+            </p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Gallery Images</CardTitle>
+            <Images className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{galleryImages.length}</div>
+            <p className="text-xs text-muted-foreground">
+              Manage your gallery
             </p>
           </CardContent>
         </Card>

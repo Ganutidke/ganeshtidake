@@ -15,6 +15,7 @@ import {
   Mountain,
   Mail,
   LayoutGrid,
+  Images,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -35,6 +36,7 @@ const adminNavLinks = [
   { href: '/admin/blogs', label: 'Blogs', icon: Newspaper },
   { href: '/admin/certificates', label: 'Certificates', icon: Award },
   { href: '/admin/education', label: 'Education', icon: GraduationCap },
+  { href: '/admin/gallery', label: 'Gallery', icon: Images },
   { href: '/admin/messages', label: 'Messages', icon: Mail },
   { href: '/admin/seo', label: 'SEO Helper', icon: Lightbulb },
 ];

@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 
 // Import all models to ensure they are registered with Mongoose
@@ -9,6 +10,7 @@ import '@/models/intro.model';
 import '@/models/message.model';
 import '@/models/project-category.model';
 import '@/models/project.model';
+import '@/models/gallery.model';
 
 
 const MONGODB_URI = process.env.MONGODB_URI;
