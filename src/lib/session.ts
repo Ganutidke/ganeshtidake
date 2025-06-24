@@ -1,5 +1,4 @@
 import { SignJWT, jwtVerify } from 'jose';
-import { cookies } from 'next/headers';
 
 const secretKey = process.env.SESSION_SECRET;
 
@@ -24,26 +23,7 @@ export async function decrypt(input: string): Promise<any> {
     });
     return payload;
   } catch (error) {
-    // This will be caught if the token is expired or invalid
+    // This can happen if the token is expired or invalid
     return null;
   }
-}
-
-export async function createSession(userId: string) {
-  const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
-  const session = await encrypt({ userId, expires });
-
-  cookies().set('session', session, { expires, httpOnly: true, path: '/' });
-}
-
-export async function getSession() {
-  const sessionCookie = cookies().get('session')?.value;
-  if (!sessionCookie) {
-    return null;
-  }
-  return await decrypt(sessionCookie);
-}
-
-export async function deleteSession() {
-  cookies().delete('session');
 }
