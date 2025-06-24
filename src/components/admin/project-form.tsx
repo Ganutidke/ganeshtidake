@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useTransition } from 'react';
@@ -11,7 +10,6 @@ import { Loader2, Image as ImageIcon } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-import type { PopulatedProject } from '@/models/project.model';
 import type { IProjectCategory } from '@/models/project-category.model';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -22,12 +20,13 @@ import { useToast } from '@/hooks/use-toast';
 import { fileToBase64 } from '@/lib/utils';
 import { createProject, updateProject } from '@/lib/actions/project.actions';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { PopulatedProject } from '@/models/project.model';
 
 const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long.' }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters long.' }),
   tags: z.string(),
-  categoryId: z.string().min(1, { message: 'Please select a category.' }),
+  category: z.string().min(1, { message: 'Please select a category.' }),
   repositoryUrl: z.string().url('Must be a valid URL.').optional().or(z.literal('')),
   liveUrl: z.string().url('Must be a valid URL.').optional().or(z.literal('')),
   coverImage: z.instanceof(File).optional(),
@@ -52,7 +51,7 @@ export default function ProjectForm({ project, categories }: ProjectFormProps) {
       title: project?.title || '',
       description: project?.description || '',
       tags: project?.tags?.join(', ') || '',
-      categoryId: project?.category?._id?.toString() || '',
+      category: project?.category?._id?.toString() || '',
       repositoryUrl: project?.repositoryUrl || '',
       liveUrl: project?.liveUrl || '',
     },
@@ -179,7 +178,7 @@ export default function ProjectForm({ project, categories }: ProjectFormProps) {
                   )}/>
                  <FormField
                     control={form.control}
-                    name="categoryId"
+                    name="category"
                     render={({ field }) => (
                         <FormItem>
                         <FormLabel>Category</FormLabel>

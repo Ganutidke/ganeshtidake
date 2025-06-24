@@ -1,19 +1,19 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
 import Project from '@/models/project.model';
-import ProjectCategory from '@/models/project-category.model';
 import cloudinary from '@/lib/cloudinary';
 import { slugify } from '@/lib/utils';
 import type { PopulatedProject } from '@/models/project.model';
+import ProjectCategory from '@/models/project-category.model';
+
 
 export interface ProjectParams {
   title: string;
   description: string;
   tags: string;
-  categoryId: string;
+  category: string;
   repositoryUrl?: string;
   liveUrl?: string;
   coverImage: string; // base64
@@ -38,7 +38,7 @@ export async function createProject(data: ProjectParams) {
       liveUrl: data.liveUrl,
       slug: slugify(data.title),
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
-      category: data.categoryId,
+      category: data.category,
       coverImage: {
         url: uploadResponse.secure_url,
         public_id: uploadResponse.public_id,
@@ -48,6 +48,7 @@ export async function createProject(data: ProjectParams) {
     await newProject.save();
     revalidatePath('/admin/projects');
     revalidatePath('/projects');
+    revalidatePath('/');
   } catch (error: any) {
     console.error('Error creating project:', error);
     throw new Error(`Failed to create project: ${error.message}`);
@@ -78,7 +79,7 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
       title: data.title,
       description: data.description,
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
-      category: data.categoryId,
+      category: data.category,
       repositoryUrl: data.repositoryUrl,
       liveUrl: data.liveUrl,
       slug: slugify(data.title),
@@ -90,6 +91,7 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
     revalidatePath('/admin/projects');
     revalidatePath('/projects');
     revalidatePath(`/projects/${updateData.slug}`);
+    revalidatePath('/');
   } catch (error: any) {
     console.error('Error updating project:', error);
     throw new Error(`Failed to update project: ${error.message}`);
@@ -152,6 +154,7 @@ export async function deleteProject(id: string) {
     await Project.findByIdAndDelete(id);
     revalidatePath('/admin/projects');
     revalidatePath('/projects');
+    revalidatePath('/');
   } catch (error: any) {
     console.error('Error deleting project:', error);
     throw new Error(`Failed to delete project: ${error.message}`);
