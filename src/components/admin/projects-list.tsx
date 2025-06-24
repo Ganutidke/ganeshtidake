@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Edit, Trash, ExternalLink, Github } from 'lucide-react';
 
-import type { PopulatedProject } from '@/lib/actions/project.actions';
+import type { PopulatedProject } from '@/models/project.model';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
@@ -54,7 +54,7 @@ export default function ProjectsList({ projects }: { projects: PopulatedProject[
                 />
               </TableCell>
               <TableCell className="font-medium">{project.title}</TableCell>
-              <TableCell>{project.category?.name}</TableCell>
+              <TableCell>{project.category?.name ?? 'N/A'}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
                   {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
@@ -109,3 +109,5 @@ export default function ProjectsList({ projects }: { projects: PopulatedProject[
     </div>
   );
 }
+
+    

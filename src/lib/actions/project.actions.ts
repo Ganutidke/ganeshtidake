@@ -3,15 +3,9 @@
 
 import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
-import Project, { IProject } from '@/models/project.model';
-import '@/models/project-category.model'; // Ensures ProjectCategory model is registered
+import Project, { type IProject, type PopulatedProject } from '@/models/project.model';
 import cloudinary from '@/lib/cloudinary';
 import { slugify } from '@/lib/utils';
-import type { IProjectCategory } from '@/models/project-category.model';
-
-export interface PopulatedProject extends Omit<IProject, 'category'> {
-    category: IProjectCategory;
-}
 
 export interface ProjectParams {
   title: string;
@@ -107,7 +101,7 @@ export async function getProjects(): Promise<PopulatedProject[]> {
     return JSON.parse(JSON.stringify(projects));
   } catch (error) {
     console.error('Error fetching projects:', error);
-    return [];
+    throw error;
   }
 }
 
@@ -152,3 +146,5 @@ export async function deleteProject(id: string) {
     throw new Error(`Failed to delete project: ${error.message}`);
   }
 }
+
+    

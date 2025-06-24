@@ -1,6 +1,6 @@
 
 import mongoose, { Schema, Document } from 'mongoose';
-import '@/models/project-category.model'; // Ensures ProjectCategory model is registered before Project model
+import '@/models/project-category.model'; // Ensures ProjectCategory model is registered
 import type { IProjectCategory } from '@/models/project-category.model';
 
 export interface IProject extends Document {
@@ -15,6 +15,10 @@ export interface IProject extends Document {
   category: IProjectCategory['_id'];
   repositoryUrl?: string;
   liveUrl?: string;
+}
+
+export interface PopulatedProject extends Omit<IProject, 'category'> {
+    category: IProjectCategory;
 }
 
 const ProjectSchema: Schema = new Schema(
