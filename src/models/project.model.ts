@@ -1,4 +1,6 @@
+
 import mongoose, { Schema, Document } from 'mongoose';
+import type { IProjectCategory } from './project-category.model';
 
 export interface IProject extends Document {
   title: string;
@@ -9,6 +11,7 @@ export interface IProject extends Document {
     url: string;
     public_id: string;
   };
+  category: IProjectCategory['_id'];
   repositoryUrl?: string;
   liveUrl?: string;
 }
@@ -23,6 +26,7 @@ const ProjectSchema: Schema = new Schema(
       url: { type: String, required: true },
       public_id: { type: String, required: true },
     },
+    category: { type: Schema.Types.ObjectId, ref: 'ProjectCategory', required: true },
     repositoryUrl: { type: String },
     liveUrl: { type: String },
   },

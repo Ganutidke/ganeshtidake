@@ -12,6 +12,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 import type { IProject } from '@/models/project.model';
+import type { IProjectCategory } from '@/models/project-category.model';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -20,11 +21,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { fileToBase64 } from '@/lib/utils';
 import { createProject, updateProject } from '@/lib/actions/project.actions';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long.' }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters long.' }),
   tags: z.string(),
+  categoryId: z.string().min(1, { message: 'Please select a category.' }),
   repositoryUrl: z.string().url('Must be a valid URL.').optional().or(z.literal('')),
   liveUrl: z.string().url('Must be a valid URL.').optional().or(z.literal('')),
   coverImage: z.instanceof(File).optional(),
@@ -32,7 +35,12 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function ProjectForm({ project }: { project?: IProject }) {
+interface ProjectFormProps {
+    project?: IProject;
+    categories: IProjectCategory[];
+}
+
+export default function ProjectForm({ project, categories }: ProjectFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
@@ -44,6 +52,7 @@ export default function ProjectForm({ project }: { project?: IProject }) {
       title: project?.title || '',
       description: project?.description || '',
       tags: project?.tags?.join(', ') || '',
+      categoryId: project?.category?.toString() || '',
       repositoryUrl: project?.repositoryUrl || '',
       liveUrl: project?.liveUrl || '',
     },
@@ -168,6 +177,30 @@ export default function ProjectForm({ project }: { project?: IProject }) {
                       <FormMessage />
                     </FormItem>
                   )}/>
+                 <FormField
+                    control={form.control}
+                    name="categoryId"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Category</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                            {categories.map((cat) => (
+                                <SelectItem key={cat._id} value={cat._id}>
+                                {cat.name}
+                                </SelectItem>
+                            ))}
+                            </SelectContent>
+                        </Select>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                 />
                 <FormField control={form.control} name="tags" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tags</FormLabel>

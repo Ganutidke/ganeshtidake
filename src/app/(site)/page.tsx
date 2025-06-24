@@ -1,6 +1,7 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Briefcase, Zap, Newspaper, GraduationCap } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Briefcase, Zap, Newspaper, GraduationCap, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getIntro } from '@/lib/actions/intro.actions';
@@ -14,7 +15,7 @@ import { Badge } from '@/components/ui/badge';
 export default async function HomePage() {
   const intro = await getIntro();
   const about = await getAbout();
-  const projects = (await getProjects()).slice(0, 4);
+  const projects = (await getProjects()).slice(0, 3);
   const blogs = (await getBlogs()).slice(0, 3);
   const educationHistory = (await getEducationHistory()).slice(0, 2);
 
@@ -148,33 +149,29 @@ export default async function HomePage() {
                 Explore more <ArrowRight className="h-4 w-4"/>
             </Link>
 
-            <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((project) => (
-                <Card key={project._id as string} className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
-                  <Link href={`/projects/${project.slug}`} className="absolute inset-0 z-10" aria-label={project.title}></Link>
-                   <div className="relative h-48 w-full overflow-hidden">
-                        <Image
-                          src={project.coverImage.url}
-                          alt={project.title}
-                          fill
-                          className="object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">{project.title}</h3>
-                     <div className="flex flex-wrap gap-2 my-2">
-                        {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
-                      </div>
-                    <p className="text-muted-foreground text-sm line-clamp-2">{project.description}</p>
-                    {project.liveUrl && (
-                      <div className="absolute top-2 right-2 z-20">
-                          <Button asChild variant="secondary" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"><ExternalLink className="h-4 w-4" /></a>
-                          </Button>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                 <div key={project._id as string}>
+                    <Link href={`/projects/${project.slug}`} className="block group">
+                        <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                            <div className="relative h-56 w-full">
+                                <Image
+                                src={project.coverImage.url}
+                                alt={project.title}
+                                fill
+                                className="object-cover"
+                                />
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <h3 className="font-bold text-lg text-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
+                                {project.title}
+                                <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </h3>
+                            <p className="text-muted-foreground mt-1">{project.category.name}</p>
+                        </div>
+                    </Link>
+                </div>
               ))}
             </div>
         </section>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useTransition } from 'react';
@@ -23,6 +24,7 @@ import { Separator } from '../ui/separator';
 
 const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long.' }),
+  excerpt: z.string().min(10, { message: 'Excerpt must be at least 10 characters long.' }).max(200, { message: 'Excerpt must be 200 characters or less.'}),
   content: z.string().min(100, { message: 'Content must be at least 100 characters long.' }),
   tags: z.string(),
   coverImage: z.instanceof(File).optional(),
@@ -40,6 +42,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: blog?.title || '',
+      excerpt: blog?.excerpt || '',
       content: blog?.content || '',
       tags: blog?.tags?.join(', ') || '',
     },
@@ -63,9 +66,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
         
         if (blog) {
           await updateBlog(blog._id as string, {
-            title: values.title,
-            content: values.content,
-            tags: values.tags,
+            ...values,
             ...(imageBase64 && { coverImage: imageBase64 }),
           });
           toast({ title: 'Success', description: 'Blog post updated successfully.' });
@@ -75,9 +76,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
              return;
           }
           await createBlog({
-            title: values.title,
-            content: values.content,
-            tags: values.tags,
+            ...values,
             coverImage: imageBase64,
           });
           toast({ title: 'Success', description: 'Blog post created successfully.' });
@@ -108,6 +107,19 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
                       <FormLabel>Title</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter post title" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="excerpt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Excerpt</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder="A short summary of the post..." className="h-24" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

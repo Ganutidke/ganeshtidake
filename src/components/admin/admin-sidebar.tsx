@@ -14,6 +14,7 @@ import {
   User,
   Mountain,
   Mail,
+  LayoutGrid,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -30,6 +31,7 @@ const adminNavLinks = [
   { href: '/admin/intro', label: 'Intro', icon: Home },
   { href: '/admin/about', label: 'About', icon: User },
   { href: '/admin/projects', label: 'Projects', icon: Book },
+  { href: '/admin/projects/categories', label: 'Categories', icon: LayoutGrid },
   { href: '/admin/blogs', label: 'Blogs', icon: Newspaper },
   { href: '/admin/certificates', label: 'Certificates', icon: Award },
   { href: '/admin/education', label: 'Education', icon: GraduationCap },
@@ -39,6 +41,16 @@ const adminNavLinks = [
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+
+  const isLinkActive = (href: string) => {
+    if (href === '/admin') {
+      return pathname === href;
+    }
+    if (href === '/admin/projects') {
+      return pathname.startsWith(href) && !pathname.includes('/categories');
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <Sidebar collapsible="icon" className="border-r">
@@ -57,10 +69,7 @@ export default function AdminSidebar() {
       <SidebarContent>
         <SidebarMenu>
           {adminNavLinks.map((link) => {
-            const isActive =
-              link.href === '/admin'
-                ? pathname === link.href
-                : pathname.startsWith(link.href);
+            const isActive = isLinkActive(link.href);
             return (
               <SidebarMenuItem key={link.href}>
                 <SidebarMenuButton

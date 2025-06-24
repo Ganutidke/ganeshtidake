@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default async function CertificatesPage() {
   const certificates = await getCertificates();
@@ -27,33 +28,34 @@ export default async function CertificatesPage() {
         </p>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-2">
         {certificates.map((cert) => (
-          <Card key={cert._id as string} className="group relative flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-primary/20 hover:shadow-lg">
-            <CardHeader className="p-0">
-              <div className="relative h-48 w-full bg-muted">
-                <Image
+          <Card key={cert._id as string} className="group flex flex-col sm:flex-row items-center gap-8 p-6 transition-all duration-300 hover:bg-card/80 hover:shadow-primary/20 hover:shadow-lg">
+            <div className="relative h-48 w-full sm:w-1/3 flex-shrink-0">
+               <Image
                   src={cert.coverImage.url}
                   alt={cert.title}
                   fill
-                  className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                  className="object-contain transition-transform duration-300 group-hover:scale-105"
                 />
-              </div>
-            </CardHeader>
-            <CardContent className="p-6 flex-grow flex flex-col">
-              <CardTitle className="font-headline text-xl mb-2">{cert.title}</CardTitle>
-              <p className="text-muted-foreground flex-grow">
+            </div>
+            <div className="flex-grow text-center sm:text-left">
+              <p className="text-sm text-muted-foreground">
+                {format(new Date(cert.issueDate), 'MMMM yyyy')}
+              </p>
+              <h3 className="font-headline text-xl font-bold mt-1 text-foreground">{cert.title}</h3>
+              <p className="text-muted-foreground mt-1">
                 Issued by: <span className="font-semibold text-foreground">{cert.issuingOrganization}</span>
               </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Date: {format(new Date(cert.issueDate), 'MMMM yyyy')}
-              </p>
-            </CardContent>
-            {cert.credentialUrl && (
-              <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="absolute top-4 right-4 bg-primary text-primary-foreground p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                <ExternalLink className="h-5 w-5" />
-              </a>
-            )}
+              {cert.credentialUrl && (
+                 <Button asChild size="sm" className="mt-4">
+                    <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer">
+                        View Credential
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                    </a>
+                </Button>
+              )}
+            </div>
           </Card>
         ))}
       </div>

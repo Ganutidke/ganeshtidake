@@ -1,81 +1,122 @@
 
-import { getProjects } from '@/lib/actions/project.actions';
-import PagePlaceholder from '@/components/site/page-placeholder';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { Github, ExternalLink } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import Link from 'next/link';
+'use client';
 
-export default async function ProjectsPage() {
-  const projects = await getProjects();
+import { useState, useMemo } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
+import { getProjects, PopulatedProject } from '@/lib/actions/project.actions';
+import { getProjectCategories, IProjectCategory } from '@/lib/actions/project-category.actions';
+import PagePlaceholder from '@/components/site/page-placeholder';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+interface ProjectsPageProps {
+  projects: PopulatedProject[];
+  categories: IProjectCategory[];
+}
+
+const ProjectsPageClient = ({ projects, categories }: ProjectsPageProps) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+
+  const filteredProjects = useMemo(() => {
+    if (selectedCategory === 'All') {
+      return projects;
+    }
+    return projects.filter(
+      (project) => project.category?.name === selectedCategory
+    );
+  }, [selectedCategory, projects]);
 
   if (!projects || projects.length === 0) {
     return (
       <PagePlaceholder
-        title="Projects"
-        description="No projects found yet. Add some from the admin panel!"
+        title="My Projects"
+        description="No projects found yet. Check back soon!"
       />
     );
   }
+  
+  const allCategory = { _id: 'all', name: 'All' };
+  const allCategories = [allCategory, ...categories];
 
   return (
     <div className="container max-w-7xl mx-auto px-4 py-16">
       <div className="text-center">
-        <h1 className="font-headline text-4xl font-bold text-primary">My Projects</h1>
+        <h1 className="font-headline text-4xl font-bold text-primary">My Creative Works</h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-          Here are some of the projects I've worked on.
+          A collection of projects I've built.
         </p>
       </div>
+      
+      <div className="flex justify-center flex-wrap gap-2 mt-12">
+        {allCategories.map((category) => (
+          <Button
+            key={category._id}
+            variant={selectedCategory === category.name ? 'default' : 'outline'}
+            onClick={() => setSelectedCategory(category.name)}
+            className={cn(
+                "rounded-full",
+                selectedCategory === category.name && "bg-primary text-primary-foreground"
+            )}
+          >
+            {category.name}
+          </Button>
+        ))}
+      </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project) => (
-          <Card key={project._id as string} className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-primary/20 hover:shadow-lg hover:-translate-y-1">
-            <CardHeader className="p-0">
-               <Link href={`/projects/${project.slug}`} className="block">
-                  <div className="relative h-48 w-full group">
-                    <Image
-                      src={project.coverImage.url}
-                      alt={project.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                </Link>
-            </CardHeader>
-            <CardContent className="p-6 flex-grow flex flex-col">
-              <CardTitle className="font-headline mb-2">
-                 <Link href={`/projects/${project.slug}`} className="hover:text-primary transition-colors">{project.title}</Link>
-              </CardTitle>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
-              </div>
-              <p className="text-muted-foreground flex-grow line-clamp-3">
-                {project.description}
-              </p>
-              <div className="mt-4 flex items-center gap-2">
-                {project.repositoryUrl && (
-                    <Button asChild variant="outline" size="sm">
-                        <Link href={project.repositoryUrl} target="_blank">
-                            <Github className="mr-2 h-4 w-4" />
-                            GitHub
-                        </Link>
-                    </Button>
-                )}
-                {project.liveUrl && (
-                    <Button asChild size="sm">
-                        <Link href={project.liveUrl} target="_blank">
-                            Live Demo
-                            <ExternalLink className="ml-2 h-4 w-4" />
-                        </Link>
-                    </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+      <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredProjects.map((project) => (
+          <div key={project._id as string}>
+             <Link href={`/projects/${project.slug}`} className="block group">
+                <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                     <div className="relative h-56 w-full">
+                        <Image
+                        src={project.coverImage.url}
+                        alt={project.title}
+                        fill
+                        className="object-cover"
+                        />
+                    </div>
+                </div>
+                <div className="mt-4">
+                    <h3 className="font-bold text-lg text-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
+                        {project.title}
+                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </h3>
+                    <p className="text-muted-foreground mt-1">{project.category.name}</p>
+                </div>
+             </Link>
+          </div>
         ))}
       </div>
     </div>
   );
+};
+
+
+export default function ProjectsPage() {
+    const [projects, setProjects] = useState<PopulatedProject[]>([]);
+    const [categories, setCategories] = useState<IProjectCategory[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useMemo(() => {
+        const fetchData = async () => {
+            const [projData, catData] = await Promise.all([
+                getProjects(),
+                getProjectCategories()
+            ]);
+            setProjects(projData);
+            setCategories(catData);
+            setLoading(false);
+        };
+        fetchData();
+    }, []);
+
+    if(loading) {
+        return <PagePlaceholder title="Loading Projects..." />;
+    }
+
+    return <ProjectsPageClient projects={projects} categories={categories} />;
 }
+

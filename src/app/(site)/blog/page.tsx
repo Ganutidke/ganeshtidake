@@ -1,3 +1,4 @@
+
 import { getBlogs } from '@/lib/actions/blog.actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -49,7 +50,7 @@ export default async function BlogPage() {
             </CardHeader>
             <CardContent className="p-6 pt-0 flex-grow flex flex-col">
               <p className="text-muted-foreground line-clamp-3 flex-grow">
-                {blog.content.substring(0, 150)}...
+                {blog.excerpt}
               </p>
               <Button asChild variant="link" className="mt-4 p-0 self-start">
                 <Link href={`/blog/${blog.slug}`}>

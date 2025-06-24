@@ -6,11 +6,17 @@ import connectDB from '@/lib/db';
 import Project, { IProject } from '@/models/project.model';
 import cloudinary from '@/lib/cloudinary';
 import { slugify } from '@/lib/utils';
+import type { IProjectCategory } from '@/models/project-category.model';
+
+export interface PopulatedProject extends Omit<IProject, 'category'> {
+    category: IProjectCategory;
+}
 
 export interface ProjectParams {
   title: string;
   description: string;
   tags: string;
+  categoryId: string;
   repositoryUrl?: string;
   liveUrl?: string;
   coverImage: string; // base64
@@ -32,6 +38,7 @@ export async function createProject(data: ProjectParams) {
       ...data,
       slug: slugify(data.title),
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
+      category: data.categoryId,
       coverImage: {
         url: uploadResponse.secure_url,
         public_id: uploadResponse.public_id,
@@ -71,6 +78,7 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
       ...data,
       slug: slugify(data.title),
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
+      category: data.categoryId,
       coverImage,
     };
 
@@ -85,10 +93,10 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
   }
 }
 
-export async function getProjects(): Promise<IProject[]> {
+export async function getProjects(): Promise<PopulatedProject[]> {
   try {
     await connectDB();
-    const projects = await Project.find().sort({ createdAt: -1 }).lean();
+    const projects = await Project.find().sort({ createdAt: -1 }).populate('category').lean();
     return JSON.parse(JSON.stringify(projects));
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -107,10 +115,10 @@ export async function getProjectById(id: string): Promise<IProject | null> {
   }
 }
 
-export async function getProjectBySlug(slug: string): Promise<IProject | null> {
+export async function getProjectBySlug(slug: string): Promise<PopulatedProject | null> {
   try {
     await connectDB();
-    const project = await Project.findOne({ slug }).lean();
+    const project = await Project.findOne({ slug }).populate('category').lean();
     return project ? JSON.parse(JSON.stringify(project)) : null;
   } catch (error) {
     console.error('Error fetching project by slug:', error);

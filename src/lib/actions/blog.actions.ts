@@ -1,3 +1,4 @@
+
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -9,6 +10,7 @@ import cloudinary from '@/lib/cloudinary';
 
 export interface CreateBlogParams {
   title: string;
+  excerpt: string;
   content: string;
   tags: string;
   coverImage: string; // base64
@@ -16,6 +18,7 @@ export interface CreateBlogParams {
 
 export interface UpdateBlogParams {
   title: string;
+  excerpt: string;
   content: string;
   tags: string;
   coverImage?: string; // base64
@@ -36,6 +39,7 @@ export async function createBlog(data: CreateBlogParams) {
     const newBlog = new Blog({
       title: data.title,
       slug: slugify(data.title),
+      excerpt: data.excerpt,
       content: data.content,
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
       coverImage: {
@@ -84,6 +88,7 @@ export async function updateBlog(id: string, data: UpdateBlogParams) {
 
     const updateData = {
       title: data.title,
+      excerpt: data.excerpt,
       content: data.content,
       slug: slugify(data.title),
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
@@ -94,6 +99,7 @@ export async function updateBlog(id: string, data: UpdateBlogParams) {
     
     revalidatePath('/admin/blogs');
     revalidatePath(`/blog/${updateData.slug}`);
+    revalidatePath('/blog');
   } catch (error: any) {
     console.error('Error updating blog:', error);
     throw new Error(`Failed to update blog: ${error.message}`);
