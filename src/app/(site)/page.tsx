@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Github, Linkedin, Mail, ExternalLink, Briefcase, Zap, Newspaper, GraduationCap, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, Briefcase, Zap, Newspaper, GraduationCap } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getIntro } from '@/lib/actions/intro.actions';
@@ -11,6 +11,7 @@ import { getBlogs } from '@/lib/actions/blog.actions';
 import { getEducationHistory } from '@/lib/actions/education.actions';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
+import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
 
 export default async function HomePage() {
   const intro = await getIntro();
@@ -33,116 +34,117 @@ export default async function HomePage() {
 
   const skillCategories = getSkillCategories(about?.skills);
 
-
   return (
     <div className="container max-w-7xl mx-auto px-4 flex flex-col gap-24 sm:gap-32">
-      {/* Hero Section */}
-      <section className="grid grid-cols-1 gap-8 pt-12 md:pt-20">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight text-primary md:text-5xl">
-            Hey there!, I’m
-          </h1>
-          <h2 className="mt-2 text-6xl font-bold tracking-tight text-foreground sm:text-8xl">
-            {intro?.headline ?? 'Ganesh Tidke.'}
-          </h2>
-          <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-            {intro?.subheadline ?? 'A self-taught developer with an interest in Computer Science.'}
-          </p>
-          {intro?.role && (
-            <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                <div className="flex items-center gap-3 text-muted-foreground">
-                  <Briefcase className="h-5 w-5 text-primary"/>
-                  <span>{intro.role}</span>
-                </div>
-            </div>
-          )}
-          <div className="mt-8 flex gap-4">
-            {intro?.githubUrl && (
-              <Button asChild variant="outline">
-                <Link href={intro.githubUrl} target="_blank">
-                  <Github /> Github
-                </Link>
-              </Button>
+      <FramerMotionWrapper>
+        <section className="grid grid-cols-1 gap-8 pt-12 md:pt-20">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-primary md:text-5xl">
+              Hey there!, I’m
+            </h1>
+            <h2 className="mt-2 text-6xl font-bold tracking-tight text-foreground sm:text-8xl">
+              {intro?.headline ?? 'Ganesh Tidke.'}
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
+              {intro?.subheadline ?? 'A self-taught developer with an interest in Computer Science.'}
+            </p>
+            {intro?.role && (
+              <div className="mt-6 flex flex-col sm:flex-row gap-4">
+                  <div className="flex items-center gap-3 text-muted-foreground">
+                    <Briefcase className="h-5 w-5 text-primary"/>
+                    <span>{intro.role}</span>
+                  </div>
+              </div>
             )}
-            {intro?.linkedinUrl && (
-              <Button asChild variant="outline">
-                <Link href={intro.linkedinUrl} target="_blank">
-                  <Linkedin /> LinkedIn
-                </Link>
-              </Button>
-            )}
-            {intro?.email && (
-             <Button asChild variant="outline">
-              <Link href={`mailto:${intro.email}`}>
-                <Mail /> Email
-              </Link>
-            </Button>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* About Me Preview */}
-      {about && (
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
-            <div className="md:col-span-2">
-                <h2 className="flex items-center gap-2 text-2xl font-bold text-primary">
-                    <Zap className="h-6 w-6"/> About Me
-                </h2>
-                <div className="mt-4 prose prose-invert max-w-none text-muted-foreground space-y-4">
-                   <p className="line-clamp-6">
-                     {about.bio}
-                   </p>
-                </div>
-                 <Button asChild variant="link" className="p-0 mt-4 text-primary">
-                  <Link href="/about">
-                    Read More <ArrowRight className="ml-2 h-4 w-4" />
+            <div className="mt-8 flex gap-4">
+              {intro?.githubUrl && (
+                <Button asChild variant="outline">
+                  <Link href={intro.githubUrl} target="_blank">
+                    <Github /> Github
                   </Link>
                 </Button>
+              )}
+              {intro?.linkedinUrl && (
+                <Button asChild variant="outline">
+                  <Link href={intro.linkedinUrl} target="_blank">
+                    <Linkedin /> LinkedIn
+                  </Link>
+                </Button>
+              )}
+              {intro?.email && (
+              <Button asChild variant="outline">
+                <Link href={`mailto:${intro.email}`}>
+                  <Mail /> Email
+                </Link>
+              </Button>
+              )}
             </div>
-            <div className="relative mx-auto h-64 w-64 md:h-80 md:w-80">
-                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 blur-2xl transform -translate-x-10 -translate-y-10"></div>
-                 <div className="absolute inset-0 rounded-full bg-card border border-border" 
-                    style={{
-                        backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--border)) 1px, transparent 0)`,
-                        backgroundSize: `1rem 1rem`
-                    }}>
-                </div>
-                <Image
-                  src={about.profilePicture.url}
-                  alt="Ganesh Tidke"
-                  fill
-                  className="object-cover rounded-full p-2"
-                />
-            </div>
-        </section>
-      )}
-
-      {/* Skills Section */}
-      {skillCategories && skillCategories.length > 0 && (
-        <section>
-          <h2 className="text-2xl font-bold text-primary text-center">My Skills</h2>
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {skillCategories.map((category) => (
-              <Card key={category.category} className="bg-card/50">
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-4">{category.category}</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {category.skills.map((skill) => (
-                      <Badge key={skill} variant="secondary">{skill}</Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </section>
+      </FramerMotionWrapper>
+
+      {about && (
+        <FramerMotionWrapper>
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+              <div className="md:col-span-2">
+                  <h2 className="flex items-center gap-2 text-2xl font-bold text-primary">
+                      <Zap className="h-6 w-6"/> About Me
+                  </h2>
+                  <div className="mt-4 prose prose-invert max-w-none text-muted-foreground space-y-4">
+                    <p className="line-clamp-6">
+                      {about.bio}
+                    </p>
+                  </div>
+                  <Button asChild variant="link" className="p-0 mt-4 text-primary">
+                    <Link href="/about">
+                      Read More <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+              </div>
+              <div className="relative mx-auto h-64 w-64 md:h-80 md:w-80">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 blur-2xl transform -translate-x-10 -translate-y-10"></div>
+                  <div className="absolute inset-0 rounded-full bg-card border border-border" 
+                      style={{
+                          backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--border)) 1px, transparent 0)`,
+                          backgroundSize: `1rem 1rem`
+                      }}>
+                  </div>
+                  <Image
+                    src={about.profilePicture.url}
+                    alt="Ganesh Tidke"
+                    fill
+                    className="object-cover rounded-full p-2"
+                  />
+              </div>
+          </section>
+        </FramerMotionWrapper>
       )}
 
+      {skillCategories && skillCategories.length > 0 && (
+        <FramerMotionWrapper>
+          <section>
+            <h2 className="text-2xl font-bold text-primary text-center">My Skills</h2>
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {skillCategories.map((category) => (
+                <Card key={category.category} className="bg-card/50">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold text-foreground mb-4">{category.category}</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {category.skills.map((skill) => (
+                        <Badge key={skill} variant="secondary">{skill}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        </FramerMotionWrapper>
+      )}
 
-      {/* Creative Works (Projects) */}
       {projects.length > 0 && (
-        <section>
+        <FramerMotionWrapper>
+          <section>
             <h2 className="text-2xl font-bold text-primary">All Creative Works.</h2>
             <p className="mt-2 text-muted-foreground">Here's some of my projects that I have worked on.</p>
             <Link href="/projects" className="mt-2 inline-flex items-center gap-1 text-primary hover:underline">
@@ -164,9 +166,8 @@ export default async function HomePage() {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <h3 className="font-bold text-lg text-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
+                            <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
                                 {project.title}
-                                <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </h3>
                             <p className="text-muted-foreground mt-1">{project.category}</p>
                         </div>
@@ -174,95 +175,100 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-        </section>
+          </section>
+        </FramerMotionWrapper>
       )}
 
-       {/* Latest Articles & Education */}
-       <section className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Latest Articles (Blog) */}
-            {blogs.length > 0 && (
-            <div className="lg:col-span-2">
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="flex items-center gap-2 text-2xl font-bold text-primary">
-                        <Newspaper className="h-6 w-6"/> Latest Articles
-                    </h2>
-                    <Link href="/blog" className="flex items-center gap-1 text-sm text-primary hover:underline">
-                        View all articles <ArrowRight className="h-4 w-4"/>
-                    </Link>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {blogs.map((blog) => (
-                      <Card key={blog._id as string} className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
-                          <Link href={`/blog/${blog.slug}`} className="absolute inset-0 z-10" aria-label={blog.title}></Link>
-                          <div className="relative h-40 w-full overflow-hidden">
-                              <Image
-                                src={blog.coverImage.url}
-                                alt={blog.title}
-                                fill
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                              />
-                          </div>
-                          <CardContent className="p-4">
-                            <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">{blog.title}</h3>
-                            <p className="text-muted-foreground text-sm mt-1">
-                                {format(new Date(blog.createdAt), 'MMMM d, yyyy')}
-                            </p>
-                          </CardContent>
-                      </Card>
-                    ))}
-                </div>
-            </div>
-            )}
-            
-            {/* Education */}
-            {educationHistory.length > 0 && (
-                <div className="lg:col-span-1">
-                     <h2 className="flex items-center gap-2 text-2xl font-bold text-primary mb-8">
-                        <GraduationCap className="h-6 w-6"/> Education
-                    </h2>
-                    <div className="space-y-6">
-                        {educationHistory.map((edu) => (
-                            <div key={edu._id as string}>
-                                <h3 className="font-bold text-foreground">{edu.school}</h3>
-                                <p className="text-muted-foreground text-sm">{edu.degree}, {edu.fieldOfStudy}</p>
-                                <p className="text-muted-foreground text-xs mt-1">
-                                    {format(new Date(edu.startDate), 'MMM yyyy')} - {edu.endDate ? format(new Date(edu.endDate), 'MMM yyyy') : 'Present'}
-                                </p>
-                            </div>
-                        ))}
-                         <Button asChild variant="link" className="p-0 text-primary">
-                            <Link href="/education">
-                                View Full Journey <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
-                        </Button>
-                    </div>
-                </div>
-            )}
-       </section>
-
-      {/* Keep In Touch */}
-      <section className="text-center">
-            <h2 className="text-4xl font-bold text-foreground">Keep In Touch.</h2>
-            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-              I'm currently open for new opportunities. Feel free to get in touch and talk more about your projects.
-            </p>
-             <div className="mt-8 flex justify-center gap-4">
-                 {intro?.linkedinUrl && (
-                  <Button asChild variant="outline">
-                      <Link href={intro.linkedinUrl} target="_blank">
-                          <Linkedin /> LinkedIn
+      <FramerMotionWrapper>
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              {blogs.length > 0 && (
+              <div className="lg:col-span-2">
+                  <div className="flex items-center justify-between mb-8">
+                      <h2 className="flex items-center gap-2 text-2xl font-bold text-primary">
+                          <Newspaper className="h-6 w-6"/> Latest Articles
+                      </h2>
+                      <Link href="/blog" className="flex items-center gap-1 text-sm text-primary hover:underline">
+                          View all articles <ArrowRight className="h-4 w-4"/>
                       </Link>
-                  </Button>
-                 )}
-                 {intro?.email && (
-                  <Button asChild>
-                      <a href={`mailto:${intro.email}`}>
-                          <Mail /> Email
-                      </a>
-                  </Button>
-                 )}
-            </div>
-      </section>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {blogs.map((blog) => (
+                        <Card key={blog._id as string} className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
+                            <Link href={`/blog/${blog.slug}`} className="absolute inset-0 z-10" aria-label={blog.title}></Link>
+                            <div className="relative h-40 w-full overflow-hidden">
+                                <Image
+                                  src={blog.coverImage.url}
+                                  alt={blog.title}
+                                  fill
+                                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                />
+                            </div>
+                            <CardContent className="p-4">
+                              <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">{blog.title}</h3>
+                              <p className="text-muted-foreground text-sm mt-1">
+                                  {format(new Date(blog.createdAt), 'MMMM d, yyyy')}
+                              </p>
+                            </CardContent>
+                        </Card>
+                      ))}
+                  </div>
+              </div>
+              )}
+              
+              {educationHistory.length > 0 && (
+                  <div className="lg:col-span-1">
+                      <h2 className="flex items-center gap-2 text-2xl font-bold text-primary mb-8">
+                          <GraduationCap className="h-6 w-6"/> Education
+                      </h2>
+                      <div className="space-y-8 relative">
+                          <div className="absolute left-3 top-2 h-[calc(100%-2.5rem)] w-0.5 bg-border -z-10"></div>
+                          {educationHistory.map((edu) => (
+                              <div key={edu._id as string} className="pl-10 relative">
+                                  <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full bg-primary border-4 border-background"></div>
+                                  <p className="text-sm text-muted-foreground">
+                                      {format(new Date(edu.startDate), 'MMM yyyy')} - {edu.endDate ? format(new Date(edu.endDate), 'MMM yyyy') : 'Present'}
+                                  </p>
+                                  <h3 className="font-bold text-foreground mt-1">{edu.school}</h3>
+                                  <p className="text-muted-foreground text-sm">{edu.degree}, {edu.fieldOfStudy}</p>
+                              </div>
+                          ))}
+                          <div className="pl-10">
+                            <Button asChild variant="link" className="p-0 text-primary">
+                                <Link href="/education">
+                                    View Full Journey <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                            </Button>
+                          </div>
+                      </div>
+                  </div>
+              )}
+        </section>
+      </FramerMotionWrapper>
+
+      <FramerMotionWrapper>
+        <section className="text-center">
+              <h2 className="text-4xl font-bold text-foreground">Keep In Touch.</h2>
+              <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+                I'm currently open for new opportunities. Feel free to get in touch and talk more about your projects.
+              </p>
+              <div className="mt-8 flex justify-center gap-4">
+                  {intro?.linkedinUrl && (
+                    <Button asChild variant="outline">
+                        <Link href={intro.linkedinUrl} target="_blank">
+                            <Linkedin /> LinkedIn
+                        </Link>
+                    </Button>
+                  )}
+                  {intro?.email && (
+                    <Button asChild>
+                        <a href={`mailto:${intro.email}`}>
+                            <Mail /> Email
+                        </a>
+                    </Button>
+                  )}
+              </div>
+        </section>
+      </FramerMotionWrapper>
     </div>
   );
 }
