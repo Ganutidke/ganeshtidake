@@ -34,11 +34,17 @@ export async function getProjectCategories(): Promise<IProjectCategory[]> {
 export async function deleteProjectCategory(id: string) {
   try {
     await connectDB();
-    // Note: You might want to check if any projects are using this category before deleting.
-    const projectCount = await Project.countDocuments({ category: id });
+    
+    const categoryToDelete = await ProjectCategory.findById(id);
+    if (!categoryToDelete) {
+      throw new Error('Category not found.');
+    }
+
+    const projectCount = await Project.countDocuments({ category: categoryToDelete.name });
     if (projectCount > 0) {
       throw new Error('Cannot delete category because it is being used by one or more projects.');
     }
+    
     await ProjectCategory.findByIdAndDelete(id);
     revalidatePath('/admin/projects/categories');
     revalidatePath('/admin/projects/*');
