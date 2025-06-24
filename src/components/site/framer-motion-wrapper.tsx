@@ -1,7 +1,6 @@
 
 'use client';
-import { motion, useInView, useAnimation, type Variants } from 'framer-motion';
-import { useRef, useEffect } from 'react';
+import { motion, type Variants } from 'framer-motion';
 
 interface Props {
   children: React.ReactNode;
@@ -19,28 +18,18 @@ export default function FramerMotionWrapper({
   children,
   className,
   delay = 0,
-  variants = defaultVariants
+  variants = defaultVariants,
 }: Props) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
-  const mainControls = useAnimation();
-
-  useEffect(() => {
-    if (isInView) {
-      mainControls.start('visible');
-    }
-  }, [isInView, mainControls]);
-
   return (
-    <div ref={ref} className={className}>
-      <motion.div
-        variants={variants}
-        initial="hidden"
-        animate={mainControls}
-        transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {children}
-      </motion.div>
-    </div>
+    <motion.div
+      variants={variants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
   );
 }
