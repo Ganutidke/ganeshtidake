@@ -10,7 +10,6 @@ import { Loader2, Image as ImageIcon } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-import type { IProjectCategory } from '@/models/project-category.model';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -20,7 +19,8 @@ import { useToast } from '@/hooks/use-toast';
 import { fileToBase64 } from '@/lib/utils';
 import { createProject, updateProject } from '@/lib/actions/project.actions';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { PopulatedProject } from '@/models/project.model';
+import type { IProject } from '@/models/project.model';
+import type { IProjectCategory } from '@/models/project-category.model';
 
 const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long.' }),
@@ -35,7 +35,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface ProjectFormProps {
-    project?: PopulatedProject;
+    project?: IProject;
     categories: IProjectCategory[];
 }
 
@@ -73,9 +73,18 @@ export default function ProjectForm({ project, categories }: ProjectFormProps) {
       try {
         const imageBase64 = values.coverImage ? await fileToBase64(values.coverImage) : undefined;
         
+        const projectData = {
+          title: values.title,
+          description: values.description,
+          tags: values.tags,
+          category: values.category,
+          repositoryUrl: values.repositoryUrl,
+          liveUrl: values.liveUrl,
+        };
+
         if (project) {
           await updateProject(project._id as string, {
-            ...values,
+            ...projectData,
             ...(imageBase64 && { coverImage: imageBase64 }),
           });
           toast({ title: 'Success', description: 'Project updated successfully.' });
@@ -85,7 +94,7 @@ export default function ProjectForm({ project, categories }: ProjectFormProps) {
              return;
           }
           await createProject({
-            ...values,
+            ...projectData,
             coverImage: imageBase64,
           });
           toast({ title: 'Success', description: 'Project created successfully.' });
