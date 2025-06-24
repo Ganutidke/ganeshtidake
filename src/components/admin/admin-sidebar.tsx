@@ -4,20 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
-  Newspaper,
-  Book,
-  Award,
-  GraduationCap,
-  Lightbulb,
-  Home,
-  User,
-  Mountain,
-  Mail,
-  LayoutGrid,
-  Images,
-  Briefcase,
-  HelpCircle,
   LogOut,
+  Ticket,
+  ChevronDown
 } from 'lucide-react';
 import {
   Sidebar,
@@ -27,57 +16,49 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarRail,
+  SidebarFooter,
 } from '@/components/ui/sidebar';
 import { logout } from '@/lib/actions/auth.actions';
+import { Avatar, AvatarFallback } from '../ui/avatar';
+import { Button } from '../ui/button';
 
 
 const adminNavLinks = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/intro', label: 'Intro', icon: Home },
-  { href: '/admin/about', label: 'About', icon: User },
-  { href: '/admin/projects', label: 'Projects', icon: Book },
-  { href: '/admin/projects/categories', label: 'Categories', icon: LayoutGrid },
-  { href: '/admin/blogs', label: 'Blogs', icon: Newspaper },
-  { href: '/admin/experience', label: 'Experience', icon: Briefcase },
-  { href: '/admin/education', label: 'Education', icon: GraduationCap },
-  { href: '/admin/certificates', label: 'Certificates', icon: Award },
-  { href: '/admin/gallery', label: 'Gallery', icon: Images },
-  { href: '/admin/faq', label: 'FAQ', icon: HelpCircle },
-  { href: '/admin/messages', label: 'Messages', icon: Mail },
-  { href: '/admin/seo', label: 'SEO Helper', icon: Lightbulb },
+  { href: '/admin', label: 'Ticket', icon: Ticket },
 ];
+
+const Logo = () => (
+    <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-primary relative">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 21L4.5 13.5L12 3L19.5 13.5L17 21L12 16L7 21Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M4.5 13.5L12 16L19.5 13.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        <div className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-background"></div>
+    </div>
+);
+
 
 export default function AdminSidebar() {
   const pathname = usePathname();
 
-  const isLinkActive = (href: string) => {
-    if (href === '/admin') {
-      return pathname === href;
-    }
-    if (href === '/admin/projects') {
-      return pathname.startsWith(href) && !pathname.includes('/categories');
-    }
-    return pathname.startsWith(href);
-  };
-
   return (
-    <Sidebar collapsible="icon" className="border-r">
+    <Sidebar collapsible="icon" className="border-r bg-card text-card-foreground">
       <SidebarRail />
       <SidebarHeader>
-        <Link
-          href="/"
-          className="flex items-center gap-2 font-semibold text-primary"
-        >
-          <Mountain className="h-6 w-6 shrink-0" />
-          <span className="group-data-[collapsible=icon]:hidden font-headline">
-            Ganesh Tidke
-          </span>
-        </Link>
+        <Button variant="ghost" className="flex items-center justify-start gap-2 w-full px-2 text-left">
+            <Logo />
+            <div className="group-data-[collapsible=icon]:hidden flex-1">
+                <p className="font-semibold text-foreground text-sm">Name</p>
+                <p className="text-xs text-muted-foreground">Agent Admin</p>
+            </div>
+            <ChevronDown className="h-4 w-4 text-muted-foreground group-data-[collapsible=icon]:hidden" />
+        </Button>
       </SidebarHeader>
       <SidebarContent className="flex flex-col">
         <SidebarMenu className="flex-1">
           {adminNavLinks.map((link) => {
-            const isActive = isLinkActive(link.href);
+            const isActive = pathname === link.href;
             return (
               <SidebarMenuItem key={link.href}>
                 <SidebarMenuButton
@@ -100,7 +81,7 @@ export default function AdminSidebar() {
             );
           })}
         </SidebarMenu>
-         <div className="mt-auto p-2">
+         <SidebarFooter>
             <form action={logout}>
                  <SidebarMenu>
                     <SidebarMenuItem>
@@ -113,7 +94,7 @@ export default function AdminSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </form>
-        </div>
+        </SidebarFooter>
       </SidebarContent>
     </Sidebar>
   );
