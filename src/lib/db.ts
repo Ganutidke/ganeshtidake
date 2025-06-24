@@ -14,6 +14,7 @@ import '@/models/project-category.model';
 import '@/models/project.model';
 import '@/models/gallery.model';
 import '@/models/theme.model';
+import '@/models/view.model';
 
 
 const MONGODB_URI = process.env.MONGODB_URI;
