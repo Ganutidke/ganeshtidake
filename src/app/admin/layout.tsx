@@ -4,8 +4,10 @@ import type { Metadata } from 'next';
 import AdminSidebar from '@/components/admin/admin-sidebar';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Bell, PanelLeft } from 'lucide-react';
+import { Bell, PanelLeft, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { getIntro } from '@/lib/actions/intro.actions';
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard | Ganesh Tidke',
@@ -16,7 +18,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({ children }: { children: ReactNode }) {
+  const intro = await getIntro();
+  
   return (
     <SidebarProvider>
       <AdminSidebar />
@@ -26,10 +30,50 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             <PanelLeft />
           </SidebarTrigger>
           <div className="ml-auto flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="rounded-full">
-                <Bell className="h-5 w-5" />
-                <span className="sr-only">Notifications</span>
-            </Button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                    <Bell className="h-5 w-5" />
+                    <span className="sr-only">Contact Information</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80">
+                <div className="grid gap-4">
+                  <div className="space-y-2">
+                    <h4 className="font-medium leading-none">Contact Details</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Your primary contact information.
+                    </p>
+                  </div>
+                   <div className="grid gap-3">
+                    {intro?.email && (
+                      <div className="flex items-start gap-4">
+                        <Mail className="h-4 w-4 mt-1 flex-shrink-0 text-muted-foreground" />
+                        <div className="grid gap-1">
+                          <p className="text-sm font-medium">{intro.email}</p>
+                        </div>
+                      </div>
+                    )}
+                    {intro?.phone && (
+                      <div className="flex items-start gap-4">
+                        <Phone className="h-4 w-4 mt-1 flex-shrink-0 text-muted-foreground" />
+                        <div className="grid gap-1">
+                          <p className="text-sm font-medium">{intro.phone}</p>
+                        </div>
+                      </div>
+                    )}
+                    {intro?.address && (
+                      <div className="flex items-start gap-4">
+                        <MapPin className="h-4 w-4 mt-1 flex-shrink-0 text-muted-foreground" />
+                        <div className="grid gap-1">
+                          <p className="text-sm font-medium">{intro.address}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
             <Avatar className='h-9 w-9'>
                 <AvatarImage src="https://placehold.co/40x40.png" alt="@ganesh" data-ai-hint="profile avatar" />
                 <AvatarFallback>GT</AvatarFallback>

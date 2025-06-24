@@ -25,6 +25,8 @@ const formSchema = z.object({
   githubUrl: z.string().url('Must be a valid URL.').optional().or(z.literal('')),
   linkedinUrl: z.string().url('Must be a valid URL.').optional().or(z.literal('')),
   email: z.string().email('Must be a valid email.').optional().or(z.literal('')),
+  phone: z.string().optional().or(z.literal('')),
+  address: z.string().optional().or(z.literal('')),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -43,6 +45,8 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
       githubUrl: intro?.githubUrl || '',
       linkedinUrl: intro?.linkedinUrl || '',
       email: intro?.email || '',
+      phone: intro?.phone || '',
+      address: intro?.address || '',
     },
   });
 
@@ -155,6 +159,32 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                       <FormLabel>Email Address</FormLabel>
                       <FormControl>
                         <Input placeholder="your.email@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                 <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number</FormLabel>
+                      <FormControl>
+                        <Input placeholder="+1 (234) 567-890" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                 <FormField
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Pune, Maharashtra, India" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

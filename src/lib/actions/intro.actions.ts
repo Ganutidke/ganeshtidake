@@ -14,6 +14,8 @@ export interface UpdateIntroParams {
   githubUrl?: string;
   linkedinUrl?: string;
   email?: string;
+  phone?: string;
+  address?: string;
 }
 
 export async function getIntro(): Promise<IIntro | null> {
@@ -54,6 +56,8 @@ export async function updateIntro(data: UpdateIntroParams) {
       githubUrl: data.githubUrl || 'https://github.com/Ganutidke',
       linkedinUrl: data.linkedinUrl || 'https://www.linkedin.com/in/ganeshtidake/',
       email: data.email || 'ganeshtidake519@gmail.com',
+      phone: data.phone || '+1 (234) 567-890',
+      address: data.address || 'Pune, Maharashtra, India',
       ...(heroImage && { heroImage }),
     };
 

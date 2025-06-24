@@ -37,17 +37,20 @@ export default function ContactPageClient({ intro }: { intro: IIntro | null }) {
                       </div>
                   </a>
                   )}
-                  <a href="tel:+1234567890" className="flex items-center gap-4 group">
+                  {intro?.phone && (
+                  <a href={`tel:${intro.phone}`} className="flex items-center gap-4 group">
                       <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                           <Phone className="h-6 w-6" />
                       </div>
                       <div>
                           <p className="font-semibold text-foreground">Phone</p>
                           <p className="text-muted-foreground group-hover:text-primary transition-colors">
-                             +1 (234) 567-890
+                             {intro.phone}
                           </p>
                       </div>
                   </a>
+                  )}
+                  {intro?.address && (
                   <div className="flex items-center gap-4 group">
                       <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
                           <MapPin className="h-6 w-6" />
@@ -55,10 +58,11 @@ export default function ContactPageClient({ intro }: { intro: IIntro | null }) {
                       <div>
                           <p className="font-semibold text-foreground">Location</p>
                           <p className="text-muted-foreground">
-                              Pune, Maharashtra, India
+                              {intro.address}
                           </p>
                       </div>
                   </div>
+                  )}
               </div>
           </div>
           

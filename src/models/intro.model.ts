@@ -1,3 +1,4 @@
+
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IIntro extends Document {
@@ -11,6 +12,8 @@ export interface IIntro extends Document {
   githubUrl?: string;
   linkedinUrl?: string;
   email?: string;
+  phone?: string;
+  address?: string;
 }
 
 const IntroSchema: Schema = new Schema(
@@ -25,6 +28,8 @@ const IntroSchema: Schema = new Schema(
     githubUrl: { type: String, default: 'https://github.com/Ganutidke' },
     linkedinUrl: { type: String, default: 'https://www.linkedin.com/in/ganeshtidake/' },
     email: { type: String, default: 'ganeshtidake519@gmail.com' },
+    phone: { type: String, default: '+1 (234) 567-890' },
+    address: { type: String, default: 'Pune, Maharashtra, India' },
   },
   { timestamps: true }
 );
