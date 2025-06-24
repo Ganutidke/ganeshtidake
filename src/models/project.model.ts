@@ -1,7 +1,7 @@
 
 import mongoose, { Schema, Document } from 'mongoose';
-import './project-category.model'; // Ensures ProjectCategory model is registered before Project model
-import type { IProjectCategory } from './project-category.model';
+import '@/models/project-category.model'; // Ensures ProjectCategory model is registered before Project model
+import type { IProjectCategory } from '@/models/project-category.model';
 
 export interface IProject extends Document {
   title: string;

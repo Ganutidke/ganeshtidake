@@ -4,6 +4,7 @@
 import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
 import Project, { IProject } from '@/models/project.model';
+import '@/models/project-category.model'; // Ensures ProjectCategory model is registered
 import cloudinary from '@/lib/cloudinary';
 import { slugify } from '@/lib/utils';
 import type { IProjectCategory } from '@/models/project-category.model';

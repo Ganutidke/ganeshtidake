@@ -1,7 +1,6 @@
-
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -33,7 +32,7 @@ export default function ProjectCategoriesPage() {
   const [isPending, startTransition] = useTransition();
   const [categories, setCategories] = useState<IProjectCategory[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchCategories().then(setCategories);
   }, []);
   
