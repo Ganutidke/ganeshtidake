@@ -5,8 +5,8 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import type { PopulatedProject } from '@/lib/actions/project.actions';
-import type { IProjectCategory } from '@/lib/actions/project-category.actions';
+import type { PopulatedProject } from '@/models/project.model';
+import type { IProjectCategory } from '@/models/project-category.model';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -23,7 +23,7 @@ export default function ProjectsPageClient({ projects, categories }: ProjectsPag
       return projects;
     }
     return projects.filter(
-      (project) => project.category?.name === selectedCategory
+      (project) => project.category === selectedCategory
     );
   }, [selectedCategory, projects]);
   
@@ -74,7 +74,7 @@ export default function ProjectsPageClient({ projects, categories }: ProjectsPag
                         {project.title}
                         <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </h3>
-                    <p className="text-muted-foreground mt-1">{project.category.name}</p>
+                    <p className="text-muted-foreground mt-1">{project.category}</p>
                 </div>
              </Link>
           </div>

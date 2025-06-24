@@ -168,7 +168,7 @@ export default async function HomePage() {
                                 {project.title}
                                 <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </h3>
-                            <p className="text-muted-foreground mt-1">{project.category.name}</p>
+                            <p className="text-muted-foreground mt-1">{project.category}</p>
                         </div>
                     </Link>
                 </div>

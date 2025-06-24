@@ -51,7 +51,7 @@ export default function ProjectForm({ project, categories }: ProjectFormProps) {
       title: project?.title || '',
       description: project?.description || '',
       tags: project?.tags?.join(', ') || '',
-      category: project?.category?._id?.toString() || '',
+      category: project?.category || '',
       repositoryUrl: project?.repositoryUrl || '',
       liveUrl: project?.liveUrl || '',
     },
@@ -190,7 +190,7 @@ export default function ProjectForm({ project, categories }: ProjectFormProps) {
                             </FormControl>
                             <SelectContent>
                             {categories.map((cat) => (
-                                <SelectItem key={cat._id} value={cat._id}>
+                                <SelectItem key={cat._id} value={cat.name}>
                                 {cat.name}
                                 </SelectItem>
                             ))}

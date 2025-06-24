@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import type { IProjectCategory } from './project-category.model';
 
 export interface IProject extends Document {
   title: string;
@@ -10,14 +9,12 @@ export interface IProject extends Document {
     url: string;
     public_id: string;
   };
-  category: mongoose.Types.ObjectId | IProjectCategory;
+  category: string;
   repositoryUrl?: string;
   liveUrl?: string;
 }
 
-export interface PopulatedProject extends Omit<IProject, 'category'> {
-    category: IProjectCategory;
-}
+export type PopulatedProject = IProject;
 
 const ProjectSchema: Schema = new Schema(
   {
@@ -29,7 +26,7 @@ const ProjectSchema: Schema = new Schema(
       url: { type: String, required: true },
       public_id: { type: String, required: true },
     },
-    category: { type: Schema.Types.ObjectId, ref: 'ProjectCategory', required: true },
+    category: { type: String, required: true },
     repositoryUrl: { type: String },
     liveUrl: { type: String },
   },
