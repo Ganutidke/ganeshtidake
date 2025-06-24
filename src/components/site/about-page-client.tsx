@@ -54,20 +54,29 @@ export default function AboutPageClient({ intro, about, experienceHistory, educa
     return (
         <main className="container max-w-4xl mx-auto px-4 py-16 sm:py-24 space-y-24">
             <FramerMotionWrapper>
-                <section className="flex flex-col sm:flex-row items-center gap-8 text-center sm:text-left">
-                    <div className="relative h-32 w-32 sm:h-40 sm:w-40 flex-shrink-0">
-                        <Image
+                <section className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+                    <div className="md:col-span-1 flex justify-center">
+                         <div className="relative h-56 w-56 md:h-64 md:w-64">
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 blur-2xl transform -translate-x-10 -translate-y-10"></div>
+                            <div className="absolute inset-0 rounded-full bg-card border border-border" 
+                                style={{
+                                    backgroundImage: `radial-gradient(circle at 1px 1px, hsl(var(--border)) 1px, transparent 0)`,
+                                    backgroundSize: `1rem 1rem`
+                                }}>
+                            </div>
+                            <Image
                             src={about.profilePicture.url}
-                            alt={intro.headline}
+                            alt={intro?.headline ?? 'Profile Picture'}
                             fill
-                            className="object-cover rounded-full shadow-lg"
-                        />
+                            className="object-cover rounded-full p-2"
+                            />
+                        </div>
                     </div>
-                    <div className="flex-grow">
+                    <div className="md:col-span-2 text-center md:text-left">
                         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground">{intro.headline}</h1>
                         <p className="mt-2 text-xl text-primary font-semibold">{intro.role}</p>
                         <p className="mt-4 text-lg text-muted-foreground leading-relaxed">{about.bio}</p>
-                        <div className="mt-6 flex flex-wrap gap-4 justify-center sm:justify-start">
+                        <div className="mt-6 flex flex-wrap gap-4 justify-center md:justify-start">
                             {intro.githubUrl && (
                                 <Button asChild variant="outline">
                                     <Link href={intro.githubUrl} target="_blank"><Github /> GitHub</Link>
