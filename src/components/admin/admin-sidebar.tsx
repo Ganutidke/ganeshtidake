@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -18,6 +17,7 @@ import {
   Images,
   Briefcase,
   HelpCircle,
+  LogOut,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -28,6 +28,8 @@ import {
   SidebarMenuButton,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import { logout } from '@/lib/actions/auth.actions';
+
 
 const adminNavLinks = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -72,8 +74,8 @@ export default function AdminSidebar() {
           </span>
         </Link>
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarMenu>
+      <SidebarContent className="flex flex-col">
+        <SidebarMenu className="flex-1">
           {adminNavLinks.map((link) => {
             const isActive = isLinkActive(link.href);
             return (
@@ -98,6 +100,20 @@ export default function AdminSidebar() {
             );
           })}
         </SidebarMenu>
+         <div className="mt-auto p-2">
+            <form action={logout}>
+                 <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton type="submit" tooltip={{children: "Logout", side: 'right', align: 'center'}}>
+                            <LogOut />
+                            <span className="group-data-[collapsible=icon]:hidden">
+                            Logout
+                            </span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </form>
+        </div>
       </SidebarContent>
     </Sidebar>
   );
