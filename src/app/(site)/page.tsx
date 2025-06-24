@@ -121,12 +121,14 @@ export default async function HomePage() {
       )}
 
       {skillCategories && skillCategories.length > 0 && (
-        <FramerMotionWrapper>
-          <section>
+        <section>
+          <FramerMotionWrapper>
             <h2 className="text-2xl font-bold text-primary text-center">My Skills</h2>
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {skillCategories.map((category) => (
-                <Card key={category.category} className="bg-card/50">
+          </FramerMotionWrapper>
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {skillCategories.map((category, index) => (
+              <FramerMotionWrapper key={category.category} delay={index * 0.1}>
+                <Card className="bg-card/50">
                   <CardContent className="p-6">
                     <h3 className="text-xl font-bold text-foreground mb-4">{category.category}</h3>
                     <div className="flex flex-wrap gap-2">
@@ -136,53 +138,52 @@ export default async function HomePage() {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-          </section>
-        </FramerMotionWrapper>
+              </FramerMotionWrapper>
+            ))}
+          </div>
+        </section>
       )}
 
       {projects.length > 0 && (
-        <FramerMotionWrapper>
-          <section>
+        <section>
+          <FramerMotionWrapper>
             <h2 className="text-2xl font-bold text-primary">All Creative Works.</h2>
             <p className="mt-2 text-muted-foreground">Here's some of my projects that I have worked on.</p>
             <Link href="/projects" className="mt-2 inline-flex items-center gap-1 text-primary hover:underline">
                 Explore more <ArrowRight className="h-4 w-4"/>
             </Link>
-
-            <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => (
-                 <div key={project._id as string}>
-                    <Link href={`/projects/${project.slug}`} className="block group">
-                        <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-                            <div className="relative h-56 w-full">
-                                <Image
-                                src={project.coverImage.url}
-                                alt={project.title}
-                                fill
-                                className="object-cover"
-                                />
-                            </div>
-                        </div>
-                        <div className="mt-4">
-                            <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
-                                {project.title}
-                            </h3>
-                            <p className="text-muted-foreground mt-1">{project.category}</p>
-                        </div>
-                    </Link>
-                </div>
-              ))}
-            </div>
-          </section>
-        </FramerMotionWrapper>
+          </FramerMotionWrapper>
+          <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project, index) => (
+               <FramerMotionWrapper key={project._id as string} delay={index * 0.1}>
+                  <Link href={`/projects/${project.slug}`} className="block group">
+                      <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                          <div className="relative h-56 w-full">
+                              <Image
+                              src={project.coverImage.url}
+                              alt={project.title}
+                              fill
+                              className="object-cover"
+                              />
+                          </div>
+                      </div>
+                      <div className="mt-4">
+                          <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
+                              {project.title}
+                          </h3>
+                          <p className="text-muted-foreground mt-1">{project.category}</p>
+                      </div>
+                  </Link>
+              </FramerMotionWrapper>
+            ))}
+          </div>
+        </section>
       )}
 
-      <FramerMotionWrapper>
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              {blogs.length > 0 && (
-              <div className="lg:col-span-2">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            {blogs.length > 0 && (
+            <div className="lg:col-span-2">
+                <FramerMotionWrapper>
                   <div className="flex items-center justify-between mb-8">
                       <h2 className="flex items-center gap-2 text-2xl font-bold text-primary">
                           <Newspaper className="h-6 w-6"/> Latest Articles
@@ -191,9 +192,11 @@ export default async function HomePage() {
                           View all articles <ArrowRight className="h-4 w-4"/>
                       </Link>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {blogs.map((blog) => (
-                        <Card key={blog._id as string} className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
+                </FramerMotionWrapper>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {blogs.map((blog, index) => (
+                      <FramerMotionWrapper key={blog._id as string} delay={index * 0.1}>
+                        <Card className="group relative overflow-hidden bg-card border-border hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
                             <Link href={`/blog/${blog.slug}`} className="absolute inset-0 z-10" aria-label={blog.title}></Link>
                             <div className="relative h-40 w-full overflow-hidden">
                                 <Image
@@ -210,20 +213,24 @@ export default async function HomePage() {
                               </p>
                             </CardContent>
                         </Card>
-                      ))}
-                  </div>
-              </div>
-              )}
-              
-              {educationHistory.length > 0 && (
-                  <div className="lg:col-span-1">
+                      </FramerMotionWrapper>
+                    ))}
+                </div>
+            </div>
+            )}
+            
+            {educationHistory.length > 0 && (
+                <div className="lg:col-span-1">
+                    <FramerMotionWrapper>
                       <h2 className="flex items-center gap-2 text-2xl font-bold text-primary mb-8">
                           <GraduationCap className="h-6 w-6"/> Education
                       </h2>
-                      <div className="space-y-8 relative">
-                          <div className="absolute left-3 top-2 h-[calc(100%-2.5rem)] w-0.5 bg-border -z-10"></div>
-                          {educationHistory.map((edu) => (
-                              <div key={edu._id as string} className="pl-10 relative">
+                    </FramerMotionWrapper>
+                    <div className="space-y-8 relative">
+                        <div className="absolute left-3 top-2 h-[calc(100%-2.5rem)] w-0.5 bg-border -z-10"></div>
+                        {educationHistory.map((edu, index) => (
+                            <FramerMotionWrapper key={edu._id as string} delay={index * 0.1}>
+                              <div className="pl-10 relative">
                                   <div className="absolute left-0 top-1.5 h-4 w-4 rounded-full bg-primary border-4 border-background"></div>
                                   <p className="text-sm text-muted-foreground">
                                       {format(new Date(edu.startDate), 'MMM yyyy')} - {edu.endDate ? format(new Date(edu.endDate), 'MMM yyyy') : 'Present'}
@@ -231,7 +238,9 @@ export default async function HomePage() {
                                   <h3 className="font-bold text-foreground mt-1">{edu.school}</h3>
                                   <p className="text-muted-foreground text-sm">{edu.degree}, {edu.fieldOfStudy}</p>
                               </div>
-                          ))}
+                            </FramerMotionWrapper>
+                        ))}
+                        <FramerMotionWrapper delay={educationHistory.length * 0.1}>
                           <div className="pl-10">
                             <Button asChild variant="link" className="p-0 text-primary">
                                 <Link href="/education">
@@ -239,11 +248,11 @@ export default async function HomePage() {
                                 </Link>
                             </Button>
                           </div>
-                      </div>
-                  </div>
-              )}
-        </section>
-      </FramerMotionWrapper>
+                        </FramerMotionWrapper>
+                    </div>
+                </div>
+            )}
+      </section>
 
       <FramerMotionWrapper>
         <section className="text-center">
