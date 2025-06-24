@@ -45,8 +45,8 @@ export default function BlogPostClient({ blog }: { blog: IBlog }) {
 
         <div className="relative my-8 h-64 md:h-96 w-full">
           <Image
-            src={project.coverImage.url}
-            alt={project.title}
+            src={blog.coverImage.url}
+            alt={blog.title}
             fill
             className="rounded-lg object-cover shadow-lg"
             priority

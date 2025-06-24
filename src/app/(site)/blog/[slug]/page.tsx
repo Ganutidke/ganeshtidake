@@ -19,10 +19,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const [blog, intro] = await Promise.all([
-    getBlogBySlug(params.slug),
-    getIntro()
-  ]);
+  const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
     return {
@@ -30,36 +27,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: 'The page you are looking for does not exist.',
     };
   }
-
+  
+  const intro = await getIntro();
   const authorName = intro?.headline ?? 'Ganesh Tidke';
+  const description = blog.content?.substring(0, 160) ?? '';
 
   return {
     title: `${blog.title} | ${authorName}`,
-    description: blog.content.substring(0, 160),
+    description: description,
     openGraph: {
       title: blog.title,
-      description: blog.content.substring(0, 160),
+      description: description,
       type: 'article',
       url: `/blog/${blog.slug}`,
-      images: [
+      images: blog.coverImage?.url ? [
         {
           url: blog.coverImage.url,
           width: 1200,
           height: 630,
           alt: blog.title,
         },
-      ],
+      ] : [],
     },
   };
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  await incrementBlogViews(params.slug);
   const blog: IBlog | null = await getBlogBySlug(params.slug);
 
   if (!blog) {
     notFound();
   }
+
+  await incrementBlogViews(params.slug);
 
   return <BlogPostClient blog={blog} />;
 }
