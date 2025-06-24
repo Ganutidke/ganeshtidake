@@ -60,8 +60,15 @@ const navVariants = {
       times: [ 0, 0.5, 1 ],
       ease: "easeOut",
       delay: 0.2,
+      delayChildren: 0.7,
+      staggerChildren: 0.1,
     },
   },
+};
+
+const textVariants = {
+  hidden: { opacity: 0, y: -5, transition: { duration: 0.1 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
 export default function Header() {
@@ -86,7 +93,11 @@ export default function Header() {
             )}
           >
             <link.icon className="h-5 w-5" />
-            {link.label !== 'Home' && <span className="hidden sm:inline">{link.label}</span>}
+            {link.label !== 'Home' && 
+              <motion.span variants={textVariants} className="hidden sm:inline">
+                {link.label}
+              </motion.span>
+            }
           </Link>
         ))}
 
