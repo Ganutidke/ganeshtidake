@@ -8,13 +8,21 @@ import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
 import { ProjectCardSkeleton } from '@/components/skeletons/project-card-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';
 
-async function ProjectsList() {
+async function ProjectsList({ query, category }: { query: string; category: string }) {
   const [projects, categories] = await Promise.all([
-    getProjects(),
+    getProjects({ query, category }),
     getProjectCategories()
   ]);
 
   if (!projects || projects.length === 0) {
+    if (query || (category && category !== 'All')) {
+        return (
+             <PagePlaceholder
+                title="No projects found"
+                description="Try adjusting your search or filter."
+            />
+        )
+    }
     return (
       <PagePlaceholder
         title="My Projects"
@@ -35,9 +43,15 @@ function ProjectsPageSkeleton() {
           <Skeleton className="h-6 w-2/3 mx-auto mt-4" />
         </div>
       </FramerMotionWrapper>
+
+      <FramerMotionWrapper delay={0.1}>
+         <div className="max-w-md mx-auto mt-8">
+          <Skeleton className="h-10 w-full" />
+        </div>
+      </FramerMotionWrapper>
       
       <FramerMotionWrapper delay={0.2}>
-        <div className="flex justify-center flex-wrap gap-2 mt-12">
+        <div className="flex justify-center flex-wrap gap-2 mt-8">
           <Skeleton className="h-9 w-16 rounded-full" />
           <Skeleton className="h-9 w-24 rounded-full" />
           <Skeleton className="h-9 w-32 rounded-full" />
@@ -53,10 +67,13 @@ function ProjectsPageSkeleton() {
   );
 }
 
-export default function ProjectsPage() {
+export default function ProjectsPage({ searchParams }: { searchParams?: { query?: string; category?: string } }) {
+  const query = searchParams?.query || '';
+  const category = searchParams?.category || 'All';
+  
   return (
-    <Suspense fallback={<ProjectsPageSkeleton />}>
-      <ProjectsList />
+    <Suspense key={query + category} fallback={<ProjectsPageSkeleton />}>
+      <ProjectsList query={query} category={category} />
     </Suspense>
   );
 }

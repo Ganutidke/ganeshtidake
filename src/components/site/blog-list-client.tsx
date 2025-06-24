@@ -1,15 +1,32 @@
 
 'use client';
 
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search as SearchIcon } from 'lucide-react';
 import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
 import type { IBlog } from '@/models/blog.model';
 
 export default function BlogListClient({ blogs }: { blogs: IBlog[] }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handleSearch = useDebouncedCallback((term: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set('query', term);
+    } else {
+      params.delete('query');
+    }
+    router.replace(`${pathname}?${params.toString()}`);
+  }, 300);
+
   return (
     <FramerMotionWrapper>
       <div className="container max-w-7xl mx-auto px-4 py-16">
@@ -18,6 +35,17 @@ export default function BlogListClient({ blogs }: { blogs: IBlog[] }) {
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
             Sharing my thoughts on web development, AI, and more.
           </p>
+        </div>
+
+        <div className="relative mt-8 max-w-md mx-auto">
+          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search for articles..."
+            className="pl-10 h-11"
+            onChange={(e) => handleSearch(e.target.value)}
+            defaultValue={searchParams.get('query')?.toString()}
+          />
         </div>
 
         <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -57,4 +85,3 @@ export default function BlogListClient({ blogs }: { blogs: IBlog[] }) {
     </FramerMotionWrapper>
   );
 }
-

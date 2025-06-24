@@ -108,10 +108,20 @@ export async function updateBlog(id: string, data: UpdateBlogParams) {
   redirect('/admin/blogs');
 }
 
-export async function getBlogs() {
+export async function getBlogs(params: { query?: string } = {}) {
   try {
     await connectDB();
-    const blogs = await Blog.find().sort({ createdAt: -1 }).lean();
+    const { query } = params;
+
+    const filter: any = {};
+    if (query) {
+      filter.$or = [
+        { title: { $regex: query, $options: 'i' } },
+        { tags: { $regex: query, $options: 'i' } },
+      ];
+    }
+    
+    const blogs = await Blog.find(filter).sort({ createdAt: -1 }).lean();
     return JSON.parse(JSON.stringify(blogs)) as IBlog[];
   } catch (error) {
     console.error('Error fetching blogs:', error);

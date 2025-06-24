@@ -5,9 +5,11 @@ import ProjectsList from '@/components/admin/projects-list';
 import PageHeader from '@/components/admin/page-header';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
+import Search from '@/components/admin/search';
 
-export default async function AdminProjectsPage() {
-  const projects = await getProjects();
+export default async function AdminProjectsPage({ searchParams }: { searchParams?: { query?: string } }) {
+  const query = searchParams?.query || '';
+  const projects = await getProjects({ query });
 
   return (
     <div>
@@ -23,6 +25,10 @@ export default async function AdminProjectsPage() {
         </Button>
       </PageHeader>
       
+      <div className="mb-4">
+        <Search placeholder="Search by title, tag, or category..." />
+      </div>
+
       <ProjectsList projects={projects} />
     </div>
   );

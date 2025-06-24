@@ -95,10 +95,26 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
   }
 }
 
-export async function getProjects(): Promise<PopulatedProject[]> {
+export async function getProjects(params: { query?: string, category?: string } = {}): Promise<PopulatedProject[]> {
   try {
     await connectDB();
-    const projects = await Project.find().sort({ createdAt: -1 }).lean();
+    const { query, category } = params;
+
+    const filter: any = {};
+
+    if (query) {
+      filter.$or = [
+        { title: { $regex: query, $options: 'i' } },
+        { tags: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } }
+      ];
+    }
+
+    if (category && category !== 'All') {
+      filter.category = category;
+    }
+
+    const projects = await Project.find(filter).sort({ createdAt: -1 }).lean();
     return JSON.parse(JSON.stringify(projects));
   } catch (error) {
     console.error('Error fetching projects:', error);
