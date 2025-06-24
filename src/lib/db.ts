@@ -13,6 +13,7 @@ import '@/models/message.model';
 import '@/models/project-category.model';
 import '@/models/project.model';
 import '@/models/gallery.model';
+import '@/models/theme.model';
 
 
 const MONGODB_URI = process.env.MONGODB_URI;
