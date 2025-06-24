@@ -36,7 +36,10 @@ export async function createProject(data: ProjectParams) {
     });
 
     const newProject = new Project({
-      ...data,
+      title: data.title,
+      description: data.description,
+      repositoryUrl: data.repositoryUrl,
+      liveUrl: data.liveUrl,
       slug: slugify(data.title),
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
       category: data.categoryId,
@@ -76,10 +79,13 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
     }
     
     const updateData = {
-      ...data,
-      slug: slugify(data.title),
+      title: data.title,
+      description: data.description,
       tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
       category: data.categoryId,
+      repositoryUrl: data.repositoryUrl,
+      liveUrl: data.liveUrl,
+      slug: slugify(data.title),
       coverImage,
     };
 

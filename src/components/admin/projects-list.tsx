@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Edit, Trash, ExternalLink, Github } from 'lucide-react';
 
-import type { IProject } from '@/models/project.model';
+import type { PopulatedProject } from '@/lib/actions/project.actions';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { deleteProject } from '@/lib/actions/project.actions';
 import { Badge } from '../ui/badge';
 
-export default function ProjectsList({ projects }: { projects: IProject[] }) {
+export default function ProjectsList({ projects }: { projects: PopulatedProject[] }) {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
@@ -36,6 +36,7 @@ export default function ProjectsList({ projects }: { projects: IProject[] }) {
           <TableRow>
             <TableHead className="w-[80px]">Image</TableHead>
             <TableHead>Title</TableHead>
+            <TableHead>Category</TableHead>
             <TableHead>Tags</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
@@ -53,6 +54,7 @@ export default function ProjectsList({ projects }: { projects: IProject[] }) {
                 />
               </TableCell>
               <TableCell className="font-medium">{project.title}</TableCell>
+              <TableCell>{project.category?.name}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
                   {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
