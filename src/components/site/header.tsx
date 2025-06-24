@@ -45,18 +45,21 @@ const moreLinks = [
 
 const navVariants = {
   hidden: {
+    y: -40,
+    scaleX: 0.3,
+    scaleY: 0.6,
     opacity: 0,
-    y: -20,
-    scaleX: 0.5,
   },
   visible: {
-    opacity: 1,
-    y: 0,
-    scaleX: 1,
+    y: [ -40, 0, 0 ],
+    scaleX: [ 0.3, 0.3, 1 ],
+    scaleY: [ 0.6, 1, 1 ],
+    opacity: [ 0, 1, 1 ],
     transition: {
-      duration: 0.7,
-      delay: 0.15,
-      ease: [0.16, 1, 0.3, 1],
+      duration: 1.2,
+      times: [ 0, 0.5, 1 ],
+      ease: "easeOut",
+      delay: 0.2,
     },
   },
 };
