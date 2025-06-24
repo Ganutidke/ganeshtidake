@@ -1,3 +1,4 @@
+
 import ContactForm from '@/components/site/contact-form';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { getIntro } from '@/lib/actions/intro.actions';
@@ -13,48 +14,54 @@ export default async function ContactPage() {
         </p>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-2">
-        <div>
-          <h2 className="text-2xl font-bold font-headline text-primary mb-6">Contact Information</h2>
-          <div className="space-y-6">
-            {intro?.email && (
-              <div className="flex items-start gap-4">
-                <div className="mt-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                  <Mail className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Email</h3>
-                  <p className="text-muted-foreground">Drop me a line anytime!</p>
-                  <a href={`mailto:${intro.email}`} className="text-secondary hover:underline">
-                    {intro.email}
-                  </a>
-                </div>
-              </div>
-            )}
-            <div className="flex items-start gap-4">
-              <div className="mt-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <Phone className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold">Phone</h3>
-                <p className="text-muted-foreground">Let's have a chat.</p>
-                <a href="tel:+1234567890" className="text-secondary hover:underline">
-                  +1 (234) 567-890
+      <div className="mt-12 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 bg-card p-8 sm:p-12 rounded-lg shadow-lg">
+        <div className="lg:col-span-2">
+            <h2 className="text-3xl font-bold font-headline text-primary mb-4">Contact Information</h2>
+            <p className="text-muted-foreground mb-8">
+                You can reach me through any of the channels below. I look forward to hearing from you!
+            </p>
+            <div className="space-y-6">
+                {intro?.email && (
+                <a href={`mailto:${intro.email}`} className="flex items-center gap-4 group">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Mail className="h-6 w-6" />
+                    </div>
+                    <div>
+                        <p className="font-semibold text-foreground">Email</p>
+                        <p className="text-muted-foreground group-hover:text-primary transition-colors">
+                            {intro.email}
+                        </p>
+                    </div>
                 </a>
-              </div>
+                )}
+                <a href="tel:+1234567890" className="flex items-center gap-4 group">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Phone className="h-6 w-6" />
+                    </div>
+                    <div>
+                        <p className="font-semibold text-foreground">Phone</p>
+                        <p className="text-muted-foreground group-hover:text-primary transition-colors">
+                           +1 (234) 567-890
+                        </p>
+                    </div>
+                </a>
+                <div className="flex items-center gap-4 group">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <MapPin className="h-6 w-6" />
+                    </div>
+                    <div>
+                        <p className="font-semibold text-foreground">Location</p>
+                        <p className="text-muted-foreground">
+                            Pune, Maharashtra, India
+                        </p>
+                    </div>
+                </div>
             </div>
-             <div className="flex items-start gap-4">
-              <div className="mt-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <MapPin className="h-6 w-6" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold">Location</h3>
-                <p className="text-muted-foreground">Pune, Maharashtra, India</p>
-              </div>
-            </div>
-          </div>
         </div>
-        <ContactForm />
+        
+        <div className="lg:col-span-3">
+            <ContactForm />
+        </div>
       </div>
     </div>
   );
