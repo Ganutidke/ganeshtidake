@@ -116,7 +116,7 @@ export default async function HomePage() {
                   </div>
                   <Image
                     src={about.profilePicture.url}
-                    alt="Ganesh Tidke"
+                    alt={intro?.headline ?? 'Profile Picture'}
                     fill
                     className="object-cover rounded-full p-2"
                   />

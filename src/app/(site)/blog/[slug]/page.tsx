@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { getBlogBySlug, getBlogs } from '@/lib/actions/blog.actions';
 import BlogPostClient from '@/components/site/blog-post-client';
 import type { IBlog } from '@/models/blog.model';
+import { getIntro } from '@/lib/actions/intro.actions';
 
 
 type Props = {
@@ -18,7 +19,10 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const blog = await getBlogBySlug(params.slug);
+  const [blog, intro] = await Promise.all([
+    getBlogBySlug(params.slug),
+    getIntro()
+  ]);
 
   if (!blog) {
     return {
@@ -27,8 +31,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const authorName = intro?.headline ?? 'Ganesh Tidke';
+
   return {
-    title: `${blog.title} | Ganesh Tidke`,
+    title: `${blog.title} | ${authorName}`,
     description: blog.content.substring(0, 160),
     openGraph: {
       title: blog.title,

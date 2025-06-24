@@ -1,12 +1,20 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import { getIntro } from '@/lib/actions/intro.actions';
 
-export const metadata: Metadata = {
-  title: 'Ganesh Tidke | Portfolio',
-  description: 'The portfolio of Ganesh Tidke, a passionate Full-Stack Developer creating modern and responsive web applications.',
-  icons: false,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const intro = await getIntro();
+  
+  const title = intro?.headline ? `${intro.headline} | Portfolio` : 'Ganesh Tidke | Portfolio';
+  const description = intro?.subheadline || 'The portfolio of Ganesh Tidke, a passionate Full-Stack Developer creating modern and responsive web applications.';
+
+  return {
+    title,
+    description,
+    icons: false,
+  };
+}
 
 export default function RootLayout({
   children,
