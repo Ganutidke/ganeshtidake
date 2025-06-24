@@ -25,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from '@/components/ui/separator';
+import { motion } from 'framer-motion';
 
 const mainNavLinks = [
   { href: '/', label: 'Home', icon: Home },
@@ -42,12 +43,35 @@ const moreLinks = [
   { href: '/contact', label: 'Contact', icon: Mail },
 ];
 
+const navVariants = {
+  hidden: {
+    opacity: 0,
+    y: -20,
+    scaleX: 0.9,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scaleX: 1,
+    transition: {
+      duration: 0.5,
+      delay: 0.15,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
 export default function Header() {
   const pathname = usePathname();
 
   return (
     <header className="py-4 sticky top-0 z-50">
-      <nav className="mx-auto flex w-fit items-center gap-1 rounded-full border bg-background/70 p-1.5 shadow-lg backdrop-blur-md">
+      <motion.nav
+        variants={navVariants}
+        initial="hidden"
+        animate="visible"
+        className="mx-auto flex w-fit items-center gap-1 rounded-full border bg-background/70 p-1.5 shadow-lg backdrop-blur-md"
+      >
         {mainNavLinks.map((link) => (
           <Link
             key={link.href}
@@ -82,7 +106,7 @@ export default function Header() {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-      </nav>
+      </motion.nav>
     </header>
   );
 }
