@@ -11,7 +11,7 @@ interface Props {
 }
 
 const defaultVariants: Variants = {
-  hidden: { opacity: 0, y: 50, scale: 0.98 },
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
   visible: { opacity: 1, y: 0, scale: 1 },
 };
 
@@ -37,7 +37,7 @@ export default function FramerMotionWrapper({
         variants={variants}
         initial="hidden"
         animate={mainControls}
-        transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1.0] }}
+        transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}
       </motion.div>
