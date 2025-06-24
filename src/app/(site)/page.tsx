@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight, Github, Linkedin, Mail, Briefcase, Zap, Newspaper, GraduationCap } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, Briefcase, Zap, Newspaper, GraduationCap, HelpCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getIntro } from '@/lib/actions/intro.actions';
@@ -12,6 +12,9 @@ import { getEducationHistory } from '@/lib/actions/education.actions';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
+import { getExperienceHistory } from '@/lib/actions/experience.actions';
+import { getFaqs } from '@/lib/actions/faq.actions';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export default async function HomePage() {
   const intro = await getIntro();
@@ -19,6 +22,8 @@ export default async function HomePage() {
   const projects = (await getProjects()).slice(0, 3);
   const blogs = (await getBlogs()).slice(0, 3);
   const educationHistory = (await getEducationHistory()).slice(0, 2);
+  const experienceHistory = (await getExperienceHistory()).slice(0, 2);
+  const faqs = (await getFaqs()).slice(0, 4);
 
   const getSkillCategories = (skillsString?: string) => {
     if (typeof skillsString !== 'string' || !skillsString) {
@@ -253,6 +258,71 @@ export default async function HomePage() {
                 </div>
             )}
       </section>
+
+      {experienceHistory.length > 0 && (
+        <FramerMotionWrapper>
+        <section>
+          <h2 className="text-2xl font-bold text-primary mb-8 text-center">Work Experience</h2>
+          <div className="relative">
+             <div className="absolute left-1/2 h-full w-0.5 bg-border -translate-x-1/2 hidden md:block"></div>
+            {experienceHistory.map((exp, index) => (
+              <FramerMotionWrapper key={exp._id as string} delay={index * 0.1}>
+                <div className="relative mb-12 md:flex items-center md:justify-center">
+                    <div className={`md:w-1/2 w-full ${index % 2 === 0 ? 'md:pr-8 md:text-right' : 'md:pl-8 md:text-left'}`}>
+                        <div className="p-6 rounded-lg shadow-lg bg-card text-left">
+                            <p className="text-sm font-semibold text-primary">
+                                {format(new Date(exp.startDate), 'MMM yyyy')} - {exp.endDate ? format(new Date(exp.endDate), 'MMM yyyy') : 'Present'}
+                            </p>
+                            <h3 className="text-xl font-bold font-headline mt-1 text-foreground">{exp.role}</h3>
+                            <h4 className="text-lg font-semibold">{exp.company}</h4>
+                        </div>
+                    </div>
+                    <div className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background hidden md:block"></div>
+                </div>
+              </FramerMotionWrapper>
+            ))}
+             <div className="text-center">
+                <Button asChild>
+                    <Link href="/experience">
+                        View All Experience <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
+            </div>
+          </div>
+        </section>
+        </FramerMotionWrapper>
+      )}
+
+      {faqs.length > 0 && (
+        <FramerMotionWrapper>
+          <section>
+            <h2 className="flex items-center justify-center gap-2 text-2xl font-bold text-primary mb-8">
+              <HelpCircle className="h-6 w-6"/> Frequently Asked Questions
+            </h2>
+             <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
+                {faqs.map((faq, index) => (
+                    <FramerMotionWrapper key={faq._id} delay={index * 0.1}>
+                        <AccordionItem value={`item-${index}`}>
+                            <AccordionTrigger className="text-lg text-left hover:text-primary transition-colors">
+                                {faq.question}
+                            </AccordionTrigger>
+                            <AccordionContent className="text-muted-foreground text-base">
+                                {faq.answer}
+                            </AccordionContent>
+                        </AccordionItem>
+                    </FramerMotionWrapper>
+                ))}
+            </Accordion>
+            <div className="text-center mt-8">
+                <Button asChild variant="outline">
+                    <Link href="/faq">
+                        View All FAQs <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
+            </div>
+          </section>
+        </FramerMotionWrapper>
+      )}
 
       <FramerMotionWrapper>
         <section className="text-center">

@@ -12,7 +12,6 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
   },
-  icons: false,
 };
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
