@@ -327,9 +327,10 @@ const SidebarInset = React.forwardRef<
     <main
       ref={ref}
       className={cn(
-        "relative flex min-h-svh flex-1 flex-col bg-background transition-all duration-200 ease-linear",
-        "md:ml-[var(--sidebar-width)]",
-        "peer-data-[state=collapsed]:md:ml-[var(--sidebar-width-icon)]",
+        "relative flex min-h-svh flex-1 flex-col bg-background transition-all duration-200 ease-linear min-w-0",
+        // The peer-based margin classes were removed.
+        // The Sidebar component itself now manages the layout spacing via a placeholder div,
+        // so applying a margin here was redundant and caused the overflow.
         "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] peer-data-[variant=inset]:md:ml-0 peer-data-[variant=inset]:m-2 peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 peer-data-[variant=inset]:rounded-xl peer-data-[variant=inset]:shadow",
         className
       )}
