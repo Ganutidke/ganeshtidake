@@ -1,7 +1,7 @@
 
 'use client';
 
-import { FolderKanban, Newspaper, Inbox, Eye } from 'lucide-react';
+import { FolderKanban, Newspaper, Inbox, Eye, PenSquare, Palette, CheckCircle, Circle } from 'lucide-react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 import type { PopulatedProject } from '@/models/project.model';
 import type { IMessage } from '@/models/message.model';
@@ -24,6 +25,12 @@ type DashboardStats = {
   recentMessages: IMessage[];
   mostViewedBlogs: IBlog[];
   analyticsData: any[];
+  portfolioStatus: {
+    hasIntro: boolean;
+    hasAbout: boolean;
+    hasProjects: boolean;
+    hasBlogs: boolean;
+  };
 };
 
 export default function DashboardClient({ stats }: { stats: DashboardStats }) {
@@ -45,8 +52,8 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
 
       <OverviewChart data={stats.analyticsData} />
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3">
-        <Card className="xl:col-span-2">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Recent Projects</CardTitle>
             <CardDescription>Your five most recently created projects.</CardDescription>
@@ -94,6 +101,8 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
           </CardContent>
         </Card>
         <div className="space-y-8">
+            <QuickActionsCard />
+            <PortfolioStatusCard status={stats.portfolioStatus} />
             <Card>
             <CardHeader>
                 <CardTitle>Most Viewed Blogs</CardTitle>
@@ -169,4 +178,90 @@ function StatCard({ title, value, icon }: { title: string; value: number | strin
       </CardContent>
     </Card>
   );
+}
+
+function QuickActionsCard() {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4">
+                <Button asChild variant="outline">
+                    <Link href="/admin/projects/create">
+                        <FolderKanban className="mr-2" />
+                        New Project
+                    </Link>
+                </Button>
+                <Button asChild variant="outline">
+                    <Link href="/admin/blogs/create">
+                        <PenSquare className="mr-2" />
+                        New Blog
+                    </Link>
+                </Button>
+                 <Button asChild variant="outline" className="col-span-2">
+                    <Link href="/admin/theme">
+                        <Palette className="mr-2" />
+                        Customize Theme
+                    </Link>
+                </Button>
+            </CardContent>
+        </Card>
+    );
+}
+
+function PortfolioStatusCard({ status }: { status: DashboardStats['portfolioStatus'] }) {
+    const checklist = [
+        { label: 'Setup Intro Section', completed: status.hasIntro, link: '/admin/intro' },
+        { label: 'Complete About Me', completed: status.hasAbout, link: '/admin/about' },
+        { label: 'Add First Project', completed: status.hasProjects, link: '/admin/projects/create' },
+        { label: 'Write First Blog', completed: status.hasBlogs, link: '/admin/blogs/create' },
+    ];
+
+    const completedCount = checklist.filter(item => item.completed).length;
+    const totalCount = checklist.length;
+    const progress = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Portfolio Status</CardTitle>
+                <CardDescription>
+                    Complete these steps to launch your portfolio.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="flex items-center gap-4 mb-4">
+                     <div className={`w-12 h-12 flex items-center justify-center rounded-full ${progress === 100 ? 'bg-green-500/20 text-green-500' : 'bg-primary/10 text-primary'}`}>
+                        <span className="text-xl font-bold">{Math.round(progress)}%</span>
+                    </div>
+                    <div className="flex-1">
+                        <p className="font-semibold text-foreground">{completedCount} of {totalCount} steps completed</p>
+                        <p className="text-xs text-muted-foreground">Looking good! Keep it up.</p>
+                    </div>
+                </div>
+                <ul className="space-y-3">
+                    {checklist.map(item => (
+                        <li key={item.label} className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                {item.completed ? (
+                                    <CheckCircle className="h-5 w-5 text-green-500" />
+                                ) : (
+                                    <Circle className="h-5 w-5 text-muted-foreground" />
+                                )}
+                                <span className={cn("text-sm", item.completed && "text-muted-foreground line-through")}>
+                                    {item.label}
+                                </span>
+                            </div>
+                            {!item.completed && (
+                                <Button asChild variant="secondary" size="sm" className="h-7">
+                                    <Link href={item.link}>Go</Link>
+                                </Button>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </CardContent>
+        </Card>
+    );
 }

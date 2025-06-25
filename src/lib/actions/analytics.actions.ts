@@ -1,3 +1,4 @@
+
 'use server';
 
 import connectDB from '@/lib/db';
@@ -5,6 +6,8 @@ import Project from '@/models/project.model';
 import Blog, { IBlog } from '@/models/blog.model';
 import Message from '@/models/message.model';
 import View from '@/models/view.model';
+import Intro from '@/models/intro.model';
+import About from '@/models/about.model';
 import { subDays, format as formatDate } from 'date-fns';
 
 export async function getDashboardStats() {
@@ -15,6 +18,8 @@ export async function getDashboardStats() {
     thirtyDaysAgo.setHours(0, 0, 0, 0);
 
     const [
+      introData,
+      aboutData,
       projectCount,
       blogCount,
       unreadMessagesCount,
@@ -26,6 +31,8 @@ export async function getDashboardStats() {
       monthlyProjects,
       monthlyBlogs,
     ] = await Promise.all([
+      Intro.findOne().lean(),
+      About.findOne().lean(),
       Project.countDocuments(),
       Blog.countDocuments(),
       Message.countDocuments({ read: false }),
@@ -96,6 +103,12 @@ export async function getDashboardStats() {
     
     const analyticsData = Array.from(analyticsDataMap.values()).sort((a,b) => a.date.localeCompare(b.date));
 
+    const portfolioStatus = {
+        hasIntro: !!introData,
+        hasAbout: !!aboutData,
+        hasProjects: projectCount > 0,
+        hasBlogs: blogCount > 0,
+    };
 
     return {
       projectCount,
@@ -106,6 +119,7 @@ export async function getDashboardStats() {
       recentMessages: JSON.parse(JSON.stringify(recentMessages)),
       mostViewedBlogs: JSON.parse(JSON.stringify(mostViewedBlogs)),
       analyticsData: JSON.parse(JSON.stringify(analyticsData)),
+      portfolioStatus,
     };
   } catch (error) {
     console.error('Error fetching dashboard stats:', error);
@@ -118,6 +132,12 @@ export async function getDashboardStats() {
       recentMessages: [],
       mostViewedBlogs: [],
       analyticsData: [],
+      portfolioStatus: {
+        hasIntro: false,
+        hasAbout: false,
+        hasProjects: false,
+        hasBlogs: false,
+      },
     };
   }
 }
