@@ -156,13 +156,12 @@ export default function GalleryManagementClient({ images: initialImages }: { ima
             {images.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {images.map((img) => (
-                  <div key={img._id} className="relative group">
+                  <div key={img._id} className="relative group aspect-square">
                     <Image
                       src={img.image.url}
                       alt={img.title}
-                      width={200}
-                      height={200}
-                      className="rounded-md object-cover aspect-square"
+                      fill
+                      className="rounded-md object-cover"
                     />
                     <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <p className="text-white text-center text-sm p-2">{img.title}</p>
