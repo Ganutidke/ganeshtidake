@@ -1,3 +1,4 @@
+
 'use client';
 
 import { FolderKanban, Newspaper, Inbox, Eye } from 'lucide-react';
@@ -28,8 +29,11 @@ type DashboardStats = {
 export default function DashboardClient({ stats }: { stats: DashboardStats }) {
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="space-y-1">
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-muted-foreground">
+            Here's a quick overview of your portfolio's performance.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -73,8 +77,15 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={3} className="h-24 text-center">
-                      No recent projects.
+                    <TableCell colSpan={3} className="h-48 text-center">
+                       <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                          <FolderKanban className="h-10 w-10" />
+                          <h3 className="text-lg font-semibold">No Projects Yet</h3>
+                          <p className="text-sm">You haven't added any projects.</p>
+                          <Button asChild size="sm" className="mt-2">
+                            <Link href="/admin/projects/create">Add a Project</Link>
+                          </Button>
+                        </div>
                     </TableCell>
                   </TableRow>
                 )}
@@ -88,21 +99,27 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                 <CardTitle>Most Viewed Blogs</CardTitle>
                 <CardDescription>Your top 3 most viewed blog posts.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent>
                 {stats.mostViewedBlogs.length > 0 ? (
-                    stats.mostViewedBlogs.map((blog) => (
-                    <div key={blog._id as string} className="flex items-center">
-                        <div className="flex-1 space-y-1">
-                        <Link href={`/admin/blogs/edit/${blog._id}`} className="text-sm font-medium leading-none hover:underline">{blog.title}</Link>
+                    <div className="space-y-4">
+                    {stats.mostViewedBlogs.map((blog) => (
+                        <div key={blog._id as string} className="flex items-center">
+                            <div className="flex-1 space-y-1">
+                            <Link href={`/admin/blogs/edit/${blog._id}`} className="text-sm font-medium leading-none hover:underline">{blog.title}</Link>
+                            </div>
+                            <div className="ml-auto text-sm text-muted-foreground flex items-center gap-1.5">
+                                <Eye className="h-4 w-4" />
+                                <span>{blog.views.toLocaleString()}</span>
+                            </div>
                         </div>
-                        <div className="ml-auto text-sm text-muted-foreground flex items-center gap-1.5">
-                            <Eye className="h-4 w-4" />
-                            <span>{blog.views.toLocaleString()}</span>
-                        </div>
+                    ))}
                     </div>
-                    ))
                 ) : (
-                <p className="text-center text-sm text-muted-foreground py-4">No blog views yet.</p>
+                <div className="flex flex-col items-center justify-center h-32 text-center">
+                    <Newspaper className="h-8 w-8 text-muted-foreground mb-2" />
+                    <p className="text-sm font-semibold text-foreground">No blog views yet.</p>
+                    <p className="text-xs text-muted-foreground">Views will appear here once your articles are read.</p>
+                </div>
                 )}
             </CardContent>
             </Card>
@@ -126,7 +143,11 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                     ))}
                 </div>
                 ) : (
-                <p className="text-center text-sm text-muted-foreground py-8">No recent messages.</p>
+                <div className="flex flex-col items-center justify-center h-32 text-center">
+                    <Inbox className="h-8 w-8 text-muted-foreground mb-2" />
+                    <p className="text-sm font-semibold text-foreground">Your inbox is empty.</p>
+                    <p className="text-xs text-muted-foreground">New messages from your contact form will show up here.</p>
+                </div>
                 )}
             </CardContent>
             </Card>
