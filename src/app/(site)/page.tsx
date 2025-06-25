@@ -309,17 +309,9 @@ export default async function HomePage() {
       <FramerMotionWrapper>
         <section className="grid grid-cols-1 gap-8 pt-12 md:pt-20">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-primary md:text-5xl">Hey there!, I’m</h1>
-            <h2 className="mt-2 text-6xl font-bold tracking-tight text-foreground sm:text-8xl">{intro?.headline ?? 'Ganesh Tidke.'}</h2>
-            <p className="mt-6 max-w-2xl text-lg text-muted-foreground">{intro?.subheadline ?? 'A self-taught developer...'}</p>
-            {intro?.role && (
-              <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                  <div className="flex items-center gap-3 text-muted-foreground">
-                    <Briefcase className="h-5 w-5 text-primary"/>
-                    <span>{intro.role}</span>
-                  </div>
-              </div>
-            )}
+            <h1 className="text-6xl font-bold tracking-tight text-foreground sm:text-8xl">{intro?.headline ?? 'Your Name'}</h1>
+            <p className="mt-4 text-2xl text-primary font-semibold">{intro?.role ?? 'Full-Stack Developer'}</p>
+            <p className="mt-6 max-w-2xl text-lg text-muted-foreground">{intro?.subheadline ?? 'A passionate developer creating modern and responsive web applications.'}</p>
             <div className="mt-8 flex gap-4">
               {intro?.githubUrl && <Button asChild variant="outline"><Link href={intro.githubUrl} target="_blank"><Github /> Github</Link></Button>}
               {intro?.linkedinUrl && <Button asChild variant="outline"><Link href={intro.linkedinUrl} target="_blank"><Linkedin /> LinkedIn</Link></Button>}

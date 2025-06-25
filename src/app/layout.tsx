@@ -8,8 +8,8 @@ import { getTheme } from '@/lib/actions/theme.actions';
 export async function generateMetadata(): Promise<Metadata> {
   const intro = await getIntro();
   
-  const title = intro?.headline ? `${intro.headline} | Portfolio` : 'Ganesh Tidke | Portfolio';
-  const description = intro?.subheadline || 'The portfolio of Ganesh Tidke, a passionate Full-Stack Developer creating modern and responsive web applications.';
+  const title = intro?.headline ? `${intro.headline} | Portfolio` : 'Portfolio';
+  const description = intro?.subheadline || 'A personal portfolio built with Next.js.';
 
   return {
     title,

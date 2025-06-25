@@ -10,14 +10,20 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { getIntro } from '@/lib/actions/intro.actions';
 import { getAbout } from '@/lib/actions/about.actions';
 
-export const metadata: Metadata = {
-  title: 'Admin Dashboard | Ganesh Tidke',
-  description: 'Admin dashboard for the portfolio of Ganesh Tidke.',
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const intro = await getIntro();
+  const title = `Admin | ${intro?.headline || 'Dashboard'}`;
+
+  return {
+    title,
+    description: `Admin dashboard for the portfolio of ${intro?.headline || 'a user'}.`,
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
+
 
 const getInitials = (name: string = '') => {
   const words = name.split(' ').filter(Boolean);
@@ -36,7 +42,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   return (
     <SidebarProvider>
       <AdminSidebar />
-      <SidebarInset className="bg-background">
+      <SidebarInset className="bg-background min-w-0">
         <header className="p-4 md:p-6 flex items-center border-b sticky top-0 bg-background/80 backdrop-blur-sm z-10">
           <SidebarTrigger className="md:hidden">
             <PanelLeft />
@@ -88,7 +94,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             </Popover>
             <Avatar className='h-9 w-9'>
                 <AvatarImage src={about?.profilePicture?.url || "https://placehold.co/40x40.png"} alt={intro?.headline || "User"} data-ai-hint="profile avatar" />
-                <AvatarFallback>{initials || 'GT'}</AvatarFallback>
+                <AvatarFallback>{initials || 'AD'}</AvatarFallback>
             </Avatar>
           </div>
         </header>

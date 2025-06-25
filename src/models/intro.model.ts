@@ -24,12 +24,12 @@ const IntroSchema: Schema = new Schema(
       url: { type: String, required: true },
       public_id: { type: String, required: true },
     },
-    role: { type: String, default: 'Full Stack devloper' },
-    githubUrl: { type: String, default: 'https://github.com/Ganutidke' },
-    linkedinUrl: { type: String, default: 'https://www.linkedin.com/in/ganeshtidake/' },
-    email: { type: String, default: 'ganeshtidake519@gmail.com' },
-    phone: { type: String, default: '+1 (234) 567-890' },
-    address: { type: String, default: 'Pune, Maharashtra, India' },
+    role: { type: String, default: 'Full-Stack Developer' },
+    githubUrl: { type: String, default: '' },
+    linkedinUrl: { type: String, default: '' },
+    email: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    address: { type: String, default: '' },
   },
   { timestamps: true }
 );

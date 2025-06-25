@@ -1,3 +1,4 @@
+
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -55,12 +56,12 @@ export async function updateIntro(data: UpdateIntroParams) {
     const updateData = {
       headline: data.headline,
       subheadline: data.subheadline,
-      role: data.role || 'Full Stack devloper',
-      githubUrl: data.githubUrl || 'https://github.com/Ganutidke',
-      linkedinUrl: data.linkedinUrl || 'https://www.linkedin.com/in/ganeshtidake/',
-      email: data.email || 'ganeshtidake519@gmail.com',
-      phone: data.phone || '+1 (234) 567-890',
-      address: data.address || 'Pune, Maharashtra, India',
+      role: data.role,
+      githubUrl: data.githubUrl,
+      linkedinUrl: data.linkedinUrl,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
       ...(heroImage && { heroImage }),
     };
 
