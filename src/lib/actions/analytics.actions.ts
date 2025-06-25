@@ -25,6 +25,7 @@ export async function getDashboardStats() {
       unreadMessagesCount,
       viewCount,
       recentProjects,
+      recentBlogs,
       recentMessages,
       mostViewedBlogs,
       monthlyViews,
@@ -38,6 +39,7 @@ export async function getDashboardStats() {
       Message.countDocuments({ read: false }),
       View.countDocuments(),
       Project.find().sort({ createdAt: -1 }).limit(5).lean(),
+      Blog.find().sort({ createdAt: -1 }).limit(5).lean(),
       Message.find().sort({ createdAt: -1 }).limit(5).lean(),
       Blog.find({ views: { $gt: 0 } }).sort({ views: -1 }).limit(3).lean(),
       // Aggregation for Views
@@ -74,6 +76,16 @@ export async function getDashboardStats() {
         { $project: { date: '$_id', Blogs: '$count', _id: 0 } },
       ]),
     ]);
+    
+    // Create a unified activity feed
+    const projectActivities = recentProjects.map(p => ({ type: 'project', title: p.title, createdAt: p.createdAt, link: `/admin/projects/edit/${p._id}`}));
+    const blogActivities = recentBlogs.map(b => ({ type: 'blog', title: b.title, createdAt: b.createdAt, link: `/admin/blogs/edit/${b._id}`}));
+    const messageActivities = recentMessages.map(m => ({ type: 'message', title: `Message from ${m.name}`, createdAt: m.createdAt, link: '/admin/messages' }));
+
+    const activityFeed = [...projectActivities, ...blogActivities, ...messageActivities]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 7);
+
 
     // Combine the data for the chart
     const analyticsDataMap = new Map<string, any>();
@@ -120,6 +132,7 @@ export async function getDashboardStats() {
       mostViewedBlogs: JSON.parse(JSON.stringify(mostViewedBlogs)),
       analyticsData: JSON.parse(JSON.stringify(analyticsData)),
       portfolioStatus,
+      activityFeed: JSON.parse(JSON.stringify(activityFeed)),
     };
   } catch (error) {
     console.error('Error fetching dashboard stats:', error);
@@ -138,6 +151,7 @@ export async function getDashboardStats() {
         hasProjects: false,
         hasBlogs: false,
       },
+      activityFeed: [],
     };
   }
 }

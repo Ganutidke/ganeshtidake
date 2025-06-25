@@ -1,7 +1,7 @@
 
 'use client';
 
-import { FolderKanban, Newspaper, Inbox, Eye, PenSquare, Palette, CheckCircle, Circle } from 'lucide-react';
+import { FolderKanban, Newspaper, Inbox, Eye, PenSquare, Palette, CheckCircle, Circle, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -15,6 +15,13 @@ import type { PopulatedProject } from '@/models/project.model';
 import type { IMessage } from '@/models/message.model';
 import { OverviewChart } from './overview-chart';
 import type { IBlog } from '@/models/blog.model';
+
+type Activity = {
+  type: 'project' | 'blog' | 'message';
+  title: string;
+  createdAt: string;
+  link: string;
+};
 
 type DashboardStats = {
   projectCount: number;
@@ -31,6 +38,7 @@ type DashboardStats = {
     hasProjects: boolean;
     hasBlogs: boolean;
   };
+  activityFeed: Activity[];
 };
 
 export default function DashboardClient({ stats }: { stats: DashboardStats }) {
@@ -50,56 +58,11 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
         <StatCard title="Total Site Views" value={stats.viewCount} icon={<Eye className="h-6 w-6 text-primary" />} />
       </div>
 
-      <OverviewChart data={stats.analyticsData} />
-
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Recent Projects</CardTitle>
-            <CardDescription>Your five most recently created projects.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead className="hidden sm:table-cell">Category</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {stats.recentProjects.length > 0 ? (
-                  stats.recentProjects.map((project) => (
-                    <TableRow key={project._id as string}>
-                      <TableCell className="font-medium">{project.title}</TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <Badge variant="outline">{project.category}</Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button asChild variant="ghost" size="sm">
-                          <Link href={`/admin/projects/edit/${project._id}`}>View</Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={3} className="h-48 text-center">
-                       <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                          <FolderKanban className="h-10 w-10" />
-                          <h3 className="text-lg font-semibold">No Projects Yet</h3>
-                          <p className="text-sm">You haven't added any projects.</p>
-                          <Button asChild size="sm" className="mt-2">
-                            <Link href="/admin/projects/create">Add a Project</Link>
-                          </Button>
-                        </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+        <div className="lg:col-span-2 space-y-8">
+            <OverviewChart data={stats.analyticsData} />
+            <RecentActivityCard activities={stats.activityFeed} />
+        </div>
         <div className="space-y-8">
             <QuickActionsCard />
             <PortfolioStatusCard status={stats.portfolioStatus} />
@@ -128,34 +91,6 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
                     <Newspaper className="h-8 w-8 text-muted-foreground mb-2" />
                     <p className="text-sm font-semibold text-foreground">No blog views yet.</p>
                     <p className="text-xs text-muted-foreground">Views will appear here once your articles are read.</p>
-                </div>
-                )}
-            </CardContent>
-            </Card>
-            <Card>
-            <CardHeader>
-                <CardTitle>Recent Messages</CardTitle>
-            </CardHeader>
-            <CardContent>
-                {stats.recentMessages.length > 0 ? (
-                <div className="space-y-4">
-                    {stats.recentMessages.map((message) => (
-                    <div key={message._id as string} className="flex items-center">
-                        <div className="flex-1 space-y-1">
-                        <p className="text-sm font-medium leading-none">{message.name}</p>
-                        <p className="text-sm text-muted-foreground line-clamp-1">{message.subject}</p>
-                        </div>
-                        <div className="ml-auto text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
-                        </div>
-                    </div>
-                    ))}
-                </div>
-                ) : (
-                <div className="flex flex-col items-center justify-center h-32 text-center">
-                    <Inbox className="h-8 w-8 text-muted-foreground mb-2" />
-                    <p className="text-sm font-semibold text-foreground">Your inbox is empty.</p>
-                    <p className="text-xs text-muted-foreground">New messages from your contact form will show up here.</p>
                 </div>
                 )}
             </CardContent>
@@ -261,6 +196,52 @@ function PortfolioStatusCard({ status }: { status: DashboardStats['portfolioStat
                         </li>
                     ))}
                 </ul>
+            </CardContent>
+        </Card>
+    );
+}
+
+const activityIcons = {
+    project: <FolderKanban className="h-5 w-5" />,
+    blog: <Newspaper className="h-5 w-5" />,
+    message: <MessageSquare className="h-5 w-5" />,
+}
+
+function RecentActivityCard({ activities }: { activities: Activity[] }) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Recent Activity</CardTitle>
+                <CardDescription>A log of the latest updates to your portfolio.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                {activities.length > 0 ? (
+                    <div className="space-y-6">
+                        {activities.map((activity, index) => (
+                             <Link key={index} href={activity.link} className="flex items-start gap-4 group">
+                                <div className="p-2 rounded-full bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                                    {activityIcons[activity.type]}
+                                </div>
+                                <div className="flex-1">
+                                    <p className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                                        {activity.title}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground">
+                                        {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
+                                    </p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center h-48 text-center">
+                        <Eye className="h-10 w-10 text-muted-foreground mb-4" />
+                        <h3 className="text-lg font-semibold">No Recent Activity</h3>
+                        <p className="text-sm text-muted-foreground">
+                            Create a project, blog, or receive a message to see activity here.
+                        </p>
+                    </div>
+                )}
             </CardContent>
         </Card>
     );
