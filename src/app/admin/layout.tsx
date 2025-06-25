@@ -4,11 +4,12 @@ import type { Metadata } from 'next';
 import AdminSidebar from '@/components/admin/admin-sidebar';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Bell, PanelLeft, Mail, Phone, MapPin } from 'lucide-react';
+import { Bell, PanelLeft, Mail, Phone, MapPin, Compass } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { getIntro } from '@/lib/actions/intro.actions';
 import { getAbout } from '@/lib/actions/about.actions';
+import Link from 'next/link';
 
 export async function generateMetadata(): Promise<Metadata> {
   const intro = await getIntro();
@@ -48,6 +49,12 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <PanelLeft />
           </SidebarTrigger>
           <div className="ml-auto flex items-center gap-4">
+            <Button asChild variant="ghost" size="icon" className="rounded-full">
+              <Link href="/admin/get-started">
+                <Compass className="h-5 w-5" />
+                <span className="sr-only">Get Started Guide</span>
+              </Link>
+            </Button>
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
