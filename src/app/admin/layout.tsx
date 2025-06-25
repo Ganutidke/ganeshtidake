@@ -49,10 +49,10 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <PanelLeft />
           </SidebarTrigger>
           <div className="ml-auto flex items-center gap-4">
-            <Button asChild variant="ghost" size="icon" className="rounded-full">
+            <Button asChild variant="outline">
               <Link href="/admin/get-started">
-                <Compass className="h-5 w-5" />
-                <span className="sr-only">Get Started Guide</span>
+                <Compass className="h-4 w-4" />
+                Get Started
               </Link>
             </Button>
             <Popover>
