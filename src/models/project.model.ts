@@ -1,3 +1,4 @@
+
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IProject extends Document {
@@ -12,6 +13,8 @@ export interface IProject extends Document {
   category: string;
   repositoryUrl?: string;
   liveUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export type PopulatedProject = IProject;
