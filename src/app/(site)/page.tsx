@@ -307,7 +307,7 @@ export default async function HomePage() {
   return (
     <div className="container max-w-7xl mx-auto px-4 flex flex-col gap-24 sm:gap-32">
       <FramerMotionWrapper>
-        <section className="grid grid-cols-1 gap-8 pt-12 md:pt-20">
+        <section className="grid grid-cols-1 gap-8 pt-12 md:grid-cols-2 md:items-center md:pt-20">
           <div>
             <h1 className="text-6xl font-bold tracking-tight text-foreground sm:text-8xl">{intro?.headline ?? 'Your Name'}</h1>
             <p className="mt-4 text-2xl text-primary font-semibold">{intro?.role ?? 'Full-Stack Developer'}</p>
@@ -317,6 +317,9 @@ export default async function HomePage() {
               {intro?.linkedinUrl && <Button asChild variant="outline"><Link href={intro.linkedinUrl} target="_blank"><Linkedin /> LinkedIn</Link></Button>}
               {intro?.email && <Button asChild variant="outline"><Link href={`mailto:${intro.email}`}><Mail /> Email</Link></Button>}
             </div>
+          </div>
+          <div className="relative h-96 w-full hidden md:block">
+              {intro?.heroImage?.url && <Image src={intro.heroImage.url} alt={intro.headline ?? 'Hero Image'} fill className="object-contain" />}
           </div>
         </section>
       </FramerMotionWrapper>
