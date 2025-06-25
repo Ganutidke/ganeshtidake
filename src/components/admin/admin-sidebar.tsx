@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import {
   Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem,
-  SidebarMenuButton, SidebarRail, SidebarFooter
+  SidebarMenuButton, SidebarFooter
 } from '@/components/ui/sidebar';
 import { logout } from '@/lib/actions/auth.actions';
 import { Button } from '../ui/button';
@@ -82,7 +82,6 @@ export default function AdminSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="border-r bg-card text-card-foreground">
-      <SidebarRail />
       <SidebarHeader>
         <Button variant="ghost" className="flex items-center justify-start gap-2 w-full px-2 text-left">
             <Logo />
