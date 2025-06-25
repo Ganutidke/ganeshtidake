@@ -185,3 +185,25 @@ export async function incrementBlogViews(slug: string) {
     // Fail silently to not disrupt user experience
   }
 }
+
+export async function getRelatedBlogs({ blogId, tags }: { blogId: string, tags: string[] }): Promise<IBlog[]> {
+  try {
+    await connectDB();
+    if (!tags || tags.length === 0) {
+      return [];
+    }
+
+    const relatedBlogs = await Blog.find({
+      tags: { $in: tags },
+      _id: { $ne: blogId },
+    })
+    .sort({ createdAt: -1 })
+    .limit(3)
+    .lean();
+    
+    return JSON.parse(JSON.stringify(relatedBlogs));
+  } catch (error) {
+    console.error('Error fetching related blogs:', error);
+    return [];
+  }
+}

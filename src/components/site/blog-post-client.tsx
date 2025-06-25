@@ -12,8 +12,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
 import type { IBlog } from '@/models/blog.model';
+import { Card, CardContent } from '@/components/ui/card';
 
-export default function BlogPostClient({ blog }: { blog: IBlog }) {
+export default function BlogPostClient({ blog, relatedBlogs }: { blog: IBlog, relatedBlogs: IBlog[] }) {
   return (
     <FramerMotionWrapper>
       <article className="max-w-4xl mx-auto py-12 px-4">
@@ -63,6 +64,36 @@ export default function BlogPostClient({ blog }: { blog: IBlog }) {
             ">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{blog.content}</ReactMarkdown>
         </div>
+
+        {relatedBlogs && relatedBlogs.length > 0 && (
+          <div className="mt-16 pt-8 border-t">
+            <h2 className="text-2xl font-bold text-center mb-8 text-primary">Related Articles</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {relatedBlogs.map((relatedBlog) => (
+                <Card key={relatedBlog._id as string} className="group overflow-hidden hover:shadow-lg transition-shadow">
+                  <Link href={`/blog/${relatedBlog.slug}`} className="block">
+                    <div className="relative h-40 w-full">
+                      <Image
+                        src={relatedBlog.coverImage.url}
+                        alt={relatedBlog.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-lg leading-tight text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {relatedBlog.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {format(new Date(relatedBlog.createdAt), 'MMMM d, yyyy')}
+                      </p>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
       </article>
     </FramerMotionWrapper>
   );

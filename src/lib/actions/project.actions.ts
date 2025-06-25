@@ -1,3 +1,4 @@
+
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -162,5 +163,24 @@ export async function deleteProject(id: string) {
   } catch (error: any) {
     console.error('Error deleting project:', error);
     throw new Error(`Failed to delete project: ${error.message}`);
+  }
+}
+
+export async function getRelatedProjects({ projectId, category }: { projectId: string, category: string }): Promise<PopulatedProject[]> {
+  try {
+    await connectDB();
+
+    const relatedProjects = await Project.find({
+      category,
+      _id: { $ne: projectId },
+    })
+    .sort({ createdAt: -1 })
+    .limit(3)
+    .lean();
+
+    return JSON.parse(JSON.stringify(relatedProjects));
+  } catch (error) {
+    console.error('Error fetching related projects:', error);
+    return [];
   }
 }

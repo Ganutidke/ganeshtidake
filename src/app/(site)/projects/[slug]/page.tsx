@@ -2,7 +2,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
-import { getProjectBySlug, getProjects } from '@/lib/actions/project.actions';
+import { getProjectBySlug, getProjects, getRelatedProjects } from '@/lib/actions/project.actions';
 import ProjectDetailClient from '@/components/site/project-detail-client';
 import type { PopulatedProject } from '@/models/project.model';
 
@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${project.title} | Project`,
     description: project.description.substring(0, 160),
+    keywords: project.tags,
     openGraph: {
       title: project.title,
       description: project.description.substring(0, 160),
@@ -55,5 +56,7 @@ export default async function ProjectDetailPage({ params }: Props) {
     notFound();
   }
 
-  return <ProjectDetailClient project={project} />;
+  const relatedProjects = await getRelatedProjects({ projectId: project._id, category: project.category });
+
+  return <ProjectDetailClient project={project} relatedProjects={relatedProjects} />;
 }

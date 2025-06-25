@@ -1,7 +1,7 @@
 
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getBlogBySlug, getBlogs, incrementBlogViews } from '@/lib/actions/blog.actions';
+import { getBlogBySlug, getBlogs, incrementBlogViews, getRelatedBlogs } from '@/lib/actions/blog.actions';
 import BlogPostClient from '@/components/site/blog-post-client';
 import type { IBlog } from '@/models/blog.model';
 import { getIntro } from '@/lib/actions/intro.actions';
@@ -35,6 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${blog.title} | ${authorName}`,
     description: description,
+    keywords: blog.tags,
     openGraph: {
       title: blog.title,
       description: description,
@@ -60,6 +61,8 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   await incrementBlogViews(params.slug);
+  
+  const relatedBlogs = await getRelatedBlogs({ blogId: blog._id, tags: blog.tags });
 
-  return <BlogPostClient blog={blog} />;
+  return <BlogPostClient blog={blog} relatedBlogs={relatedBlogs} />;
 }

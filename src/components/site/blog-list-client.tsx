@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { ArrowRight, Search as SearchIcon } from 'lucide-react';
 import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
 import type { IBlog } from '@/models/blog.model';
+import { format } from 'date-fns';
 
 export default function BlogListClient({ blogs }: { blogs: IBlog[] }) {
   const router = useRouter();
@@ -62,13 +63,16 @@ export default function BlogListClient({ blogs }: { blogs: IBlog[] }) {
                     />
                   </div>
                 </Link>
-                <CardTitle className="p-6 pb-2 font-headline">
-                  <Link href={`/blog/${blog.slug}`} className="hover:text-primary transition-colors">
+              </CardHeader>
+              <CardContent className="p-6 pt-4 flex-grow flex flex-col">
+                <CardTitle className="font-headline text-xl mb-1 leading-tight">
+                  <Link href={`/blog/${blog.slug}`} className="hover:text-primary transition-colors line-clamp-2">
                     {blog.title}
                   </Link>
                 </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 pt-0 flex-grow flex flex-col">
+                <p className="text-sm text-muted-foreground mb-3 mt-1">
+                  {format(new Date(blog.createdAt), 'MMMM d, yyyy')}
+                </p>
                 <p className="text-muted-foreground line-clamp-3 flex-grow">
                   {blog.excerpt}
                 </p>

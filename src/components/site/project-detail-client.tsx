@@ -11,8 +11,9 @@ import Link from 'next/link';
 import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
 import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
 import type { PopulatedProject } from '@/models/project.model';
+import { Card, CardContent } from '@/components/ui/card';
 
-export default function ProjectDetailClient({ project }: { project: PopulatedProject }) {
+export default function ProjectDetailClient({ project, relatedProjects }: { project: PopulatedProject, relatedProjects: PopulatedProject[] }) {
   return (
     <FramerMotionWrapper>
       <article className="max-w-4xl mx-auto py-12 px-4">
@@ -72,6 +73,34 @@ export default function ProjectDetailClient({ project }: { project: PopulatedPro
             </Button>
           )}
         </div>
+
+        {relatedProjects && relatedProjects.length > 0 && (
+          <div className="mt-16 pt-8 border-t">
+            <h2 className="text-2xl font-bold text-center mb-8 text-primary">Related Projects</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {relatedProjects.map((relatedProject) => (
+                <Card key={relatedProject._id as string} className="group overflow-hidden hover:shadow-lg transition-shadow">
+                  <Link href={`/projects/${relatedProject.slug}`} className="block">
+                    <div className="relative h-48 w-full">
+                      <Image
+                        src={relatedProject.coverImage.url}
+                        alt={relatedProject.title}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                        {relatedProject.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mt-1">{relatedProject.category}</p>
+                    </CardContent>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
       </article>
     </FramerMotionWrapper>
   );
