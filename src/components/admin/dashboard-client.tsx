@@ -208,6 +208,8 @@ const activityIcons = {
 }
 
 function RecentActivityCard({ activities }: { activities: Activity[] }) {
+    const validActivities = Array.isArray(activities) ? activities.filter(a => a.createdAt) : [];
+
     return (
         <Card>
             <CardHeader>
@@ -215,9 +217,9 @@ function RecentActivityCard({ activities }: { activities: Activity[] }) {
                 <CardDescription>A log of the latest updates to your portfolio.</CardDescription>
             </CardHeader>
             <CardContent>
-                {activities.length > 0 ? (
+                {validActivities.length > 0 ? (
                     <div className="space-y-6">
-                        {activities.map((activity, index) => (
+                        {validActivities.map((activity, index) => (
                              <Link key={index} href={activity.link} className="flex items-start gap-4 group">
                                 <div className="p-2 rounded-full bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                                     {activityIcons[activity.type]}
