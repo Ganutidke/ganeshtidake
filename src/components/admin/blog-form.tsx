@@ -22,6 +22,7 @@ import { createBlog, updateBlog } from '@/lib/actions/blog.actions';
 import { fileToBase64 } from '@/lib/utils';
 import { generateImage } from '@/ai/flows/image-generation-flow';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Label } from '@/components/ui/label';
 
 const formSchema = z.object({
   title: z.string().min(3, { message: 'Title must be at least 3 characters long.' }),
