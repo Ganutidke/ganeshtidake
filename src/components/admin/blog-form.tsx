@@ -196,17 +196,19 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
                         <FormItem>
                           <FormLabel>Cover Image</FormLabel>
                           <FormControl>
-                            <label htmlFor="coverImage" className="block w-full cursor-pointer">
-                              <div className="w-full aspect-video rounded-md border-2 border-dashed border-border flex items-center justify-center bg-card hover:bg-muted/50 transition-colors">
-                                {imagePreview ? <Image src={imagePreview} alt="Cover preview" width={300} height={168} className="object-cover w-full h-full rounded-md" /> : (
-                                  <div className="text-center text-muted-foreground p-4">
-                                    {isGenerating ? <Loader2 className="mx-auto h-12 w-12 animate-spin" /> : <ImageIcon className="mx-auto h-12 w-12" />}
-                                    <p className="mt-2 text-sm">{isGenerating ? 'Generating...' : 'Click to upload image'}</p>
-                                  </div>
-                                )}
-                              </div>
-                            </label>
-                            <Input id="coverImage" type="file" accept="image/*" className="sr-only" onChange={handleImageFileChange} />
+                            <div>
+                                <label htmlFor="coverImage" className="block w-full cursor-pointer">
+                                <div className="w-full aspect-video rounded-md border-2 border-dashed border-border flex items-center justify-center bg-card hover:bg-muted/50 transition-colors">
+                                    {imagePreview ? <Image src={imagePreview} alt="Cover preview" width={300} height={168} className="object-cover w-full h-full rounded-md" /> : (
+                                    <div className="text-center text-muted-foreground p-4">
+                                        {isGenerating ? <Loader2 className="mx-auto h-12 w-12 animate-spin" /> : <ImageIcon className="mx-auto h-12 w-12" />}
+                                        <p className="mt-2 text-sm">{isGenerating ? 'Generating...' : 'Click to upload image'}</p>
+                                    </div>
+                                    )}
+                                </div>
+                                </label>
+                                <Input id="coverImage" type="file" accept="image/*" className="sr-only" onChange={handleImageFileChange} />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
