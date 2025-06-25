@@ -10,7 +10,7 @@ interface OverviewChartProps {
   data: any[];
 }
 
-const chartConfig = {
+const chartConfig: ChartConfig = {
     Views: {
       label: "Views",
       color: "hsl(var(--chart-1))",
@@ -23,7 +23,7 @@ const chartConfig = {
       label: "Blogs",
       color: "hsl(var(--chart-3))",
     },
-} satisfies ChartConfig
+};
 
 export function OverviewChart({ data }: OverviewChartProps) {
   return (

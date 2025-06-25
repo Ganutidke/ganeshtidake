@@ -42,6 +42,8 @@ type DashboardStats = {
 };
 
 export default function DashboardClient({ stats }: { stats: DashboardStats }) {
+  const validActivities = Array.isArray(stats.activityFeed) ? stats.activityFeed.filter(a => a.createdAt) : [];
+
   return (
     <div className="space-y-8">
       <div className="space-y-1">
@@ -61,7 +63,7 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-8">
             <OverviewChart data={stats.analyticsData} />
-            <RecentActivityCard activities={stats.activityFeed} />
+            <RecentActivityCard activities={validActivities} />
         </div>
         <div className="space-y-8">
             <QuickActionsCard />
@@ -124,19 +126,19 @@ function QuickActionsCard() {
             <CardContent className="grid grid-cols-2 gap-4">
                 <Button asChild variant="outline">
                     <Link href="/admin/projects/create">
-                        <FolderKanban className="mr-2" />
+                        <FolderKanban className="mr-2 h-4 w-4" />
                         New Project
                     </Link>
                 </Button>
                 <Button asChild variant="outline">
                     <Link href="/admin/blogs/create">
-                        <PenSquare className="mr-2" />
+                        <PenSquare className="mr-2 h-4 w-4" />
                         New Blog
                     </Link>
                 </Button>
                  <Button asChild variant="outline" className="col-span-2">
                     <Link href="/admin/theme">
-                        <Palette className="mr-2" />
+                        <Palette className="mr-2 h-4 w-4" />
                         Customize Theme
                     </Link>
                 </Button>
@@ -167,7 +169,10 @@ function PortfolioStatusCard({ status }: { status: DashboardStats['portfolioStat
             </CardHeader>
             <CardContent>
                 <div className="flex items-center gap-4 mb-4">
-                     <div className={`w-12 h-12 flex items-center justify-center rounded-full ${progress === 100 ? 'bg-green-500/20 text-green-500' : 'bg-primary/10 text-primary'}`}>
+                     <div className={cn(
+                       'w-12 h-12 flex items-center justify-center rounded-full',
+                       progress === 100 ? 'bg-green-500/20 text-green-500' : 'bg-primary/10 text-primary'
+                     )}>
                         <span className="text-xl font-bold">{Math.round(progress)}%</span>
                     </div>
                     <div className="flex-1">
@@ -201,15 +206,13 @@ function PortfolioStatusCard({ status }: { status: DashboardStats['portfolioStat
     );
 }
 
-const activityIcons = {
+const activityIcons: Record<Activity['type'], React.ReactNode> = {
     project: <FolderKanban className="h-5 w-5" />,
     blog: <Newspaper className="h-5 w-5" />,
     message: <MessageSquare className="h-5 w-5" />,
 }
 
 function RecentActivityCard({ activities }: { activities: Activity[] }) {
-    const validActivities = Array.isArray(activities) ? activities.filter(a => a.createdAt) : [];
-
     return (
         <Card>
             <CardHeader>
@@ -217,9 +220,9 @@ function RecentActivityCard({ activities }: { activities: Activity[] }) {
                 <CardDescription>A log of the latest updates to your portfolio.</CardDescription>
             </CardHeader>
             <CardContent>
-                {validActivities.length > 0 ? (
+                {activities.length > 0 ? (
                     <div className="space-y-6">
-                        {validActivities.map((activity, index) => (
+                        {activities.map((activity, index) => (
                              <Link key={index} href={activity.link} className="flex items-start gap-4 group">
                                 <div className="p-2 rounded-full bg-muted text-muted-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                                     {activityIcons[activity.type]}
