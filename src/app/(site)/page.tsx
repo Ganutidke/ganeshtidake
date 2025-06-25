@@ -291,6 +291,9 @@ function CombinedSectionSkeleton() {
 export default async function HomePage() {
   const intro = await getIntro();
   const about = await getAbout();
+  const experienceHistory = await getExperienceHistory();
+
+  const currentJob = experienceHistory.find((exp) => !exp.endDate);
 
   const getSkillCategories = (skillsString?: string) => {
     if (typeof skillsString !== 'string' || !skillsString) return [];
@@ -307,20 +310,34 @@ export default async function HomePage() {
   return (
     <div className="container max-w-7xl mx-auto px-4 flex flex-col gap-24 sm:gap-32">
       <FramerMotionWrapper>
-        <section className="grid grid-cols-1 gap-8 pt-12 md:grid-cols-2 md:items-center md:pt-20">
-          <div>
-            <h1 className="text-6xl font-bold tracking-tight text-foreground sm:text-8xl">{intro?.headline ?? 'Your Name'}</h1>
-            <p className="mt-4 text-2xl text-primary font-semibold">{intro?.role ?? 'Full-Stack Developer'}</p>
-            <p className="mt-6 max-w-2xl text-lg text-muted-foreground">{intro?.subheadline ?? 'A passionate developer creating modern and responsive web applications.'}</p>
+        <section className="flex gap-8 pt-12 md:grid-cols-2 md:items-center md:pt-20">
+          <div className=''>
+            <h1 className="text-4xl font-bold tracking-tight text-primary md:text-5xl">Hey there!, I’m</h1>
+            <h2 className="mt-2 text-6xl font-bold tracking-tight text-foreground sm:text-9xl">{intro?.headline ?? 'Ganesh Tidke'}</h2>
+            <p className="mt-6 max-w-2xl text-lg font-semibold lg:text-3xl text-muted-foreground"><span className='text-foreground'>{intro?.role ?? 'Software Engineer'} .</span> {intro?.subheadline ?? 'A self-taught developer...'}</p>
+            
+            {(currentJob || intro?.role) && (
+              <div className="mt-6 flex flex-col sm:flex-row gap-4">
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <Briefcase className="h-5 w-5 text-primary"/>
+                  {currentJob ? (
+                    <span>
+                      {currentJob.role} at <strong className="font-semibold text-foreground">{currentJob.company}</strong>
+                    </span>
+                  ) : (
+                    <span>{intro!.role}</span>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="mt-8 flex gap-4">
               {intro?.githubUrl && <Button asChild variant="outline"><Link href={intro.githubUrl} target="_blank"><Github /> Github</Link></Button>}
               {intro?.linkedinUrl && <Button asChild variant="outline"><Link href={intro.linkedinUrl} target="_blank"><Linkedin /> LinkedIn</Link></Button>}
               {intro?.email && <Button asChild variant="outline"><Link href={`mailto:${intro.email}`}><Mail /> Email</Link></Button>}
             </div>
           </div>
-          <div className="relative h-96 w-full hidden md:block">
-              {intro?.heroImage?.url && <Image src={intro.heroImage.url} alt={intro.headline ?? 'Hero Image'} fill className="object-contain" />}
-          </div>
+          
         </section>
       </FramerMotionWrapper>
 
