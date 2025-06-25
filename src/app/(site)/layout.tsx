@@ -3,6 +3,7 @@ import Header from '@/components/site/header';
 import Footer from '@/components/site/footer';
 import PageLoader from '@/components/site/page-loader';
 import { trackView } from '@/lib/actions/analytics.actions';
+import Chatbot from '@/components/site/chatbot';
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
   await trackView();
@@ -12,6 +13,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <Chatbot />
     </div>
   );
 }

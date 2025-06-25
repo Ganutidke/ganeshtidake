@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, LogOut, ChevronDown, Home, UserCircle, Briefcase, GraduationCap,
-  FolderKanban, Newspaper, Award, Image as ImageIcon, HelpCircle, Inbox, Lightbulb, Palette, Grip
+  FolderKanban, Newspaper, Award, Image as ImageIcon, HelpCircle, Inbox, Lightbulb, Palette, Grip, MessageSquare
 } from 'lucide-react';
 import {
   Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem,
@@ -35,6 +35,7 @@ const contentLinks = [
 
 const settingsLinks = [
     { href: '/admin/seo', label: 'AI SEO', icon: Lightbulb },
+    { href: '/admin/chatbot', label: 'Chatbot', icon: MessageSquare },
     { href: '/admin/theme', label: 'Theme', icon: Palette },
 ];
 
