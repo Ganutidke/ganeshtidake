@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -42,6 +41,10 @@ export async function updateIntro(data: UpdateIntroParams) {
       }
       const uploadResponse = await cloudinary.uploader.upload(data.heroImage, {
         folder: 'portfolio-intro',
+        transformation: [
+          { width: 1920, crop: 'limit' },
+          { quality: 'auto', fetch_format: 'auto' }
+        ]
       });
       heroImage = {
         url: uploadResponse.secure_url,

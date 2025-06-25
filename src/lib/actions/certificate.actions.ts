@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -24,6 +23,10 @@ export async function createCertificate(data: CertificateParams) {
 
     const uploadResponse = await cloudinary.uploader.upload(data.coverImage, {
       folder: 'portfolio-certificates',
+      transformation: [
+        { width: 1024, crop: 'limit' },
+        { quality: 'auto', fetch_format: 'auto' }
+      ]
     });
 
     const newCertificate = new Certificate({
@@ -56,6 +59,10 @@ export async function updateCertificate(id: string, data: UpdateCertificateParam
       }
       const uploadResponse = await cloudinary.uploader.upload(data.coverImage, {
         folder: 'portfolio-certificates',
+        transformation: [
+          { width: 1024, crop: 'limit' },
+          { quality: 'auto', fetch_format: 'auto' }
+        ]
       });
       coverImage = {
         url: uploadResponse.secure_url,

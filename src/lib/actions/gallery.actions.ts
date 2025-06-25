@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -22,6 +21,10 @@ export async function uploadImage(data: { title: string; image: string }) {
     await connectDB();
     const uploadResponse = await cloudinary.uploader.upload(data.image, {
       folder: 'portfolio-gallery',
+      transformation: [
+        { width: 1920, crop: 'limit' },
+        { quality: 'auto', fetch_format: 'auto' }
+      ]
     });
 
     const newImage = new GalleryImage({

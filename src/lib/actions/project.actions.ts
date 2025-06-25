@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -27,6 +26,10 @@ export async function createProject(data: ProjectParams) {
 
     const uploadResponse = await cloudinary.uploader.upload(data.coverImage, {
       folder: 'portfolio-projects',
+      transformation: [
+        { width: 1200, crop: 'limit' },
+        { quality: 'auto', fetch_format: 'auto' }
+      ]
     });
 
     const newProject = new Project({
@@ -66,6 +69,10 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
       }
       const uploadResponse = await cloudinary.uploader.upload(data.coverImage, {
         folder: 'portfolio-projects',
+        transformation: [
+          { width: 1200, crop: 'limit' },
+          { quality: 'auto', fetch_format: 'auto' }
+        ]
       });
       coverImage = {
         url: uploadResponse.secure_url,

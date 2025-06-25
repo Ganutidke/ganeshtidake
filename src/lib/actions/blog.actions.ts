@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -34,6 +33,10 @@ export async function createBlog(data: CreateBlogParams) {
 
     const uploadResponse = await cloudinary.uploader.upload(data.coverImage, {
       folder: 'portfolio-blogs',
+      transformation: [
+        { width: 1200, crop: 'limit' },
+        { quality: 'auto', fetch_format: 'auto' }
+      ]
     });
 
     const newBlog = new Blog({
@@ -79,6 +82,10 @@ export async function updateBlog(id: string, data: UpdateBlogParams) {
       // Upload new image
       const uploadResponse = await cloudinary.uploader.upload(data.coverImage, {
         folder: 'portfolio-blogs',
+        transformation: [
+          { width: 1200, crop: 'limit' },
+          { quality: 'auto', fetch_format: 'auto' }
+        ]
       });
       coverImage = {
         url: uploadResponse.secure_url,
