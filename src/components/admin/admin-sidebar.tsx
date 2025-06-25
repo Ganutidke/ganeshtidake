@@ -73,7 +73,7 @@ export default function AdminSidebar() {
       </SidebarHeader>
       
       <SidebarContent className="flex flex-col p-2">
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto no-scrollbar">
           {menuGroups.map((group) => (
             <div key={group.title} className="mb-4 last:mb-0">
               <h3 className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider px-2 py-1 mb-1 group-data-[collapsible=icon]:hidden">
