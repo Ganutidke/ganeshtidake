@@ -8,6 +8,7 @@ import { Bell, PanelLeft, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { getIntro } from '@/lib/actions/intro.actions';
+import { getAbout } from '@/lib/actions/about.actions';
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard | Ganesh Tidke',
@@ -18,8 +19,19 @@ export const metadata: Metadata = {
   },
 };
 
+const getInitials = (name: string = '') => {
+  const words = name.split(' ').filter(Boolean);
+  if (words.length > 1) {
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+  }
+  return name.substring(0, 2).toUpperCase();
+};
+
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const intro = await getIntro();
+  const about = await getAbout();
+
+  const initials = getInitials(intro?.headline);
   
   return (
     <SidebarProvider>
@@ -75,8 +87,8 @@ export default async function AdminLayout({ children }: { children: ReactNode })
               </PopoverContent>
             </Popover>
             <Avatar className='h-9 w-9'>
-                <AvatarImage src="https://placehold.co/40x40.png" alt="@ganesh" data-ai-hint="profile avatar" />
-                <AvatarFallback>GT</AvatarFallback>
+                <AvatarImage src={about?.profilePicture?.url || "https://placehold.co/40x40.png"} alt={intro?.headline || "User"} data-ai-hint="profile avatar" />
+                <AvatarFallback>{initials || 'GT'}</AvatarFallback>
             </Avatar>
           </div>
         </header>
