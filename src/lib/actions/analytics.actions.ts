@@ -1,9 +1,8 @@
-
 'use server';
 
 import connectDB from '@/lib/db';
 import Project from '@/models/project.model';
-import Blog from '@/models/blog.model';
+import Blog, { IBlog } from '@/models/blog.model';
 import Message from '@/models/message.model';
 import View from '@/models/view.model';
 import { subDays, format as formatDate } from 'date-fns';
@@ -22,6 +21,7 @@ export async function getDashboardStats() {
       viewCount,
       recentProjects,
       recentMessages,
+      mostViewedBlogs,
       monthlyViews,
       monthlyProjects,
       monthlyBlogs,
@@ -32,6 +32,7 @@ export async function getDashboardStats() {
       View.countDocuments(),
       Project.find().sort({ createdAt: -1 }).limit(5).lean(),
       Message.find().sort({ createdAt: -1 }).limit(5).lean(),
+      Blog.find({ views: { $gt: 0 } }).sort({ views: -1 }).limit(3).lean(),
       // Aggregation for Views
       View.aggregate([
         { $match: { createdAt: { $gte: thirtyDaysAgo } } },
@@ -103,6 +104,7 @@ export async function getDashboardStats() {
       viewCount,
       recentProjects: JSON.parse(JSON.stringify(recentProjects)),
       recentMessages: JSON.parse(JSON.stringify(recentMessages)),
+      mostViewedBlogs: JSON.parse(JSON.stringify(mostViewedBlogs)),
       analyticsData: JSON.parse(JSON.stringify(analyticsData)),
     };
   } catch (error) {
@@ -114,6 +116,7 @@ export async function getDashboardStats() {
       viewCount: 0,
       recentProjects: [],
       recentMessages: [],
+      mostViewedBlogs: [],
       analyticsData: [],
     };
   }

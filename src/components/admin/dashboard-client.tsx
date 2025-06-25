@@ -1,11 +1,10 @@
-
 'use client';
 
 import { FolderKanban, Newspaper, Inbox, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import type { PopulatedProject } from '@/models/project.model';
 import type { IMessage } from '@/models/message.model';
 import { OverviewChart } from './overview-chart';
+import type { IBlog } from '@/models/blog.model';
 
 type DashboardStats = {
   projectCount: number;
@@ -21,6 +21,7 @@ type DashboardStats = {
   viewCount: number;
   recentProjects: PopulatedProject[];
   recentMessages: IMessage[];
+  mostViewedBlogs: IBlog[];
   analyticsData: any[];
 };
 
@@ -40,10 +41,11 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
 
       <OverviewChart data={stats.analyticsData} />
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3">
+        <Card className="xl:col-span-2">
           <CardHeader>
             <CardTitle>Recent Projects</CardTitle>
+            <CardDescription>Your five most recently created projects.</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
@@ -80,39 +82,55 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
             </Table>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Messages</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {stats.recentMessages.length > 0 ? (
-              <div className="space-y-4">
-                {stats.recentMessages.map((message) => (
-                  <div key={message._id as string} className="flex items-center">
-                    <div className="flex-1 space-y-1">
-                      <p className="text-sm font-medium leading-none">{message.name}</p>
-                      <p className="text-sm text-muted-foreground line-clamp-1">{message.subject}</p>
+        <div className="space-y-8">
+            <Card>
+            <CardHeader>
+                <CardTitle>Most Viewed Blogs</CardTitle>
+                <CardDescription>Your top 3 most viewed blog posts.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {stats.mostViewedBlogs.length > 0 ? (
+                    stats.mostViewedBlogs.map((blog) => (
+                    <div key={blog._id as string} className="flex items-center">
+                        <div className="flex-1 space-y-1">
+                        <Link href={`/admin/blogs/edit/${blog._id}`} className="text-sm font-medium leading-none hover:underline">{blog.title}</Link>
+                        </div>
+                        <div className="ml-auto text-sm text-muted-foreground flex items-center gap-1.5">
+                            <Eye className="h-4 w-4" />
+                            <span>{blog.views.toLocaleString()}</span>
+                        </div>
                     </div>
-                    <div className="ml-auto text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
+                    ))
+                ) : (
+                <p className="text-center text-sm text-muted-foreground py-4">No blog views yet.</p>
+                )}
+            </CardContent>
+            </Card>
+            <Card>
+            <CardHeader>
+                <CardTitle>Recent Messages</CardTitle>
+            </CardHeader>
+            <CardContent>
+                {stats.recentMessages.length > 0 ? (
+                <div className="space-y-4">
+                    {stats.recentMessages.map((message) => (
+                    <div key={message._id as string} className="flex items-center">
+                        <div className="flex-1 space-y-1">
+                        <p className="text-sm font-medium leading-none">{message.name}</p>
+                        <p className="text-sm text-muted-foreground line-clamp-1">{message.subject}</p>
+                        </div>
+                        <div className="ml-auto text-xs text-muted-foreground">
+                        {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
+                        </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-               <div className="text-center text-muted-foreground py-8">
-                  No recent messages.
-               </div>
-            )}
-             {stats.recentMessages.length > 0 && (
-                <Button size="sm" className="w-full mt-4" asChild>
-                    <Link href="/admin/messages">
-                        View All Messages
-                    </Link>
-                </Button>
-             )}
-          </CardContent>
-        </Card>
+                    ))}
+                </div>
+                ) : (
+                <p className="text-center text-sm text-muted-foreground py-8">No recent messages.</p>
+                )}
+            </CardContent>
+            </Card>
+        </div>
       </div>
     </div>
   );
