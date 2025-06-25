@@ -1,3 +1,4 @@
+
 'use client';
 
 import { FolderKanban, Newspaper, Inbox, Eye } from 'lucide-react';
@@ -11,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 
 import type { PopulatedProject } from '@/models/project.model';
 import type { IMessage } from '@/models/message.model';
+import { OverviewChart } from './overview-chart';
 
 type DashboardStats = {
   projectCount: number;
@@ -19,6 +21,7 @@ type DashboardStats = {
   viewCount: number;
   recentProjects: PopulatedProject[];
   recentMessages: IMessage[];
+  analyticsData: any[];
 };
 
 export default function DashboardClient({ stats }: { stats: DashboardStats }) {
@@ -34,6 +37,8 @@ export default function DashboardClient({ stats }: { stats: DashboardStats }) {
         <StatCard title="Unread Messages" value={stats.unreadMessagesCount} icon={<Inbox className="h-6 w-6 text-primary" />} />
         <StatCard title="Total Site Views" value={stats.viewCount} icon={<Eye className="h-6 w-6 text-primary" />} />
       </div>
+
+      <OverviewChart data={stats.analyticsData} />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <Card className="lg:col-span-2">
