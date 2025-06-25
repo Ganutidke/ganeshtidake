@@ -1,20 +1,54 @@
 
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
-import { ArrowLeft, Eye } from 'lucide-react';
+import { ArrowLeft, Eye, Volume2, Loader2 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
 import type { IBlog } from '@/models/blog.model';
 import { Card, CardContent } from '@/components/ui/card';
+import { generateSpeech } from '@/ai/flows/tts-flow';
+import { useToast } from '@/hooks/use-toast';
 
 export default function BlogPostClient({ blog, relatedBlogs }: { blog: IBlog, relatedBlogs: IBlog[] }) {
+  const { toast } = useToast();
+  const [audioSrc, setAudioSrc] = useState<string | null>(null);
+  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
+
+  const handleListen = async () => {
+    setIsGeneratingAudio(true);
+    try {
+      // Create a simplified text version for TTS
+      const textForSpeech = `
+        Title: ${blog.title}.
+        
+        ${blog.content}
+      `.replace(/!\[.*?\]\(.*?\)/g, '') // Remove markdown images
+       .replace(/<.*?>/g, '') // Remove HTML tags
+       .replace(/[`*#_~]/g, ''); // Remove markdown syntax
+
+      const result = await generateSpeech({ text: textForSpeech });
+      setAudioSrc(result.audio);
+    } catch (error) {
+      console.error('Error generating audio:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error generating audio',
+        description: 'Could not generate audio for this article. Please try again later.',
+      });
+    } finally {
+      setIsGeneratingAudio(false);
+    }
+  };
+
+
   return (
     <FramerMotionWrapper>
       <article className="max-w-4xl mx-auto py-12 px-4">
@@ -42,6 +76,29 @@ export default function BlogPostClient({ blog, relatedBlogs }: { blog: IBlog, re
               {blog.views.toLocaleString()} views
             </p>
           </div>
+        </div>
+
+        <div className="mt-8 text-center space-y-4">
+          <Button onClick={handleListen} disabled={isGeneratingAudio || !!audioSrc}>
+            {isGeneratingAudio ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Generating Audio...
+              </>
+            ) : (
+              <>
+                <Volume2 className="mr-2 h-4 w-4" />
+                Listen to this article
+              </>
+            )}
+          </Button>
+          {audioSrc && (
+            <div className="w-full">
+                <audio controls src={audioSrc} className="w-full">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+          )}
         </div>
 
         <div className="relative my-8 h-64 md:h-96 w-full">
