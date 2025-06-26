@@ -15,7 +15,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const project = await getProjectBySlug(params.slug);
+  const resolvedParams = await params;
+  const project = await getProjectBySlug(resolvedParams.slug);
 
   if (!project) {
     return {
@@ -46,13 +47,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
-  const project: PopulatedProject | null = await getProjectBySlug(params.slug);
+    const resolvedParams = await params;
+
+  const project: PopulatedProject | null = await getProjectBySlug(resolvedParams.slug);
 
   if (!project) {
     notFound();
   }
 
-  const relatedProjects = await getRelatedProjects({ projectId: project._id, category: project.category });
+  const relatedProjects = await getRelatedProjects({ projectId: project._id as string, category: project.category });
 
   return <ProjectDetailClient project={project} relatedProjects={relatedProjects} />;
 }

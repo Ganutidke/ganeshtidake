@@ -152,7 +152,7 @@ export default function AboutPageClient({ intro, about, experienceHistory, educa
                         <h2 className="text-3xl font-bold text-primary text-center mb-12">Studies</h2>
                         <div className="relative pl-6 before:absolute before:left-0 before:top-2 before:h-full before:w-0.5 before:bg-border">
                             {visibleEducation.map((edu, index) => (
-                                <div key={edu._id} className="relative mb-8 pl-8">
+                                <div key={edu._id?.toString()} className="relative mb-8 pl-8">
                                     <div className="absolute -left-[7px] top-1.5 h-4 w-4 rounded-full bg-primary border-4 border-background"></div>
                                      <p className="text-sm text-muted-foreground">
                                         {format(new Date(edu.startDate), 'MMM yyyy')} - {edu.endDate ? format(new Date(edu.endDate), 'MMM yyyy') : 'Present'}

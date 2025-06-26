@@ -52,9 +52,10 @@ export default function AboutForm({ about }: { about?: IAbout }) {
     startTransition(async () => {
       try {
         const imageBase64 = values.profilePicture ? await fileToBase64(values.profilePicture) : undefined;
-        
+        const { bio, skills } = values;
         await updateAbout({
-          ...values,
+          bio,
+          skills,
           ...(imageBase64 && { profilePicture: imageBase64 }),
         });
         toast({ title: 'Success', description: 'About information updated successfully.' });

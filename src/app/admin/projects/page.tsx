@@ -8,7 +8,8 @@ import { PlusCircle } from 'lucide-react';
 import Search from '@/components/admin/search';
 
 export default async function AdminProjectsPage({ searchParams }: { searchParams?: { query?: string } }) {
-  const query = searchParams?.query || '';
+  const resolvedParams = await searchParams;
+  const query = resolvedParams?.query || '';
   const projects = await getProjects({ query });
 
   return (

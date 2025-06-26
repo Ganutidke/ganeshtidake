@@ -90,7 +90,7 @@ export default function BlogForm({ blog }: { blog?: IBlog }) {
   const onSubmit = (values: FormValues) => {
     startTransition(async () => {
       try {
-        let imageBase64: string | undefined = generatedImage;
+        let imageBase64: string | undefined = generatedImage ?? undefined;
         if (!imageBase64 && values.coverImageFile) {
           imageBase64 = await fileToBase64(values.coverImageFile);
         }

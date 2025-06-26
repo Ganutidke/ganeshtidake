@@ -5,7 +5,8 @@ import EducationForm from '@/components/admin/education-form';
 import { getEducationById } from '@/lib/actions/education.actions';
 
 export default async function EditEducationPage({ params }: { params: { id: string } }) {
-  const education = await getEducationById(params.id);
+  const resolvedParams = await params;
+  const education = await getEducationById(resolvedParams.id);
 
   if (!education) {
     notFound();

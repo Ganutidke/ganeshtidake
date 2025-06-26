@@ -11,20 +11,19 @@ const loginSchema = z.object({
 });
 
 async function createSession(userId: string) {
-  const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
+  const expires = new Date(Date.now() + 60 * 60 * 1000);
   const session = await encrypt({ userId, expires });
-
-  cookies().set('session', session, { expires, httpOnly: true, path: '/' });
+  const cookieStore = await cookies();
+  cookieStore.set('session', session, { expires, httpOnly: true, path: '/' });
 }
 
 async function deleteSession() {
-  cookies().delete('session');
+  const cookieStore = await cookies();
+  cookieStore.delete('session');
 }
-
 
 export async function login(prevState: any, formData: FormData) {
   const validatedFields = loginSchema.safeParse(Object.fromEntries(formData.entries()));
-
   if (!validatedFields.success) {
     return { error: 'Invalid fields.' };
   }

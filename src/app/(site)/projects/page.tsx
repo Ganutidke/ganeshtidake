@@ -65,8 +65,9 @@ function ProjectsGridSkeleton() {
 }
 
 export default async function ProjectsPage({ searchParams }: { searchParams?: { query?: string; category?: string } }) {
-  const query = searchParams?.query || '';
-  const category = searchParams?.category || 'All';
+  const resolvedParams = await searchParams;
+  const query = resolvedParams?.query ?? '';
+  const category = resolvedParams?.category ?? 'All';
   const categories = await getProjectCategories();
 
   // Check for initial empty state

@@ -5,7 +5,8 @@ import ExperienceForm from '@/components/admin/experience-form';
 import { getExperienceById } from '@/lib/actions/experience.actions';
 
 export default async function EditExperiencePage({ params }: { params: { id: string } }) {
-  const experience = await getExperienceById(params.id);
+  const resolvedParams = await params;
+  const experience = await getExperienceById(resolvedParams.id);
 
   if (!experience) {
     notFound();

@@ -60,11 +60,13 @@ export default function CertificateForm({ certificate }: { certificate?: ICertif
   const onSubmit = (values: FormValues) => {
     startTransition(async () => {
       try {
+        const { coverImage, ...restValues } = values;
         const imageBase64 = values.coverImage ? await fileToBase64(values.coverImage) : undefined;
         
         if (certificate) {
           await updateCertificate(certificate._id as string, {
-            ...values,
+            ...restValues,
+            credentialUrl: restValues.credentialUrl ?? '',
             ...(imageBase64 && { coverImage: imageBase64 }),
           });
           toast({ title: 'Success', description: 'Certificate updated successfully.' });
@@ -75,6 +77,7 @@ export default function CertificateForm({ certificate }: { certificate?: ICertif
           }
           await createCertificate({
             ...values,
+            credentialUrl: restValues.credentialUrl ?? '',
             coverImage: imageBase64,
           });
           toast({ title: 'Success', description: 'Certificate created successfully.' });
@@ -169,7 +172,7 @@ export default function CertificateForm({ certificate }: { certificate?: ICertif
                               disabled={(date) =>
                                 date > new Date() || date < new Date("1900-01-01")
                               }
-                              captionLayout="dropdown-nav"
+                              captionLayout="dropdown-buttons"
                               fromYear={1980}
                               toYear={new Date().getFullYear()}
                               initialFocus

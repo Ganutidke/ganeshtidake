@@ -6,7 +6,8 @@ import { getProjectById } from '@/lib/actions/project.actions';
 import { getProjectCategories } from '@/lib/actions/project-category.actions';
 
 export default async function EditProjectPage({ params }: { params: { id: string } }) {
-  const project = await getProjectById(params.id);
+    const resolvedParams = await params;
+  const project = await getProjectById(resolvedParams.id);
 
   if (!project) {
     notFound();

@@ -10,7 +10,7 @@ export interface EducationParams {
   fieldOfStudy: string;
   startDate: Date;
   endDate?: Date;
-  description: string;
+  description?: string;
 }
 
 export async function createEducation(data: EducationParams) {

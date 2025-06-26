@@ -5,7 +5,8 @@ import CertificateForm from '@/components/admin/certificate-form';
 import { getCertificateById } from '@/lib/actions/certificate.actions';
 
 export default async function EditCertificatePage({ params }: { params: { id: string } }) {
-  const certificate = await getCertificateById(params.id);
+  const resolvedParams = await params;
+  const certificate = await getCertificateById(resolvedParams.id);
 
   if (!certificate) {
     notFound();

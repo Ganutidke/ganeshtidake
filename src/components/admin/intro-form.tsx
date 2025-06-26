@@ -66,8 +66,9 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
         
         await updateIntro({
           ...values,
-          ...(imageBase64 && { heroImage: imageBase64 }),
+          heroImage: imageBase64 ,
         });
+        
         toast({ title: 'Success', description: 'Intro section updated successfully.' });
       } catch (error: any) {
         toast({

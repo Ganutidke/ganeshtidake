@@ -30,7 +30,7 @@ export default function MessagesList({ messages: initialMessages }: { messages: 
   const handleOpenChange = (open: boolean, messageId: string, isRead: boolean) => {
     if (open && !isRead) {
       markMessageAsRead(messageId);
-      setMessages(prev => prev.map(msg => msg._id === messageId ? { ...msg, read: true } : msg));
+      setMessages(prev => prev.map(msg => msg._id === messageId ? ({ ...msg, read: true } as IMessage) : msg));
     }
   };
 

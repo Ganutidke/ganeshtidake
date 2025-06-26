@@ -11,6 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 
 async function BlogGrid({ query }: { query: string }) {
@@ -82,7 +83,7 @@ function BlogGridSkeleton() {
 }
 
 export default async function BlogPage({ searchParams }: { searchParams?: { query?: string } }) {
-  const query = searchParams?.query || '';
+  const query = searchParams?.query ?? '';
   const initialBlogs = await getBlogs({});
 
   if (!initialBlogs || initialBlogs.length === 0) {
