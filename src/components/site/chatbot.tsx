@@ -21,7 +21,7 @@ export default function Chatbot() {
     const { toast } = useToast();
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
-        { role: 'assistant', content: "Hello! I'm Portfolio Pal. How can I help you learn more about this portfolio?" }
+        { role: 'assistant', content: "Hello! I'm LUCKY, your friendly portfolio assistant. Ask me anything!" }
     ]);
     const [input, setInput] = useState('');
     const [isPending, startTransition] = useTransition();
@@ -47,12 +47,13 @@ export default function Chatbot() {
         if (!input.trim() || isPending) return;
 
         const userMessage: Message = { role: 'user', content: input };
-        setMessages((prev) => [...prev, userMessage]);
+        const newMessages = [...messages, userMessage];
+        setMessages(newMessages);
         setInput('');
 
         startTransition(async () => {
             try {
-                const result = await answerQuestion(input);
+                const result = await answerQuestion(input, newMessages);
                 const assistantMessage: Message = { role: 'assistant', content: result.answer };
                 setMessages((prev) => [...prev, assistantMessage]);
             } catch (error) {

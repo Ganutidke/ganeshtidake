@@ -19,9 +19,15 @@ import { getFaqs } from '@/lib/actions/faq.actions';
 import { getIntro } from '@/lib/actions/intro.actions';
 import { getProjects } from '@/lib/actions/project.actions';
 
+const MessageSchema = z.object({
+  role: z.enum(['user', 'assistant']),
+  content: z.string(),
+});
+
 const PortfolioAssistantInputSchema = z.object({
   question: z.string().describe('The question the user is asking the assistant.'),
   portfolioContext: z.string().describe('The full content of the portfolio, stringified as JSON.'),
+  history: z.array(MessageSchema).optional().describe('The history of the conversation.'),
 });
 export type PortfolioAssistantInput = z.infer<typeof PortfolioAssistantInputSchema>;
 
@@ -30,7 +36,10 @@ const PortfolioAssistantOutputSchema = z.object({
 });
 export type PortfolioAssistantOutput = z.infer<typeof PortfolioAssistantOutputSchema>;
 
-export async function answerQuestion(question: string): Promise<PortfolioAssistantOutput> {
+export async function answerQuestion(
+  question: string,
+  history: z.infer<typeof MessageSchema>[] = []
+): Promise<PortfolioAssistantOutput> {
   const [
     intro,
     about,
@@ -62,28 +71,35 @@ export async function answerQuestion(question: string): Promise<PortfolioAssista
     faqs,
   }, null, 2);
 
-  return portfolioAssistantFlow({ question, portfolioContext });
+  return portfolioAssistantFlow({ question, portfolioContext, history });
 }
 
 const prompt = ai.definePrompt({
   name: 'portfolioAssistantPrompt',
   input: { schema: PortfolioAssistantInputSchema },
   output: { schema: PortfolioAssistantOutputSchema },
-  prompt: `You are a helpful and friendly AI assistant for the personal portfolio of the person described in the context. Your name is "Portfolio Pal".
+  prompt: `You are a helpful, enthusiastic, and friendly AI assistant for a personal portfolio. Your name is "LUCKY".
 
-Your goal is to answer questions from visitors about the person's skills, experience, projects, and other information found in the portfolio.
+Your goal is to answer questions from visitors about the person's skills, experience, projects, and other information found in the portfolio. You should be encouraging and positive in your tone.
 
-- Be conversational and professional.
-- Base your answers ONLY on the information provided in the portfolio context.
-- If the answer is not in the context, politely state that you don't have information on that topic. DO NOT make up information.
+- Be conversational, professional, and cheerful.
+- Use the provided portfolio context as your primary source of truth.
+- Use the conversation history to understand follow-up questions and maintain context.
+- If the answer is not in the context, politely state that you don't have information on that topic and suggest they ask something else. DO NOT make up information.
 - Keep answers concise and to the point.
-- If asked about a specific project or blog, try to provide details from the context.
-- Your persona is that of a knowledgeable guide for the portfolio.
+- Your persona is that of a knowledgeable and lucky guide for the portfolio.
 
 Portfolio Context:
 \`\`\`json
 {{{portfolioContext}}}
 \`\`\`
+
+{{#if history}}
+Conversation History:
+{{#each history}}
+{{this.role}}: {{this.content}}
+{{/each}}
+{{/if}}
 
 User's Question: "{{{question}}}"
 

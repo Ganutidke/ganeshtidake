@@ -42,12 +42,13 @@ export default function ChatbotPageClient({ context }: { context: string }) {
         if (!input.trim() || isPending) return;
 
         const userMessage: Message = { role: 'user', content: input };
-        setMessages((prev) => [...prev, userMessage]);
+        const newMessages = [...messages, userMessage];
+        setMessages(newMessages);
         setInput('');
 
         startTransition(async () => {
             try {
-                const result = await answerQuestion(input);
+                const result = await answerQuestion(input, newMessages);
                 const assistantMessage: Message = { role: 'assistant', content: result.answer };
                 setMessages((prev) => [...prev, assistantMessage]);
             } catch (error) {
