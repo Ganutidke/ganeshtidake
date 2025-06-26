@@ -137,7 +137,7 @@ export async function getProjectById(id: string): Promise<PopulatedProject | nul
     return project ? JSON.parse(JSON.stringify(project)) : null;
   } catch (error) {
     console.error('Error fetching project by id:', error);
-    return null;
+    throw error;
   }
 }
 
@@ -148,7 +148,7 @@ export async function getProjectBySlug(slug: string): Promise<PopulatedProject |
     return project ? JSON.parse(JSON.stringify(project)) : null;
   } catch (error) {
     console.error('Error fetching project by slug:', error);
-    return null;
+    throw error;
   }
 }
 
@@ -188,6 +188,6 @@ export async function getRelatedProjects({ projectId, category }: { projectId: s
     return JSON.parse(JSON.stringify(relatedProjects));
   } catch (error) {
     console.error('Error fetching related projects:', error);
-    return [];
+    throw error;
   }
 }

@@ -132,7 +132,7 @@ export async function getBlogs(params: { query?: string } = {}) {
     return JSON.parse(JSON.stringify(blogs)) as IBlog[];
   } catch (error) {
     console.error('Error fetching blogs:', error);
-    return [];
+    throw error;
   }
 }
 
@@ -144,7 +144,7 @@ export async function getBlogById(id: string) {
     return JSON.parse(JSON.stringify(blog)) as IBlog;
   } catch (error) {
     console.error('Error fetching blog by ID:', error);
-    return null;
+    throw error;
   }
 }
 
@@ -156,7 +156,7 @@ export async function getBlogBySlug(slug: string) {
     return JSON.parse(JSON.stringify(blog)) as IBlog;
   } catch (error) {
     console.error('Error fetching blog by slug:', error);
-    return null;
+    throw error;
   }
 }
 
@@ -211,6 +211,6 @@ export async function getRelatedBlogs({ blogId, tags }: { blogId: string, tags: 
     return JSON.parse(JSON.stringify(relatedBlogs));
   } catch (error) {
     console.error('Error fetching related blogs:', error);
-    return [];
+    throw error;
   }
 }

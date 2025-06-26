@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -27,7 +26,7 @@ export async function getProjectCategories(): Promise<IProjectCategory[]> {
     return JSON.parse(JSON.stringify(categories));
   } catch (error) {
     console.error('Error fetching project categories:', error);
-    return [];
+    throw error;
   }
 }
 

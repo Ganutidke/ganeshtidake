@@ -12,7 +12,7 @@ export async function getImages(): Promise<IGalleryImage[]> {
     return JSON.parse(JSON.stringify(images));
   } catch (error) {
     console.error('Error fetching gallery images:', error);
-    return [];
+    throw error;
   }
 }
 

@@ -86,7 +86,7 @@ export async function getCertificates(): Promise<ICertificate[]> {
     return JSON.parse(JSON.stringify(certificates));
   } catch (error) {
     console.error('Error fetching certificates:', error);
-    return [];
+    throw error;
   }
 }
 
@@ -97,7 +97,7 @@ export async function getCertificateById(id: string): Promise<ICertificate | nul
     return certificate ? JSON.parse(JSON.stringify(certificate)) : null;
   } catch (error) {
     console.error('Error fetching certificate by id:', error);
-    return null;
+    throw error;
   }
 }
 

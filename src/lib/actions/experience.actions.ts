@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -45,7 +44,7 @@ export async function getExperienceHistory(): Promise<IExperience[]> {
     return JSON.parse(JSON.stringify(history));
   } catch (error) {
     console.error('Error fetching experience history:', error);
-    return [];
+    throw error;
   }
 }
 
@@ -56,7 +55,7 @@ export async function getExperienceById(id: string): Promise<IExperience | null>
     return entry ? JSON.parse(JSON.stringify(entry)) : null;
   } catch (error) {
     console.error('Error fetching experience by id:', error);
-    return null;
+    throw error;
   }
 }
 

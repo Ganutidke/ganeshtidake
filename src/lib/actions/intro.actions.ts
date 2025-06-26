@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -25,7 +24,7 @@ export async function getIntro(): Promise<IIntro | null> {
     return intro ? (JSON.parse(JSON.stringify(intro)) as IIntro) : null;
   } catch (error) {
     console.error('Error fetching intro data:', error);
-    return null;
+    throw error;
   }
 }
 

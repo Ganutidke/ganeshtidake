@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -12,7 +11,7 @@ export async function getTheme(): Promise<ITheme | null> {
     return theme ? (JSON.parse(JSON.stringify(theme)) as ITheme) : null;
   } catch (error) {
     console.error('Error fetching theme:', error);
-    return null;
+    throw error;
   }
 }
 

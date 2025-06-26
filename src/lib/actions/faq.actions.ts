@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -42,7 +41,7 @@ export async function getFaqs(): Promise<IFaq[]> {
     return JSON.parse(JSON.stringify(faqs));
   } catch (error) {
     console.error('Error fetching FAQs:', error);
-    return [];
+    throw error;
   }
 }
 

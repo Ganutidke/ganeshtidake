@@ -1,4 +1,3 @@
-
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -46,7 +45,7 @@ export async function getEducationHistory(): Promise<IEducation[]> {
     return JSON.parse(JSON.stringify(history));
   } catch (error) {
     console.error('Error fetching education history:', error);
-    return [];
+    throw error;
   }
 }
 
@@ -57,7 +56,7 @@ export async function getEducationById(id: string): Promise<IEducation | null> {
     return entry ? JSON.parse(JSON.stringify(entry)) : null;
   } catch (error) {
     console.error('Error fetching education by id:', error);
-    return null;
+    throw error;
   }
 }
 
