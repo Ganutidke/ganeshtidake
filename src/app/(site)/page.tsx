@@ -314,7 +314,7 @@ export default async function HomePage() {
           <div className=''>
             <h1 className="text-4xl font-bold tracking-tight text-primary md:text-5xl">Hey there!, I’m</h1>
             <h2 className="mt-2 text-6xl font-bold tracking-tight text-foreground sm:text-9xl">{intro?.headline ?? 'Ganesh Tidke'}</h2>
-            <p className="mt-6 max-w-2xl text-lg font-semibold lg:text-3xl text-muted-foreground"><span className='text-foreground'>{intro?.role ?? 'Software Engineer'}.</span> {intro?.subheadline ?? 'A self-taught developer...'}</p>
+            <p className="mt-6 max-w-2xl text-lg font-semibold lg:text-3xl text-gray-600"><span className='text-foreground'>{intro?.role ?? 'Software Engineer'}.</span> {intro?.subheadline ?? 'A self-taught developer...'}</p>
             
             {!currentJob && (
               <div className="mt-6 flex items-center gap-3 text-muted-foreground">

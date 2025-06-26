@@ -92,7 +92,7 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                   name="headline"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Headline</FormLabel>
+                      <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input placeholder="e.g. Hi, I'm Ganesh Tidke" {...field} />
                       </FormControl>
@@ -105,7 +105,7 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                   name="subheadline"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Subheadline</FormLabel>
+                      <FormLabel>Headline</FormLabel>
                       <FormControl>
                         <Input placeholder="e.g. A passionate Full-Stack Developer..." {...field} />
                       </FormControl>
@@ -186,42 +186,6 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                       <FormLabel>Address</FormLabel>
                       <FormControl>
                         <Input placeholder="Pune, Maharashtra, India" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
-          </div>
-          <div className="lg:col-span-1">
-            <Card>
-              <CardHeader>
-                <CardTitle>Hero Image</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <FormField
-                  control={form.control}
-                  name="heroImage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="sr-only">Hero Image</FormLabel>
-                      <FormControl>
-                        <div>
-                          <label htmlFor="heroImage" className="block w-full cursor-pointer">
-                            <div className="w-full aspect-video rounded-md border-2 border-dashed border-border flex items-center justify-center bg-card hover:bg-muted/50 transition-colors">
-                              {imagePreview ? (
-                                <Image src={imagePreview} alt="Hero preview" width={300} height={168} className="object-cover w-full h-full rounded-md" />
-                              ) : (
-                                <div className="text-center text-muted-foreground p-4">
-                                  <ImageIcon className="mx-auto h-12 w-12" />
-                                  <p className="mt-2 text-sm">Click to upload image</p>
-                                </div>
-                              )}
-                            </div>
-                          </label>
-                          <Input id="heroImage" type="file" accept="image/*" className="sr-only" onChange={handleImageChange} />
-                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
