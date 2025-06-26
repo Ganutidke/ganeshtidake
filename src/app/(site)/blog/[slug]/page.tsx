@@ -7,10 +7,6 @@ import type { IBlog } from '@/models/blog.model';
 import { getIntro } from '@/lib/actions/intro.actions';
 
 
-type Props = {
-  params: { slug: string };
-};
-
 export async function generateStaticParams() {
   const blogs = await getBlogs();
   return blogs.map((blog) => ({
@@ -18,7 +14,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const blog = await getBlogBySlug(params.slug);
 
   if (!blog) {
@@ -53,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const blog: IBlog | null = await getBlogBySlug(params.slug);
 
   if (!blog) {

@@ -7,10 +7,6 @@ import ProjectDetailClient from '@/components/site/project-detail-client';
 import type { PopulatedProject } from '@/models/project.model';
 
 
-type Props = {
-  params: { slug: string };
-};
-
 export async function generateStaticParams() {
   const projects = await getProjects();
   return projects.map((project) => ({
@@ -18,7 +14,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const project = await getProjectBySlug(params.slug);
 
   if (!project) {
@@ -49,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProjectDetailPage({ params }: Props) {
+export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
   const project: PopulatedProject | null = await getProjectBySlug(params.slug);
 
   if (!project) {
