@@ -1,26 +1,21 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import { ArrowUpRight, Search as SearchIcon } from 'lucide-react';
-
-import type { PopulatedProject } from '@/models/project.model';
-import type { IProjectCategory } from '@/models/project-category.model';
+import { Search as SearchIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import FramerMotionWrapper from './framer-motion-wrapper';
+import type { IProjectCategory } from '@/models/project-category.model';
 
 interface ProjectsPageClientProps {
-  projects: PopulatedProject[];
   categories: IProjectCategory[];
+  children: React.ReactNode;
 }
 
-export default function ProjectsPageClient({ projects, categories }: ProjectsPageClientProps) {
+export default function ProjectsPageClient({ categories, children }: ProjectsPageClientProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -91,31 +86,7 @@ export default function ProjectsPageClient({ projects, categories }: ProjectsPag
           </div>
         </FramerMotionWrapper>
 
-        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <FramerMotionWrapper key={project._id as string} delay={index * 0.1}>
-               <Link href={`/projects/${project.slug}`} className="block group h-full">
-                  <div className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-                       <div className="relative h-56 w-full shrink-0">
-                          <Image
-                          src={project.coverImage.url}
-                          alt={project.title}
-                          fill
-                          className="object-cover"
-                          />
-                      </div>
-                      <div className="flex flex-grow flex-col p-4">
-                          <h3 className="font-bold text-lg text-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
-                              {project.title}
-                              <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </h3>
-                          <p className="text-muted-foreground mt-1">{project.category}</p>
-                      </div>
-                  </div>
-               </Link>
-            </FramerMotionWrapper>
-          ))}
-        </div>
+        {children}
       </div>
   );
 };
