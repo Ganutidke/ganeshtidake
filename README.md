@@ -1,6 +1,6 @@
 # VisionFolio: AI-Powered Next.js Portfolio & Blog
 
-![VisionFolio Banner](https://placehold.co/1200x630.png?text=VisionFolio)
+![VisionFolio Banner]([https://placehold.co/1200x630.png?text=VisionFolio](https://res.cloudinary.com/dsqtgvohb/image/upload/v1750928396/fozcaefihotwz7foejqx.png))
 
 VisionFolio is a modern, feature-rich, and highly customizable portfolio template built with Next.js, Tailwind CSS, and MongoDB. It comes with a powerful admin panel to manage every part of your site, from your bio and projects to blog posts and AI-powered tools.
 
