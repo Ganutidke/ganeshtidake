@@ -1,115 +1,92 @@
-# VisionFolio: AI-Powered Next.js Portfolio & Blog
+# 🌌 ZenFolio: AI-Powered Next.js Portfolio & Blog  
 
-![VisionFolio Banner]((https://res.cloudinary.com/dsqtgvohb/image/upload/v1750928396/fozcaefihotwz7foejqx.png))
+![ZenFolio Banner](https://res.cloudinary.com/dsqtgvohb/image/upload/v1750928396/fozcaefihotwz7foejqx.png)
 
-VisionFolio is a modern, feature-rich, and highly customizable portfolio template built with Next.js, Tailwind CSS, and MongoDB. It comes with a powerful admin panel to manage every part of your site, from your bio and projects to blog posts and AI-powered tools.
+ZenFolio is a sleek, AI-enhanced portfolio and blogging template built with **Next.js**, **Tailwind CSS**, and **MongoDB**. It's ideal for developers and creators seeking a beautiful, functional space for their work — complete with an Admin Panel, customizable themes, and AI tools for automated SEO, chat, and image generation.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyour-username%2Fvisionfolio-template)
+👉 **Live Demo:** [Ganesh Tidake](https://your-portfolio-url.com)
 
-**Live Demo:** [your-portfolio-url.com](https://your-portfolio-url.com) *(replace with your deployed link)*
-
----
-
-## ✨ Features
-
-- **🚀 Modern Tech Stack**: Next.js 14 (App Router), TypeScript, Tailwind CSS, and ShadCN UI.
-- **🔐 Admin Panel**: A secure, password-protected dashboard to manage your entire portfolio.
-- **✍️ Full CRUD Functionality**: Create, Read, Update, and Delete operations for:
-  - Intro & About Me sections
-  - Projects (with categories and tags)
-  - Blog Posts (with Markdown support)
-  - Work Experience & Education History
-  - Certificates & Gallery Images
-  - FAQs
-- **🤖 AI-Powered Tools (Genkit)**:
-  - **AI SEO Helper**: Get keyword suggestions based on your content.
-  - **AI Chatbot**: An intelligent assistant that answers visitor questions based on your portfolio data.
-  - **AI Image Generation**: Generate unique cover images for your blog posts from a text prompt.
-- **🎨 Theme Customizer**: Change your site's color palette directly from the admin panel.
-- **🖼️ Cloudinary Integration**: Optimized image uploads and storage.
-- **📨 Contact Form**: Receive messages directly from visitors, stored in your database.
-- **📊 Analytics**: A dashboard with site view tracking and content analytics.
-- **📱 Fully Responsive**: A sleek, dark-themed design that looks great on all devices.
-- **🚀 One-Click Deploy**: Ready to deploy on Vercel.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Ganutidke/ganeshtidake)
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Features  
 
-- **Framework**: [Next.js](https://nextjs.org/) (App Router)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [ShadCN UI](https://ui.shadcn.com/)
-- **Database**: [MongoDB](https://www.mongodb.com/) (with Mongoose)
-- **Image Management**: [Cloudinary](https://cloudinary.com/)
-- **AI Integration**: [Genkit (Google AI)](https://firebase.google.com/docs/genkit)
-- **Authentication**: JWT-based session management
-- **Deployment**: [Vercel](https://vercel.com/)
+- 🚀 **Modern Stack:** Next.js 14 (App Router), TypeScript, Tailwind CSS, ShadCN UI  
+- 🔐 **Secure Admin Panel:** Password-protected, role-based access  
+- ✍️ **Full CRUD Features:** Edit Intro, Projects, Blog, Education, Experience, and more  
+- 🤖 **AI-Powered Tools (Genkit):**  
+  - ✅ AI SEO Suggestions  
+  - ✅ Chatbot Assistant  
+  - ✅ AI Cover Image Generation  
+- 🎨 **Theme Customization:** Tailor site colors and layout from the Admin Panel  
+- 🖼️ **Cloudinary Integration:** Streamline media storage and optimization  
+- 📧 **Contact Form:** Store visitor messages in your database  
+- 📊 **Site Analytics:** Monitor page views and engagement metrics  
+- 📱 **Fully Responsive & Dark Mode Supported**  
+- ⚡️ **One-Click Deployment:** Quickly launch your site with Vercel  
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Tech Stack  
 
-Follow these steps to get your portfolio up and running.
+- **Framework:** [Next.js](https://nextjs.org/) (App Router) + TypeScript  
+- **UI Framework:** [Tailwind CSS](https://tailwindcss.com/) + [ShadCN UI](https://ui.shadcn.com/)  
+- **Database:** [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/)  
+- **Image Management:** [Cloudinary](https://cloudinary.com/)  
+- **Authentication:** JWT-based Session Management  
+- **Deployment:** [Vercel](https://vercel.com/)  
+- **AI Services:** [Genkit (Google AI)](https://firebase.google.com/docs/genkit)
 
-### Prerequisites
+---
 
-- [Node.js](https://nodejs.org/en/) (v18 or later)
-- A [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) account (you can start with a free tier)
-- A [Cloudinary](https://cloudinary.com/) account (the free tier is generous)
-- A [Google AI API Key](https://aistudio.google.com/app/apikey) for the AI features
+## ⚡ Getting Started  
 
-### Installation
+### ✅ Prerequisites
+- [Node.js](https://nodejs.org/) v18 or later  
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) Account  
+- [Cloudinary](https://cloudinary.com/) Account  
+- [Google AI Studio API Key](https://aistudio.google.com/app/apikey)
 
-1.  **Clone the repository:**
+### 📥 Installation
+1. **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-username/visionfolio-template.git
-    cd visionfolio-template
+    git clone https://github.com/Ganutidke/ganeshtidake.git
+    cd ganeshtidake
     ```
 
-2.  **Install dependencies:**
+2. **Install Dependencies:**  
     ```bash
     npm install
     ```
 
-3.  **Set up environment variables:**
-    -   Create a new file named `.env` in the root of your project by copying the example file.
-    -   Fill in the values for each variable. See the section below for details.
-
+3. **Setup Environment Variables:**  
+    Create a `.env` file in the root directory:
     ```bash
     cp .env.example .env
     ```
+    Edit `.env` and fill in your details:
+    ```
+    MONGODB_URI=
+    CLOUDINARY_CLOUD_NAME=
+    CLOUDINARY_API_KEY=
+    CLOUDINARY_API_SECRET=
+    ADMIN_USERNAME=
+    ADMIN_PASSWORD=
+    SESSION_SECRET=
+    GOOGLE_API_KEY=
+    ```
 
-### Running the Development Server
-
-This project uses `concurrently` to run both the Next.js frontend and the Genkit AI server with a single command.
-
-**Run the development server:**
-```bash
-npm run dev
-```
-This will:
-- Start the Next.js site at `http://localhost:9002`.
-- Start the Genkit AI server. You can inspect your AI flows at `http://localhost:4000`.
-
----
-
-## 🔑 Environment Variables
-
-You must create a `.env` file in the root of your project and add the following variables. Refer to `.env.example` for a template.
-
-| Variable                 | Description                                                                                                   | Example                                         |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| `MONGODB_URI`            | Your MongoDB connection string.                                                                               | `mongodb+srv://user:pass@cluster.mongodb.net/`  |
-| `CLOUDINARY_CLOUD_NAME`  | Your Cloudinary cloud name.                                                                                   | `your-cloud-name`                               |
-| `CLOUDINARY_API_KEY`     | Your Cloudinary API key.                                                                                      | `123456789012345`                               |
-| `CLOUDINARY_API_SECRET`  | Your Cloudinary API secret.                                                                                   | `aBcDeFgHiJkLmNoPqRsTuVwXyZ_12345`               |
-| `ADMIN_USERNAME`         | The username for accessing the admin panel.                                                                   | `admin`                                         |
-| `ADMIN_PASSWORD`         | The password for the admin panel.                                                                             | `a-very-secure-password`                        |
-| `SESSION_SECRET`         | A long, random, secret string for signing session cookies.                                                    | `generate-a-32-char-random-string`              |
-| `GOOGLE_API_KEY`         | Your API key from Google AI Studio for Genkit.                                                                | `AIzaSy...`                                     |
+4. **Run the Development Server:**  
+    ```bash
+    npm run dev
+    ```
+    - 🌐 **App:** http://localhost:9002
+    - 🧠 **Genkit AI Server:** http://localhost:4000
 
 ---
 
-## 📂 Project Structure
+## ⚡️ Project Structure  
 
 Here's an overview of the key directories in the project:
 
@@ -121,22 +98,12 @@ Here's an overview of the key directories in the project:
 -   `/src/lib`: Core logic, server actions, database connection, and utilities.
 -   `/src/models`: Mongoose schemas for your database collections.
 
+
 ---
 
-## ☁️ Deployment
+## ☁️ Deployment Guide  
 
-This project is optimized for deployment on [Vercel](https://vercel.com/).
-
-1.  **Push your code to a GitHub repository.**
-
-2.  **Import your project into Vercel.**
-    -   Go to your Vercel dashboard and click "Add New... > Project".
-    -   Import the GitHub repository you just created.
-    -   Vercel will automatically detect that it's a Next.js project.
-
-3.  **Configure Environment Variables.**
-    -   In the Vercel project settings, navigate to "Environment Variables".
-    -   Add all the variables from your `.env` file one by one. **This is a crucial step.**
-
-4.  **Deploy!**
-    -   Click the "Deploy" button. Vercel will build and deploy your site. Any time you push to your `main` branch, Vercel will automatically redeploy the changes.
+1. Push your code to **GitHub**.
+2. Import the repo to **Vercel**.
+3. Add environment variables in **Vercel Project Settings**.
+4. Click **Deploy** — Done! ✅  
