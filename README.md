@@ -71,37 +71,30 @@ Follow these steps to get your portfolio up and running.
     ```
 
 3.  **Set up environment variables:**
-    -   Create a new file named `.env` in the root of your project.
-    -   Copy the contents of `.env.example` into your new `.env` file.
+    -   Create a new file named `.env` in the root of your project by copying the example file.
     -   Fill in the values for each variable. See the section below for details.
 
     ```bash
     cp .env.example .env
     ```
 
-### Running the Development Servers
+### Running the Development Server
 
-This project requires two separate development servers to run concurrently in two different terminal windows.
+This project uses `concurrently` to run both the Next.js frontend and the Genkit AI server with a single command.
 
-1.  **Run the Next.js frontend:**
-    This server handles your main website and the admin panel UI.
-    ```bash
-    npm run dev
-    ```
-    Your site will be available at `http://localhost:9002`.
-
-2.  **Run the Genkit AI server:**
-    This server powers all the AI features (Chatbot, SEO helper, etc.).
-    ```bash
-    npm run genkit:dev
-    ```
-    The Genkit UI will be available at `http://localhost:4000` for inspecting your AI flows.
+**Run the development server:**
+```bash
+npm run dev
+```
+This will:
+- Start the Next.js site at `http://localhost:9002`.
+- Start the Genkit AI server. You can inspect your AI flows at `http://localhost:4000`.
 
 ---
 
 ## 🔑 Environment Variables
 
-You must create a `.env` file in the root of your project and add the following variables.
+You must create a `.env` file in the root of your project and add the following variables. Refer to `.env.example` for a template.
 
 | Variable                 | Description                                                                                                   | Example                                         |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
