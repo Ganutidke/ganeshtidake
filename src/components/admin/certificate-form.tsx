@@ -172,7 +172,7 @@ export default function CertificateForm({ certificate }: { certificate?: ICertif
                               disabled={(date) =>
                                 date > new Date() || date < new Date("1900-01-01")
                               }
-                              captionLayout="dropdown-buttons"
+                              captionLayout="dropdown"
                               fromYear={1980}
                               toYear={new Date().getFullYear()}
                               initialFocus

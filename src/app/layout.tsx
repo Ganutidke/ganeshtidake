@@ -4,6 +4,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { getIntro } from '@/lib/actions/intro.actions';
 import { getTheme } from '@/lib/actions/theme.actions';
+import { Analytics } from "@vercel/analytics/next"
 
 export async function generateMetadata(): Promise<Metadata> {
   const intro = await getIntro();
@@ -60,6 +61,7 @@ export default async function RootLayout({
       </head>
       <body className="font-body antialiased">
         {children}
+        <Analytics />
         <Toaster />
       </body>
     </html>

@@ -11,6 +11,7 @@ import { getIntro } from '@/lib/actions/intro.actions';
 import { getAbout } from '@/lib/actions/about.actions';
 import Link from 'next/link';
 
+
 export async function generateMetadata(): Promise<Metadata> {
   const intro = await getIntro();
   const title = `Admin | ${intro?.headline || 'Dashboard'}`;
