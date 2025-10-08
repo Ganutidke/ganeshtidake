@@ -52,7 +52,8 @@ export async function createBlog(data: CreateBlogParams) {
     });
 
     await newBlog.save();
-    
+
+    revalidatePath('/');
     revalidatePath('/admin/blogs');
     revalidatePath('/blog');
   } catch (error: any) {
@@ -103,7 +104,8 @@ export async function updateBlog(id: string, data: UpdateBlogParams) {
     };
 
     await Blog.findByIdAndUpdate(id, updateData, { new: true });
-    
+
+    revalidatePath('/');
     revalidatePath('/admin/blogs');
     revalidatePath(`/blog/${updateData.slug}`);
     revalidatePath('/blog');
@@ -175,6 +177,7 @@ export async function deleteBlog(id: string) {
     
     await Blog.findByIdAndDelete(id);
 
+    revalidatePath('/');
     revalidatePath('/admin/blogs');
     revalidatePath('/blog');
   } catch (error: any) {
