@@ -82,7 +82,7 @@ export default function BlogsList({ blogs }: { blogs: IBlog[] }) {
               <TableCell className="font-medium">{blog.title}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
-                  {blog.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                  {blog.tags.slice(0, 6).map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
                 </div>
               </TableCell>
               <TableCell className="hidden md:table-cell">

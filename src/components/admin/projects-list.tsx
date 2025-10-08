@@ -57,7 +57,7 @@ export default function ProjectsList({ projects }: { projects: PopulatedProject[
               <TableCell>{project.category}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
-                  {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                  {project.tags.slice(0, 6).map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
                 </div>
               </TableCell>
               <TableCell className="text-right">

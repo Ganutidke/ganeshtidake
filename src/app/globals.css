@@ -23,7 +23,7 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 217.2 91.2% 59.8%;
-    --radius: 0.5rem;
+    --radius: 1.3rem;
 
     --sidebar-background: var(--card);
     --sidebar-foreground: var(--card-foreground);
@@ -61,7 +61,8 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 217.2 91.2% 59.8%;
-    
+    --radius: 1.3rem;
+
     --sidebar-background: var(--card);
     --sidebar-foreground: var(--card-foreground);
     --sidebar-primary: var(--primary);
