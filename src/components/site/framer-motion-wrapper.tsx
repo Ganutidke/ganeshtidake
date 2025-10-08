@@ -10,7 +10,7 @@ interface Props {
 }
 
 const defaultVariants: Variants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  hidden: { opacity: 0, y: 10, scale: 0.95 },
   visible: { opacity: 1, y: 0, scale: 1 },
 };
 
@@ -24,7 +24,7 @@ export default function FramerMotionWrapper({
     <motion.div
       variants={variants}
       initial="hidden"
-      whileInView="visible"
+      animate="visible"
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 1.2, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
