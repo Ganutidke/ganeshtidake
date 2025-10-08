@@ -4,6 +4,7 @@
 import { format } from 'date-fns';
 import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
 import type { IEducation } from '@/models/education.model';
+import { Badge } from '../ui/badge';
 
 export default function EducationPageClient({ educationHistory }: { educationHistory: IEducation[] }) {
   return (
@@ -23,9 +24,9 @@ export default function EducationPageClient({ educationHistory }: { educationHis
               <div className={`flex items-center md:flex-row-reverse flex-col md:text-right`}>
                   <div className="md:w-1/2 w-full md:pr-6 md:pl-0 pl-6 mb-6 md:mb-0">
                       <div className="p-6 rounded-lg shadow-lg bg-card text-left">
-                      <p className="text-sm font-semibold text-secondary">
+                      <Badge variant={'outline'} className="text-sm font-semibold text-secondary/45">
                           {format(new Date(edu.startDate), 'MMM yyyy')} - {edu.endDate ? format(new Date(edu.endDate), 'MMM yyyy') : 'Present'}
-                      </p>
+                      </Badge>
                       <h3 className="text-xl font-bold font-headline mt-1 text-primary">{edu.degree}</h3>
                       <h4 className="text-lg font-semibold">{edu.school}</h4>
                       <p className="text-muted-foreground">{edu.fieldOfStudy}</p>
