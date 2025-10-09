@@ -20,6 +20,7 @@ export async function createEducation(data: EducationParams) {
     await newEducation.save();
     revalidatePath('/admin/education');
     revalidatePath('/education');
+    revalidatePath('/about');
   } catch (error: any) {
     console.error('Error creating education entry:', error);
     throw new Error(`Failed to create education entry: ${error.message}`);
@@ -32,6 +33,7 @@ export async function updateEducation(id: string, data: EducationParams) {
     await Education.findByIdAndUpdate(id, data, { new: true });
     revalidatePath('/admin/education');
     revalidatePath('/education');
+    revalidatePath('/about');
   } catch (error: any) {
     console.error('Error updating education entry:', error);
     throw new Error(`Failed to update education entry: ${error.message}`);
@@ -66,6 +68,7 @@ export async function deleteEducation(id: string) {
     await Education.findByIdAndDelete(id);
     revalidatePath('/admin/education');
     revalidatePath('/education');
+    revalidatePath('/about');
   } catch (error: any) {
     console.error('Error deleting education entry:', error);
     throw new Error(`Failed to delete education entry: ${error.message}`);

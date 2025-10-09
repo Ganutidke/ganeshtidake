@@ -19,6 +19,8 @@ export async function createExperience(data: ExperienceParams) {
     await newExperience.save();
     revalidatePath('/admin/experience');
     revalidatePath('/experience');
+    revalidatePath('/about');
+    revalidatePath('/');
   } catch (error: any) {
     console.error('Error creating experience entry:', error);
     throw new Error(`Failed to create experience entry: ${error.message}`);
@@ -31,6 +33,8 @@ export async function updateExperience(id: string, data: ExperienceParams) {
     await Experience.findByIdAndUpdate(id, data, { new: true });
     revalidatePath('/admin/experience');
     revalidatePath('/experience');
+    revalidatePath('/about');
+    revalidatePath('/');
   } catch (error: any) {
     console.error('Error updating experience entry:', error);
     throw new Error(`Failed to update experience entry: ${error.message}`);
@@ -65,6 +69,8 @@ export async function deleteExperience(id: string) {
     await Experience.findByIdAndDelete(id);
     revalidatePath('/admin/experience');
     revalidatePath('/experience');
+    revalidatePath('/about');
+    revalidatePath('/');
   } catch (error: any) {
     console.error('Error deleting experience entry:', error);
     throw new Error(`Failed to delete experience entry: ${error.message}`);

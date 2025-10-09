@@ -167,16 +167,16 @@ export default function AboutPageClient({
             <h2 className="text-3xl font-bold text-primary text-center mb-12">
               Work Experience
             </h2>
-            <div className="relative pl-6 before:absolute before:left-0 before:top-2 before:h-full before:w-0.5 before:bg-border">
+            <div className="relative pl-6 ">
               {experienceHistory.map((exp, index) => (
                 <div key={exp._id} className="relative mb-12 pl-8">
                   <div className="absolute -left-[7px] top-1.5 h-4 w-4 rounded-full bg-primary border-4 border-background"></div>
-                  <p className="text-sm text-muted-foreground">
+                  <Badge variant={'secondary'} className="text-sm text-muted-foreground">
                     {format(new Date(exp.startDate), "MMM yyyy")} -{" "}
                     {exp.endDate
                       ? format(new Date(exp.endDate), "MMM yyyy")
                       : "Present"}
-                  </p>
+                  </Badge>
                   <h3 className="font-bold text-xl text-foreground mt-1">
                     {exp.role}
                   </h3>
@@ -201,16 +201,16 @@ export default function AboutPageClient({
             <h2 className="text-3xl font-bold text-primary text-center mb-12">
               Studies
             </h2>
-            <div className="relative pl-6 before:absolute before:left-0 before:top-2 before:h-full before:w-0.5 before:bg-border">
+            <div className="relative pl-6 ">
               {visibleEducation.map((edu, index) => (
                 <div key={edu._id?.toString()} className="relative mb-8 pl-8">
                   <div className="absolute -left-[7px] top-1.5 h-4 w-4 rounded-full bg-primary border-4 border-background"></div>
-                  <p className="text-sm text-muted-foreground">
+                  <Badge variant={"secondary"} className="text-sm text-muted-foreground">
                     {format(new Date(edu.startDate), "MMM yyyy")} -{" "}
                     {edu.endDate
                       ? format(new Date(edu.endDate), "MMM yyyy")
                       : "Present"}
-                  </p>
+                  </Badge>
                   <h3 className="font-bold text-xl text-foreground mt-1">
                     {edu.school}
                   </h3>

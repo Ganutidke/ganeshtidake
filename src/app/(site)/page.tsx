@@ -51,7 +51,7 @@ async function ProjectsSection() {
   return (
     <section>
       <FramerMotionWrapper>
-        <h2 className="text-2xl font-bold text-primary">All Creative Works.</h2>
+        <h2 className="text-2xl font-bold text-primary" >All Creative Works.</h2>
         <p className="mt-2 text-muted-foreground">
           Here's some of my projects that I have worked on.
         </p>
@@ -129,8 +129,8 @@ async function ExperienceSection() {
               </div>
             </FramerMotionWrapper>
           ))}
-          <div className="text-center">
-            <Button asChild>
+          <div className="text-center z-50">
+            <Button asChild className="z-50">
               <Link href="/experience">
                 View All Experience <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
