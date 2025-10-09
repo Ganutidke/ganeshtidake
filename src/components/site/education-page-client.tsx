@@ -23,7 +23,7 @@ export default function EducationTimeline({
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start end', 'end start'],
+    offset: ["start end", "end start"],
   });
 
   return (
@@ -42,12 +42,12 @@ export default function EducationTimeline({
           <div className="relative mt-8">
             {/* Scroll Progress Line */}
             <motion.div
-            className="hidden md:block absolute left-1/2 top-0 -translate-x-1/2 h-full w-[3px] rounded origin-top"
-            style={{ scaleY: scrollYProgress, transformOrigin: 'top' }}
-            aria-hidden
-          >
-            <div className="h-full w-full bg-gradient-to-b from-primary to-cyan-400 rounded" />
-          </motion.div>
+              className="hidden md:block absolute left-1/2 top-0 -translate-x-1/2 h-full w-[3px] rounded origin-top"
+              style={{ scaleY: scrollYProgress, transformOrigin: "top" }}
+              aria-hidden
+            >
+              <div className="h-full w-full bg-gradient-to-b from-primary to-cyan-400 rounded" />
+            </motion.div>
 
             <div className="space-y-16 relative">
               {educationHistory.map((edu, index) => {
@@ -96,10 +96,13 @@ export default function EducationTimeline({
                                 : "Present"
                             }`}</Badge>
                             <CardTitle className="text-lg font-semibold">
-                              {edu.degree}
+                              {edu.school}
                             </CardTitle>
                             <CardDescription className="text-sm text-muted-foreground/30">
-                              {edu.school}
+                              {edu.degree} in{" "}
+                              <span className="text-muted-foreground/80">
+                                {edu.fieldOfStudy}
+                              </span>
                             </CardDescription>
                           </div>
                         </CardHeader>
