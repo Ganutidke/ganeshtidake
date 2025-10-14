@@ -35,7 +35,7 @@ export async function generateMetadata({
     blog.excerpt ||
     blog.content?.slice(0, 160).replace(/<[^>]+>/g, "") ||
     "A detailed post about modern web development and technology trends.";
-
+    console.log("published at", blog.createdAt);
   return {
     title: `${blog.title} | ${authorName}`,
     description: cleanDescription,
@@ -51,8 +51,16 @@ export async function generateMetadata({
       url: `https://ganeshtidake.site/blog/${blog.slug}`,
       siteName: "Ganesh Tidake Blog",
       type: "article",
-      publishedTime: blog.createdAt.toISOString(),
-      modifiedTime: blog.updatedAt.toISOString(),
+      publishedTime: blog.createdAt
+        ? typeof blog.createdAt === "string"
+          ? blog.createdAt
+          : blog.createdAt.toISOString()
+        : undefined,
+      modifiedTime: blog.updatedAt
+        ? typeof blog.updatedAt === "string"
+          ? blog.updatedAt
+          : blog.updatedAt.toISOString()
+        : undefined,
       images: [
         {
           url: blog.coverImage?.url || "/og-image.png",

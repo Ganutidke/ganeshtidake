@@ -127,7 +127,7 @@ function BlogGridSkeleton() {
 }
 
 export default async function BlogPage({ searchParams }: { searchParams?: { query?: string } }) {
-  const query = searchParams?.query ?? '';
+  const query = await searchParams?.query ?? '';
   const initialBlogs = await getBlogs({});
 
   if (!initialBlogs || initialBlogs.length === 0) {
