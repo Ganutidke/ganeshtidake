@@ -10,10 +10,8 @@ import BlogPostClient from "@/components/site/blog-post-client";
 import type { IBlog } from "@/models/blog.model";
 import { getIntro } from "@/lib/actions/intro.actions";
 
-export async function generateStaticParams() {
-  const blogs = await getBlogs();
-  return blogs.map((blog) => ({ slug: blog.slug }));
-}
+export const dynamic = "force-dynamic";
+
 
 export async function generateMetadata({
   params,

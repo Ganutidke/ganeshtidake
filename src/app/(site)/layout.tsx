@@ -4,7 +4,7 @@ import Footer from '@/components/site/footer';
 import PageLoader from '@/components/site/page-loader';
 import { trackView } from '@/lib/actions/analytics.actions';
 import Chatbot from '@/components/site/chatbot';
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 
 
 export const metadata: Metadata = {
@@ -62,18 +62,19 @@ export const metadata: Metadata = {
   creator: "Ganesh Tidake",
   publisher: "Ganesh Tidake",
   category: "Portfolio, Web Development, SaaS",
-  themeColor: "#0f172a",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   robots: {
     index: true,
     follow: true,
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: 'black',
+}
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
   await trackView();

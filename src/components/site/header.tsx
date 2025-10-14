@@ -1,10 +1,9 @@
+"use client";
 
-'use client';
-
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Menu,
   Home,
@@ -17,30 +16,30 @@ import {
   GraduationCap,
   HelpCircle,
   Mail,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from '@/components/ui/separator';
-import { motion, type Variants } from 'framer-motion';
+import { Separator } from "@/components/ui/separator";
+import { motion, type Variants } from "framer-motion";
 
 const mainNavLinks = [
-  { href: '/', label: 'Home', icon: Home },
-  { href: '/about', label: 'About', icon: User },
-  { href: '/projects', label: 'Work', icon: LayoutGrid },
-  { href: '/blog', label: 'Blog', icon: Newspaper },
-  { href: '/gallery', label: 'Gallery', icon: GalleryIcon },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/about", label: "About", icon: User },
+  { href: "/projects", label: "Work", icon: LayoutGrid },
+  { href: "/blog", label: "Blog", icon: Newspaper },
+  { href: "/contact", label: "Contact", icon: Mail },
 ];
 
 const moreLinks = [
-  { href: '/experience', label: 'Experience', icon: Briefcase },
-  { href: '/certificates', label: 'Certificates', icon: Award },
-  { href: '/education', label: 'Education', icon: GraduationCap },
-  { href: '/faq', label: 'FAQ', icon: HelpCircle },
-  { href: '/contact', label: 'Contact', icon: Mail },
+  { href: "/experience", label: "Experience", icon: Briefcase },
+  { href: "/certificates", label: "Certificates", icon: Award },
+  { href: "/education", label: "Education", icon: GraduationCap },
+  { href: "/faq", label: "FAQ", icon: HelpCircle },
+  { href: "/gallery", label: "Gallery", icon: GalleryIcon },
 ];
 
 // 1. Main container animation: drops down and expands
@@ -52,17 +51,17 @@ const navContainerVariants: Variants = {
     opacity: 0,
   },
   visible: {
-    y: [ -40, 0, 0 ],
-    scaleX: [ 0.3, 0.3, 1 ],
-    scaleY: [ 0.6, 1, 1 ],
-    opacity: [ 0, 1, 1 ],
+    y: [-40, 0, 0],
+    scaleX: [0.3, 0.3, 1],
+    scaleY: [0.6, 1, 1],
+    opacity: [0, 1, 1],
     transition: {
       duration: 1.5, // A bit longer for a more pronounced effect
-      times: [ 0, 0.4, 1 ],
+      times: [0, 0.4, 1],
       ease: "easeOut",
       delay: 0.2,
       // Orchestrate children animations after the container is ready
-      delayChildren: 1.0, 
+      delayChildren: 1.0,
     },
   },
 };
@@ -77,7 +76,7 @@ const navItemVariants: Variants = {
       // The delay is based on the 'order' custom prop
       delay: i.order * 0.15,
       duration: 0.4,
-      ease: 'easeOut',
+      ease: "easeOut",
       // Delay the text animation until this one is nearly done
       delayChildren: 0.2,
     },
@@ -86,8 +85,8 @@ const navItemVariants: Variants = {
 
 // 3. Text inside nav items fades in after its button appears
 const textVariants: Variants = {
-    hidden: { opacity: 0, y: -5 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+  hidden: { opacity: 0, y: -5 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 // The order in which items appear. 0 is first, 1 is second, etc.
@@ -120,17 +119,20 @@ export default function Header() {
             <Link
               href={link.href}
               className={cn(
-                'flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground',
-                pathname === link.href && 'bg-muted text-foreground',
-                link.label === 'Home' && 'px-2.5'
+                "flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                pathname === link.href && "bg-muted text-foreground",
+                link.label === "Home" && "px-2.5"
               )}
             >
               <link.icon className="h-5 w-5" />
-              {link.label !== 'Home' && 
-                <motion.span variants={textVariants} className="hidden sm:inline">
+              {link.label !== "Home" && (
+                <motion.span
+                  variants={textVariants}
+                  className="hidden sm:inline"
+                >
                   {link.label}
                 </motion.span>
-              }
+              )}
             </Link>
           </motion.div>
         ))}
@@ -138,11 +140,15 @@ export default function Header() {
         <motion.div custom={{ order: 0 }} variants={navItemVariants}>
           <Separator orientation="vertical" className="h-6 mx-1" />
         </motion.div>
-        
+
         <motion.div custom={{ order: 0 }} variants={navItemVariants}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full w-8 h-8">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full w-8 h-8"
+              >
                 <Menu className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
