@@ -39,10 +39,56 @@ import type { IIntro } from "@/models/intro.model";
 import type { IAbout } from "@/models/about.model";
 import type { PopulatedProject } from "@/models/project.model";
 import type { IBlog } from "@/models/blog.model";
+import { Metadata } from "next";
 
 // --- Data Fetching Components ---
 
 export const revalidate = 3600;
+
+export const metadata:Metadata = {
+  title: "Ganesh Tidake | Web Developer & SaaS Builder",
+  description:
+    "Full-stack web developer specializing in Next.js, React, Tailwind CSS, and SaaS solutions. Building fast, scalable, and elegant web applications.",
+  keywords: [
+    "Ganesh Tidake",
+    "Next.js Developer",
+    "React Developer",
+    "Full-Stack Developer",
+    "SaaS Builder",
+    "Freelance Web Developer",
+    "Portfolio",
+  ],
+  openGraph: {
+    title: "Ganesh Tidake | Web Developer & SaaS Builder",
+    description:
+      "Next.js developer creating modern SaaS and full-stack solutions with React and Tailwind CSS.",
+    url: "https://ganeshtidake.site",
+    siteName: "Ganesh Tidake Portfolio",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Ganesh Tidake Portfolio",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ganesh Tidake | Full-Stack Web Developer",
+    description:
+      "Building SaaS, dashboards, and high-performance apps using Next.js and Tailwind CSS.",
+    images: ["/og-image.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
+  alternates: {
+    canonical: "https://ganeshtidake.site",
+  },
+};
 
 async function ProjectsSection() {
   const projects = (await getProjects()).slice(0, 3);

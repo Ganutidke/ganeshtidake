@@ -9,14 +9,68 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 export async function generateMetadata(): Promise<Metadata> {
   const intro = await getIntro();
 
-  const title = intro?.headline ? `${intro.headline} | Portfolio` : "Portfolio";
+  const title = intro?.headline
+    ? `${intro.headline} | Portfolio`
+    : "Ganesh Tidake | Portfolio";
   const description =
-    intro?.subheadline || "A personal portfolio built with Next.js.";
+    intro?.subheadline ||
+    "A personal portfolio showcasing modern web applications and SaaS products built with Next.js, React, and Tailwind CSS.";
+
+  const baseUrl = "https://ganeshtidake.site";
 
   return {
     title,
     description,
-    icons: null,
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: baseUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: baseUrl,
+      siteName: intro?.headline || "Ganesh Tidake Portfolio",
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: intro?.headline || "Ganesh Tidake Portfolio",
+        },
+      ],
+      locale: "en_IN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-image.png"],
+      creator: intro?.headline || "Ganesh Tidake",
+    },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+    manifest: "/site.webmanifest",
+    robots: {
+      index: true,
+      follow: true,
+    },
+    keywords: [
+      intro?.headline || "Ganesh Tidake",
+      "Web Developer",
+      "Next.js Developer",
+      "React.js",
+      "Frontend Developer",
+      "SaaS Builder",
+      "Portfolio",
+      "Tailwind CSS",
+    ].filter(Boolean),
+    authors: intro?.headline
+      ? [{ name: intro.headline, url: baseUrl }]
+      : [{ name: "Ganesh Tidake", url: baseUrl }],
   };
 }
 
@@ -53,6 +107,8 @@ export default async function RootLayout({
   `
     : "";
 
+  const intro = await getIntro();
+
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
@@ -63,17 +119,7 @@ export default async function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap"
-          rel="stylesheet"
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700&family=Space+Grotesk:wght@300..700&display=swap"
           rel="stylesheet"
         />
         {theme && (
@@ -82,7 +128,48 @@ export default async function RootLayout({
             dangerouslySetInnerHTML={{ __html: themeStyles }}
           />
         )}
+
+        {/* ✅ Global Structured Data (Schema.org) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: intro?.headline || "Ganesh Tidake",
+              url: "https://ganeshtidake.site",
+              jobTitle: intro?.subheadline || "Full Stack Web Developer",
+              sameAs: [
+                "https://github.com/ganeshtidake",
+                "https://linkedin.com/in/ganeshtidake",
+              ],
+              image: "https://ganeshtidake.site/og-image.png",
+              description:
+                intro?.subheadline ||
+                "Building modern web apps and SaaS products with Next.js and React.",
+            }),
+          }}
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: intro?.headline || "Ganesh Tidake Portfolio",
+              url: "https://ganeshtidake.site",
+              potentialAction: {
+                "@type": "SearchAction",
+                target:
+                  "https://ganeshtidake.site/search?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
       </head>
+
       <body className="font-body antialiased">
         {children}
         <Analytics />

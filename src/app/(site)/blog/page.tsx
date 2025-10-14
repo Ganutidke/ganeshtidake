@@ -12,7 +12,51 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Metadata } from 'next';
 
+
+export async function generateMetadata(): Promise<Metadata> {
+  const blogs = await getBlogs();
+
+  const hasContent = blogs && blogs.length > 0;
+  const description = hasContent
+    ? "Explore the latest posts and insights from Ganesh Tidake’s blog — covering web development, SaaS, and modern technologies."
+    : "Explore blogs about web development, SaaS, and Next.js. New posts coming soon.";
+
+  return {
+    title: "Blog | Ganesh Tidake",
+    description,
+    alternates: {
+      canonical: "https://ganeshtidake.site/blog",
+    },
+    openGraph: {
+      title: "Ganesh Tidake | Blog",
+      description,
+      url: "https://ganeshtidake.site/blog",
+      siteName: "Ganesh Tidake Blog",
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: "Ganesh Tidake Blog Cover",
+        },
+      ],
+      locale: "en_IN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Ganesh Tidake Blog",
+      description,
+      images: ["/og-image.png"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
 
 async function BlogGrid({ query }: { query: string }) {
   const blogs = await getBlogs({ query });

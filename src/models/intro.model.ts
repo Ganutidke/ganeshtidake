@@ -2,7 +2,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IIntro extends Document {
-  headline: string;
+  headline: string; // Headline is to store the Name of User Who is going to use the template
   subheadline: string;
   heroImage: {
     url: string;

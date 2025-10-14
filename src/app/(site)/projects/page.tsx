@@ -9,7 +9,53 @@ import { ProjectCardSkeleton } from '@/components/skeletons/project-card-skeleto
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+  title: "Projects | Ganesh Tidake",
+  description:
+    "Explore the latest web applications, SaaS products, and modern UI projects built by Ganesh Tidake using Next.js, React, and Tailwind CSS.",
+  alternates: {
+    canonical: "https://ganeshtidake.site/projects",
+  },
+  openGraph: {
+    title: "Projects by Ganesh Tidake",
+    description:
+      "Discover creative web projects, SaaS solutions, and full-stack applications developed by Ganesh Tidake.",
+    url: "https://ganeshtidake.site/projects",
+    siteName: "Ganesh Tidake Portfolio",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Ganesh Tidake Portfolio Projects",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Projects | Ganesh Tidake",
+    description:
+      "Explore the portfolio of Ganesh Tidake – building scalable, aesthetic, and modern web apps.",
+    images: ["/og-image.png"],
+  },
+  keywords: [
+    "Ganesh Tidake Projects",
+    "Next.js Projects",
+    "React.js Projects",
+    "Web Developer Portfolio",
+    "Frontend Projects",
+    "Full Stack Developer",
+    "SaaS Builder",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 async function ProjectsGrid({ query, category }: { query: string; category: string }) {
   const projects = await getProjects({ query, category });
