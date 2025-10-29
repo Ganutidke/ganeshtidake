@@ -5,6 +5,8 @@ import { getIntro } from "@/lib/actions/intro.actions";
 import { getTheme } from "@/lib/actions/theme.actions";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
+import AnalyticsTracker from "@/components/analytics-tracker";
 
 export async function generateMetadata(): Promise<Metadata> {
   const intro = await getIntro();
@@ -175,6 +177,25 @@ export default async function RootLayout({
         <Analytics />
         <Toaster />
         <SpeedInsights />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
+        )}
+        <AnalyticsTracker />
       </body>
     </html>
   );
