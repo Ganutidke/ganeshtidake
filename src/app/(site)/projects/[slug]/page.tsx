@@ -36,7 +36,7 @@ export async function generateMetadata({
     : "Explore this project by Ganesh Tidake.";
 
   return {
-    title: `${project.title} | Ganesh Tidake`,
+    title: `${project.title}`,
     description: shortDesc,
     alternates: {
       canonical: `https://ganeshtidake.site/projects/${slug}`,

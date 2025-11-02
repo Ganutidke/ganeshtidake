@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import type { IEducation } from "@/models/education.model";
 import { Badge } from "../ui/badge";
 import FramerMotionWrapper from "./framer-motion-wrapper";
+import Image from "next/image";
 
 export default function EducationTimeline({
   educationHistory,
@@ -23,7 +24,7 @@ export default function EducationTimeline({
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start 0.8", "end 0.3"],
   });
 
   return (
@@ -42,11 +43,11 @@ export default function EducationTimeline({
           <div className="relative mt-8">
             {/* Scroll Progress Line */}
             <motion.div
-              className="hidden md:block absolute left-1/2 top-0 -translate-x-1/2 h-full w-[3px] rounded origin-top"
+              className="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-[3px] rounded origin-top"
               style={{ scaleY: scrollYProgress, transformOrigin: "top" }}
               aria-hidden
             >
-              <div className="h-full w-full bg-gradient-to-b from-primary to-cyan-400 rounded" />
+              <motion.div className="origin-top h-full  w-full bg-gradient-to-b from-primary to-cyan-400 rounded"  style={{ scaleY: scrollYProgress, transformOrigin: "center" }}/>
             </motion.div>
 
             <div className="space-y-16 relative">
@@ -79,8 +80,10 @@ export default function EducationTimeline({
                       <Card className="group relative w-full bg-card/70 border border-border/60 backdrop-blur-xl transition-all hover:border-primary/40 hover:shadow-[0_0_25px] hover:shadow-primary/10">
                         <CardHeader className="flex flex-row items-center gap-4">
                           <div className="w-12 h-12 flex-shrink-0 rounded-full bg-muted flex items-center justify-center p-2">
-                            <img
-                              src={"/default-school-logo.png"}
+                            <Image
+                              width={48}
+                              height={48}
+                              src={"/college/college.png"}
                               alt={edu.school}
                               className="object-contain w-full h-full rounded-full"
                             />

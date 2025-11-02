@@ -37,7 +37,7 @@ export async function generateMetadata({
     "A detailed post about modern web development and technology trends.";
     console.log("published at", blog.createdAt);
   return {
-    title: `${blog.title} | ${authorName}`,
+    title: `${blog.title}`,
     description: cleanDescription,
     alternates: {
       canonical: `https://ganeshtidake.site/blog/${blog.slug}`,

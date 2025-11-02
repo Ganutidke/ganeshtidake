@@ -1,24 +1,33 @@
+"use client";
 
-'use client';
+import Image from "next/image";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-import Image from 'next/image';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Github, ExternalLink, ArrowLeft } from "lucide-react";
+import FramerMotionWrapper from "@/components/site/framer-motion-wrapper";
+import type { PopulatedProject } from "@/models/project.model";
+import { Card, CardContent } from "@/components/ui/card";
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
-import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
-import type { PopulatedProject } from '@/models/project.model';
-import { Card, CardContent } from '@/components/ui/card';
-
-export default function ProjectDetailClient({ project, relatedProjects }: { project: PopulatedProject, relatedProjects: PopulatedProject[] }) {
+export default function ProjectDetailClient({
+  project,
+  relatedProjects,
+}: {
+  project: PopulatedProject;
+  relatedProjects: PopulatedProject[];
+}) {
   return (
     <FramerMotionWrapper>
       <article className="max-w-4xl mx-auto py-12 px-4">
         <div className="mb-8">
-          <Button asChild variant="link" className="p-0 text-muted-foreground hover:text-primary">
+          <Button
+            asChild
+            variant="link"
+            className="p-0 text-muted-foreground hover:text-primary"
+          >
             <Link href="/projects">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to All Projects
@@ -30,7 +39,11 @@ export default function ProjectDetailClient({ project, relatedProjects }: { proj
             {project.title}
           </h1>
           <div className="flex flex-wrap justify-center gap-2">
-            {project.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+            {project.tags.map((tag) => (
+              <Badge key={tag} variant="secondary">
+                {tag}
+              </Badge>
+            ))}
           </div>
         </div>
 
@@ -44,18 +57,7 @@ export default function ProjectDetailClient({ project, relatedProjects }: { proj
           />
         </div>
 
-        <div className="prose prose-invert prose-lg mx-auto max-w-none 
-            prose-headings:text-foreground prose-headings:font-headline
-            prose-a:text-primary hover:prose-a:text-primary/80
-            prose-strong:text-foreground
-            prose-blockquote:border-l-primary
-            prose-code:bg-muted prose-code:text-foreground prose-code:p-1 prose-code:rounded-md
-            prose-pre:bg-muted
-            ">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{project.description}</ReactMarkdown>
-        </div>
-
-        <div className="mt-8 flex justify-center gap-4">
+        <div className="my-8 flex justify-between gap-4">
           {project.repositoryUrl && (
             <Button asChild variant="outline">
               <Link href={project.repositoryUrl} target="_blank">
@@ -74,13 +76,36 @@ export default function ProjectDetailClient({ project, relatedProjects }: { proj
           )}
         </div>
 
+        <div
+          className="prose prose-invert prose-lg mx-auto max-w-none 
+            prose-headings:text-foreground prose-headings:font-headline
+            prose-a:text-primary hover:prose-a:text-primary/80
+            prose-strong:text-foreground
+            prose-blockquote:border-l-primary
+            prose-code:bg-muted prose-code:text-foreground prose-code:p-1 prose-code:rounded-md
+            prose-pre:bg-muted
+            "
+        >
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {project.description}
+          </ReactMarkdown>
+        </div>
+
         {relatedProjects && relatedProjects.length > 0 && (
           <div className="mt-16 pt-8 border-t">
-            <h2 className="text-2xl font-bold text-center mb-8 text-primary">Related Projects</h2>
+            <h2 className="text-2xl font-bold text-center mb-8 text-primary">
+              Related Projects
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedProjects.map((relatedProject) => (
-                <Card key={relatedProject._id as string} className="group overflow-hidden hover:shadow-lg transition-shadow">
-                  <Link href={`/projects/${relatedProject.slug}`} className="block">
+                <Card
+                  key={relatedProject._id as string}
+                  className="group overflow-hidden hover:shadow-lg transition-shadow"
+                >
+                  <Link
+                    href={`/projects/${relatedProject.slug}`}
+                    className="block"
+                  >
                     <div className="relative h-48 w-full">
                       <Image
                         src={relatedProject.coverImage.url}
@@ -93,7 +118,9 @@ export default function ProjectDetailClient({ project, relatedProjects }: { proj
                       <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2">
                         {relatedProject.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground mt-1">{relatedProject.category}</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {relatedProject.category}
+                      </p>
                     </CardContent>
                   </Link>
                 </Card>

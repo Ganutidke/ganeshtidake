@@ -4,8 +4,6 @@ import { getBlogs } from '@/lib/actions/blog.actions';
 import PagePlaceholder from '@/components/site/page-placeholder';
 import BlogListClient from '@/components/site/blog-list-client';
 import { BlogCardSkeleton } from '@/components/skeletons/blog-card-skeleton';
-import FramerMotionWrapper from '@/components/site/framer-motion-wrapper';
-import { IBlog } from '@/models/blog.model';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -72,7 +70,7 @@ async function BlogGrid({ query }: { query: string }) {
         </div>
       );
     }
-    // This case should be handled by the main page component
+    // This case should be handled by the main page componentyyyyy
     return null;
   }
 
@@ -127,7 +125,8 @@ function BlogGridSkeleton() {
 }
 
 export default async function BlogPage({ searchParams }: { searchParams?: { query?: string } }) {
-  const query = await searchParams?.query ?? '';
+  const searchParamsBlog = await searchParams;
+  const query =  searchParamsBlog?.query ?? '';
   const initialBlogs = await getBlogs({});
 
   if (!initialBlogs || initialBlogs.length === 0) {

@@ -12,7 +12,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Projects | Ganesh Tidake",
+  title: "Projects ",
   description:
     "Explore the latest web applications, SaaS products, and modern UI projects built by Ganesh Tidake using Next.js, React, and Tailwind CSS.",
   alternates: {

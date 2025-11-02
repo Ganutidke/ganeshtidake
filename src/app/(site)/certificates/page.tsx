@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     : "View certificates and credentials from Ganesh Tidake, a full-stack web developer specializing in modern web technologies.";
 
   return {
-    title: "Certificates | Ganesh Tidake",
+    title: "Certificates ",
     description,
     alternates: {
       canonical: "https://ganeshtidake.site/certificates",

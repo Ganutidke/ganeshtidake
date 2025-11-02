@@ -70,7 +70,7 @@ export default function AboutPageClient({
   }
 
   return (
-    <main className="container max-w-4xl mx-auto px-4 py-16 sm:py-24 space-y-24">
+    <main className="container max-w-7xl mx-auto px-4 py-16 sm:py-24 space-y-24">
       <FramerMotionWrapper>
         <section className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
           <div className="md:col-span-1 flex justify-center">

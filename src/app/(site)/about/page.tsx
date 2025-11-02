@@ -10,13 +10,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const about = await getAbout();
   const intro = await getIntro();
 
-  const pageTitle = `About ${intro?.headline || "Ganesh Tidake"} | Full Stack Developer`;
+  const pageTitle = `About ${intro?.headline || "Ganesh Tidake"} | ${intro?.role || "Full Stack Developer"}`;
   const pageDescription =
     about?.bio ||
     "Learn more about Ganesh Tidake, a passionate Full Stack Developer who builds scalable and modern web applications using Next.js, React, and Tailwind CSS.";
 
   return {
-    title: pageTitle,
+    title: pageTitle ,
     description: pageDescription,
     alternates: {
       canonical: "https://ganeshtidake.site/about",
