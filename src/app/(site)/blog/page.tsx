@@ -56,6 +56,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+// Cache this route for a short time so repeated navigations are faster
+export const revalidate = 60;
+
 async function BlogGrid({ query }: { query: string }) {
   const blogs = await getBlogs({ query });
 

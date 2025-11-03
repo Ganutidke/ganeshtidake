@@ -57,6 +57,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Cache this route for a short time so repeated navigations are faster
+export const revalidate = 60;
+
 async function ProjectsGrid({ query, category }: { query: string; category: string }) {
   const projects = await getProjects({ query, category });
 
