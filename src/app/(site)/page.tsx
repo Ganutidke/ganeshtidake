@@ -44,6 +44,8 @@ import { Metadata } from "next";
 // --- Data Fetching Components ---
 
 export const revalidate = 3600;
+export const fetchCache = 'force-cache';
+export const dynamicParams = false;
 
 export const metadata:Metadata = {
   title: "Ganesh Tidake | Web Developer & SaaS Builder",
@@ -415,9 +417,11 @@ function CombinedSectionSkeleton() {
 
 // --- Main Page Component ---
 export default async function HomePage() {
-  const intro = await getIntro();
-  const about = await getAbout();
-  const experienceHistory = await getExperienceHistory();
+  const [intro, about, experienceHistory] = await Promise.all([
+    getIntro(),
+    getAbout(),
+    getExperienceHistory()
+  ]);
 
   const currentJob = experienceHistory.find((exp) => !exp.endDate);
 
@@ -540,6 +544,7 @@ export default async function HomePage() {
                 src={about.profilePicture.url}
                 alt={intro?.headline ?? "Profile Picture"}
                 fill
+                priority
                 className="object-cover rounded-full p-2"
               />
             </div>
