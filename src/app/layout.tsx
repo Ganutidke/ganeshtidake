@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import AnalyticsTracker from "@/components/analytics-tracker";
+import { SmoothScroll } from "@/components/providers/smooth-scroll";
 
 export async function generateMetadata(): Promise<Metadata> {
   const intro = await getIntro();
@@ -172,8 +173,16 @@ export default async function RootLayout({
         />
       </head>
 
-      <body className="font-body antialiased">
-        {children}
+      <body
+        className="font-body antialiased [&::-webkit-scrollbar]:w-2
+  [&::-webkit-scrollbar-track]:rounded-full
+  [&::-webkit-scrollbar-track]:bg-gray-100
+  [&::-webkit-scrollbar-thumb]:rounded-full
+  [&::-webkit-scrollbar-thumb]:bg-gray-300
+  dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+  dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+      >
+        <SmoothScroll>{children}</SmoothScroll>
         <Analytics />
         <Toaster />
         <SpeedInsights />
