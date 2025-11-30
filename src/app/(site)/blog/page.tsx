@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Metadata } from 'next';
+import { BASE_URL } from '@/lib/utils';
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -25,12 +26,12 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Blog | Ganesh Tidake",
     description,
     alternates: {
-      canonical: "https://ganeshtidake.site/blog",
+      canonical: `${BASE_URL}/blog`,
     },
     openGraph: {
       title: "Ganesh Tidake | Blog",
       description,
-      url: "https://ganeshtidake.site/blog",
+      url: `${BASE_URL}/blog`,
       siteName: "Ganesh Tidake Blog",
       images: [
         {
@@ -129,11 +130,11 @@ function BlogGridSkeleton() {
 
 export default async function BlogPage({ searchParams }: { searchParams?: { query?: string } }) {
   const searchParamsBlog = await searchParams;
-  const query =  searchParamsBlog?.query ?? '';
+  const query = searchParamsBlog?.query ?? '';
   const initialBlogs = await getBlogs({});
 
   if (!initialBlogs || initialBlogs.length === 0) {
-     return (
+    return (
       <PagePlaceholder
         title="Blog"
         description="No blog posts found yet. Check back soon!"

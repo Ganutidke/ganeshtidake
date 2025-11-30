@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { BASE_URL } from "@/lib/utils";
 
 import {
   getProjectBySlug,
@@ -39,7 +40,7 @@ export async function generateMetadata({
     title: `${project.title}`,
     description: shortDesc,
     alternates: {
-      canonical: `https://ganeshtidake.site/projects/${slug}`,
+      canonical: `${BASE_URL}/projects/${slug}`,
     },
     keywords: [
       project.title,
@@ -52,7 +53,7 @@ export async function generateMetadata({
     openGraph: {
       title: project.title,
       description: shortDesc,
-      url: `https://ganeshtidake.site/projects/${slug}`,
+      url: `${BASE_URL}/projects/${slug}`,
       siteName: "Ganesh Tidake Portfolio",
       type: "article",
       images: [

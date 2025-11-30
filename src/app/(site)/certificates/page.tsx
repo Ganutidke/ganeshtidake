@@ -3,6 +3,7 @@ import { getCertificates } from '@/lib/actions/certificate.actions';
 import PagePlaceholder from '@/components/site/page-placeholder';
 import CertificatesPageClient from '@/components/site/certificates-page-client';
 import { Metadata } from 'next';
+import { BASE_URL } from '@/lib/utils';
 
 export async function generateMetadata(): Promise<Metadata> {
   const certificates = await getCertificates();
@@ -17,12 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Certificates ",
     description,
     alternates: {
-      canonical: "https://ganeshtidake.site/certificates",
+      canonical: `${BASE_URL}/certificates`,
     },
     openGraph: {
       title: "Certificates | Ganesh Tidake",
       description,
-      url: "https://ganeshtidake.site/certificates",
+      url: `${BASE_URL}/certificates`,
       siteName: "Ganesh Tidake Portfolio",
       images: [
         {

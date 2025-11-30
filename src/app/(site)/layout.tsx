@@ -5,6 +5,7 @@ import PageLoader from '@/components/site/page-loader';
 import { trackView } from '@/lib/actions/analytics.actions';
 import Chatbot from '@/components/site/chatbot';
 import { Metadata, Viewport } from 'next';
+import { BASE_URL } from '@/lib/utils';
 
 
 export const metadata: Metadata = {
@@ -26,15 +27,15 @@ export const metadata: Metadata = {
     "JavaScript",
     "Tailwind CSS",
   ],
-  metadataBase: new URL("https://ganeshtidake.site"),
+  metadataBase: new URL(BASE_URL),
   alternates: {
-    canonical: "https://ganeshtidake.site",
+    canonical: BASE_URL,
   },
   openGraph: {
     title: "Ganesh Tidake | Full Stack Developer & SaaS Builder",
     description:
       "Full-stack developer crafting scalable and modern web experiences using Next.js and React.",
-    url: "https://ganeshtidake.site",
+    url: BASE_URL,
     siteName: "Ganesh Tidake Portfolio",
     images: [
       {
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  authors: [{ name: "Ganesh Tidake", url: "https://ganeshtidake.site" }],
+  authors: [{ name: "Ganesh Tidake", url: BASE_URL }],
   creator: "Ganesh Tidake",
   publisher: "Ganesh Tidake",
   category: "Portfolio, Web Development, SaaS",

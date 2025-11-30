@@ -14,6 +14,10 @@ export interface IIntro extends Document {
   email?: string;
   phone?: string;
   address?: string;
+  resume?: {
+    url: string;
+    public_id: string;
+  };
 }
 
 const IntroSchema: Schema = new Schema(
@@ -24,6 +28,10 @@ const IntroSchema: Schema = new Schema(
       url: { type: String, required: true },
       public_id: { type: String, required: true },
     },
+    resume: {
+      url: { type: String },
+      public_id: { type: String },
+    },
     role: { type: String, default: 'Full-Stack Developer' },
     githubUrl: { type: String, default: '' },
     linkedinUrl: { type: String, default: '' },
@@ -33,5 +41,12 @@ const IntroSchema: Schema = new Schema(
   },
   { timestamps: true }
 );
+
+// Prevent Mongoose OverwriteModelError in development
+if (process.env.NODE_ENV === 'development') {
+  if (mongoose.models.Intro) {
+    delete mongoose.models.Intro;
+  }
+}
 
 export default mongoose.models.Intro || mongoose.model<IIntro>('Intro', IntroSchema);

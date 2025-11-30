@@ -34,11 +34,16 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
 
-    --chart-1: 217.2 91.2% 59.8%; /* Blue */
-    --chart-2: 172 71% 45%; /* Cyan/Green */
-    --chart-3: 38 92% 50%; /* Orange */
-    --chart-4: 280 82% 50%; /* Purple */
-    --chart-5: 340 82% 50%; /* Pink */
+    --chart-1: 217.2 91.2% 59.8%;
+    /* Blue */
+    --chart-2: 172 71% 45%;
+    /* Cyan/Green */
+    --chart-3: 38 92% 50%;
+    /* Orange */
+    --chart-4: 280 82% 50%;
+    /* Purple */
+    --chart-5: 340 82% 50%;
+    /* Pink */
   }
 
   .dark {
@@ -78,6 +83,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -91,8 +97,39 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+}
+
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border: none;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 0;
+  /* removes the weird round corners */
+}
+
+@theme inline {
+  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms);
+
+  @keyframes cell-ripple {
+    0% {
+      opacity: 0.4;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
+
+    100% {
+      opacity: 0.4;
+    }
   }
 }

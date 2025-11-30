@@ -8,6 +8,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import AnalyticsTracker from "@/components/analytics-tracker";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
+import { BASE_URL } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export async function generateMetadata(): Promise<Metadata> {
   const intro = await getIntro();
@@ -19,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
     intro?.subheadline ||
     "A personal portfolio showcasing modern web applications and SaaS products built with Next.js, React, and Tailwind CSS.";
 
-  const baseUrl = "https://ganeshtidake.site";
+  const baseUrl = BASE_URL;
 
   return {
     title,
@@ -113,7 +115,7 @@ export default async function RootLayout({
   const intro = await getIntro();
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -140,13 +142,13 @@ export default async function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: intro?.headline || "Ganesh Tidake",
-              url: "https://ganeshtidake.site",
+              url: BASE_URL,
               jobTitle: intro?.subheadline || "Full Stack Web Developer",
               sameAs: [
                 "https://github.com/ganeshtidake",
                 "https://linkedin.com/in/ganeshtidake",
               ],
-              image: "https://ganeshtidake.site/og-image.png",
+              image: `${BASE_URL}/og-image.png`,
               description:
                 intro?.subheadline ||
                 "Building modern web apps and SaaS products with Next.js and React.",
@@ -161,11 +163,11 @@ export default async function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: intro?.headline || "Ganesh Tidake Portfolio",
-              url: "https://ganeshtidake.site",
+              url: BASE_URL,
               potentialAction: {
                 "@type": "SearchAction",
                 target:
-                  "https://ganeshtidake.site/search?q={search_term_string}",
+                  `${BASE_URL}/search?q={search_term_string}`,
                 "query-input": "required name=search_term_string",
               },
             }),
@@ -182,29 +184,36 @@ export default async function RootLayout({
   dark:[&::-webkit-scrollbar-track]:bg-neutral-700
   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
       >
-        <SmoothScroll>{children}</SmoothScroll>
-        <Analytics />
-        <Toaster />
-        <SpeedInsights />
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                  page_path: window.location.pathname,
-                });
-              `}
-            </Script>
-          </>
-        )}
-        <AnalyticsTracker />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SmoothScroll>{children}</SmoothScroll>
+          <Analytics />
+          <Toaster />
+          <SpeedInsights />
+          {process.env.NEXT_PUBLIC_GA_ID && (
+            <>
+              <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+                strategy="afterInteractive"
+              />
+              <Script id="ga4-init" strategy="afterInteractive">
+                {`
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                      page_path: window.location.pathname,
+                    });
+                  `}
+              </Script>
+            </>
+          )}
+          <AnalyticsTracker />
+        </ThemeProvider>
       </body>
     </html>
   );

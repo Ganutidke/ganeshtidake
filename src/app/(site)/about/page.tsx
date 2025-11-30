@@ -5,6 +5,7 @@ import { getExperienceHistory } from '@/lib/actions/experience.actions';
 import { getIntro } from '@/lib/actions/intro.actions';
 import AboutPageClient from '@/components/site/about-page-client';
 import { Metadata } from 'next';
+import { BASE_URL } from '@/lib/utils';
 
 export async function generateMetadata(): Promise<Metadata> {
   const about = await getAbout();
@@ -16,15 +17,15 @@ export async function generateMetadata(): Promise<Metadata> {
     "Learn more about Ganesh Tidake, a passionate Full Stack Developer who builds scalable and modern web applications using Next.js, React, and Tailwind CSS.";
 
   return {
-    title: pageTitle ,
+    title: pageTitle,
     description: pageDescription,
     alternates: {
-      canonical: "https://ganeshtidake.site/about",
+      canonical: `${BASE_URL}/about`,
     },
     openGraph: {
       title: pageTitle,
       description: pageDescription,
-      url: "https://ganeshtidake.site/about",
+      url: `${BASE_URL}/about`,
       siteName: "Ganesh Tidake Portfolio",
       images: [
         {
@@ -64,13 +65,13 @@ export default async function AboutPage() {
   const about = await getAbout();
   const experienceHistory = await getExperienceHistory();
   const educationHistory = await getEducationHistory();
-  
+
   return (
-    <AboutPageClient 
-        intro={intro} 
-        about={about} 
-        experienceHistory={experienceHistory}
-        educationHistory={educationHistory}
+    <AboutPageClient
+      intro={intro}
+      about={about}
+      experienceHistory={experienceHistory}
+      educationHistory={educationHistory}
     />
   );
 }

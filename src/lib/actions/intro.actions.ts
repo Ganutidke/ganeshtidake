@@ -15,6 +15,7 @@ export interface UpdateIntroParams {
   email?: string;
   phone?: string;
   address?: string;
+  resume?: string; // base64
 }
 
 export async function getIntro(): Promise<IIntro | null> {
@@ -34,6 +35,7 @@ export async function updateIntro(data: UpdateIntroParams) {
 
     const existingIntro = await Intro.findOne();
     let heroImage;
+    let resume;
 
     if (data.heroImage) {
       if (existingIntro?.heroImage?.public_id) {
@@ -52,6 +54,21 @@ export async function updateIntro(data: UpdateIntroParams) {
       };
     }
 
+    if (data.resume) {
+      if (existingIntro?.resume?.public_id) {
+        await cloudinary.uploader.destroy(existingIntro.resume.public_id);
+      }
+      const uploadResponse = await cloudinary.uploader.upload(data.resume, {
+        folder: 'portfolio-resume',
+        resource_type: 'auto', // Important for PDFs
+        access_mode: 'public',
+      });
+      resume = {
+        url: uploadResponse.secure_url,
+        public_id: uploadResponse.public_id,
+      };
+    }
+
     const updateData = {
       headline: data.headline,
       subheadline: data.subheadline,
@@ -62,10 +79,11 @@ export async function updateIntro(data: UpdateIntroParams) {
       phone: data.phone,
       address: data.address,
       ...(heroImage && { heroImage }),
+      ...(resume && { resume }),
     };
 
     const options = { new: true, upsert: true, setDefaultsOnInsert: true };
-    await Intro.findOneAndUpdate({}, updateData, options);
+    const updatedIntro = await Intro.findOneAndUpdate({}, updateData, options);
 
     revalidatePath('/admin/intro');
     revalidatePath('/');

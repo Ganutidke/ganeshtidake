@@ -27,6 +27,7 @@ const formSchema = z.object({
   email: z.string().email('Must be a valid email.').optional().or(z.literal('')),
   phone: z.string().optional().or(z.literal('')),
   address: z.string().optional().or(z.literal('')),
+  resume: z.instanceof(File).optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -63,12 +64,14 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
     startTransition(async () => {
       try {
         const imageBase64 = values.heroImage ? await fileToBase64(values.heroImage) : undefined;
-        
+        const resumeBase64 = values.resume ? await fileToBase64(values.resume) : undefined;
+
         await updateIntro({
           ...values,
-          heroImage: imageBase64 ,
+          heroImage: imageBase64,
+          resume: resumeBase64,
         });
-        
+
         toast({ title: 'Success', description: 'Intro section updated successfully.' });
       } catch (error: any) {
         toast({
@@ -100,7 +103,7 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                     </FormItem>
                   )}
                 />
-                 <FormField
+                <FormField
                   control={form.control}
                   name="subheadline"
                   render={({ field }) => (
@@ -165,7 +168,7 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                     </FormItem>
                   )}
                 />
-                 <FormField
+                <FormField
                   control={form.control}
                   name="phone"
                   render={({ field }) => (
@@ -178,7 +181,7 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                     </FormItem>
                   )}
                 />
-                 <FormField
+                <FormField
                   control={form.control}
                   name="address"
                   render={({ field }) => (
@@ -186,6 +189,41 @@ export default function IntroForm({ intro }: { intro?: IIntro }) {
                       <FormLabel>Address</FormLabel>
                       <FormControl>
                         <Input placeholder="Pune, Maharashtra, India" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="resume"
+                  render={({ field: { value, onChange, ...field } }) => (
+                    <FormItem>
+                      <FormLabel>Resume (PDF)</FormLabel>
+                      <FormControl>
+                        <div className="flex flex-col gap-4">
+                          <Input
+                            type="file"
+                            accept=".pdf"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                onChange(file);
+                              }
+                            }}
+                            {...field}
+                          />
+                          {intro?.resume?.url && (
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-muted-foreground">Current Resume:</span>
+                              <Button asChild variant="link" className="p-0 h-auto">
+                                <a href={intro.resume.url} target="_blank" rel="noopener noreferrer">
+                                  View PDF
+                                </a>
+                              </Button>
+                            </div>
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

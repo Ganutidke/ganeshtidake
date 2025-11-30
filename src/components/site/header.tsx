@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { motion, type Variants } from "framer-motion";
+import { ThemeCustomizer } from "@/components/theme-customizer";
 
 const mainNavLinks = [
   { href: "/", label: "Home", icon: Home },
@@ -136,6 +137,10 @@ export default function Header() {
             </Link>
           </motion.div>
         ))}
+
+        <motion.div custom={{ order: 0 }} variants={navItemVariants}>
+          <ThemeCustomizer />
+        </motion.div>
 
         <motion.div custom={{ order: 0 }} variants={navItemVariants}>
           <Separator orientation="vertical" className="h-6 mx-1" />

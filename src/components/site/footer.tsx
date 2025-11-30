@@ -19,7 +19,7 @@ export default async function Footer() {
     <footer className="bg-card border-t border-border/40 mt-24">
       <div className="container max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 text-sm">
-          
+
           <div className="md:col-span-5 lg:col-span-6">
             <Link href="/" className="text-2xl font-bold font-headline text-foreground hover:text-primary transition-colors">
               {intro?.headline || 'Ganesh Tidke'}
@@ -28,7 +28,7 @@ export default async function Footer() {
               {intro?.subheadline || 'A self-taught developer transforming ideas into digital realities.'}
             </p>
           </div>
-          
+
           <div className="md:col-span-3 lg:col-span-2">
             <h3 className="font-semibold text-foreground tracking-wider uppercase">Menu</h3>
             <ul className="mt-4 space-y-3">
@@ -41,31 +41,31 @@ export default async function Footer() {
               ))}
             </ul>
           </div>
-          
+
           <div className="md:col-span-4 lg:col-span-4">
             <h3 className="font-semibold text-foreground tracking-wider uppercase">Connect</h3>
             <div className="mt-4 flex gap-2">
-                {intro?.githubUrl && (
+              {intro?.githubUrl && (
                 <Button asChild variant="ghost" size="icon" className="text-muted-foreground hover:text-primary hover:bg-primary/10">
-                    <Link href={intro.githubUrl} target="_blank" aria-label="GitHub">
+                  <Link href={intro.githubUrl} target="_blank" aria-label="GitHub">
                     <Github />
-                    </Link>
+                  </Link>
                 </Button>
-                )}
-                {intro?.linkedinUrl && (
+              )}
+              {intro?.linkedinUrl && (
                 <Button asChild variant="ghost" size="icon" className="text-muted-foreground hover:text-primary hover:bg-primary/10">
-                    <Link href={intro.linkedinUrl} target="_blank" aria-label="LinkedIn">
+                  <Link href={intro.linkedinUrl} target="_blank" aria-label="LinkedIn">
                     <Linkedin />
-                    </Link>
+                  </Link>
                 </Button>
-                )}
-                {intro?.email && (
+              )}
+              {intro?.email && (
                 <Button asChild variant="ghost" size="icon" className="text-muted-foreground hover:text-primary hover:bg-primary/10">
-                    <a href={`mailto:${intro.email}`} aria-label="Email">
+                  <a href={`mailto:${intro.email}`} aria-label="Email">
                     <Mail />
-                    </a>
+                  </a>
                 </Button>
-                )}
+              )}
             </div>
           </div>
         </div>
@@ -76,9 +76,6 @@ export default async function Footer() {
           <p>
             Developed by Ganesh Tidake © {new Date().getFullYear()} All Rights Reserved.
           </p>
-          <Link href="/admin" className="hover:text-primary transition-colors mt-2 sm:mt-0">
-            Admin Login
-          </Link>
         </div>
       </div>
     </footer>

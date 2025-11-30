@@ -11,6 +11,7 @@ import FramerMotionWrapper from "@/components/site/framer-motion-wrapper";
 import { ProjectCardSkeleton } from "@/components/skeletons/project-card-skeleton";
 import { BlogCardSkeleton } from "@/components/skeletons/blog-card-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ResumePreviewModal } from "@/components/ui/resume-preview-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -40,14 +41,13 @@ import type { IAbout } from "@/models/about.model";
 import type { PopulatedProject } from "@/models/project.model";
 import type { IBlog } from "@/models/blog.model";
 import { Metadata } from "next";
+import { BASE_URL } from "@/lib/utils";
 
 // --- Data Fetching Components ---
 
 export const revalidate = 3600;
-export const fetchCache = 'force-cache';
-export const dynamicParams = false;
 
-export const metadata:Metadata = {
+export const metadata: Metadata = {
   title: "Ganesh Tidake | Web Developer & SaaS Builder",
   description:
     "Full-stack web developer specializing in Next.js, React, Tailwind CSS, and SaaS solutions. Building fast, scalable, and elegant web applications.",
@@ -64,7 +64,7 @@ export const metadata:Metadata = {
     title: "Ganesh Tidake | Web Developer & SaaS Builder",
     description:
       "Next.js developer creating modern SaaS and full-stack solutions with React and Tailwind CSS.",
-    url: "https://ganeshtidake.site",
+    url: BASE_URL,
     siteName: "Ganesh Tidake Portfolio",
     images: [
       {
@@ -88,7 +88,7 @@ export const metadata:Metadata = {
     icon: "/favicon.ico",
   },
   alternates: {
-    canonical: "https://ganeshtidake.site",
+    canonical: BASE_URL,
   },
 };
 
@@ -154,11 +154,10 @@ async function ExperienceSection() {
             <FramerMotionWrapper key={exp._id as string} delay={index * 0.1}>
               <div className="relative mb-12 md:flex items-center md:justify-center">
                 <div
-                  className={`md:w-1/2 w-full ${
-                    index % 2 === 0
-                      ? "md:pr-8 md:text-right"
-                      : "md:pl-8 md:text-left"
-                  }`}
+                  className={`md:w-1/2 w-full ${index % 2 === 0
+                    ? "md:pr-8 md:text-right"
+                    : "md:pl-8 md:text-left"
+                    }`}
                 >
                   <div className="p-6 rounded-lg shadow-lg bg-card text-left">
                     <p className="text-sm font-semibold text-primary">
@@ -364,9 +363,8 @@ function ExperienceSectionSkeleton() {
             className="relative mb-12 md:flex items-center justify-center"
           >
             <div
-              className={`md:w-1/2 w-full ${
-                index % 2 === 0 ? "md:pr-8" : "md:pl-8"
-              }`}
+              className={`md:w-1/2 w-full ${index % 2 === 0 ? "md:pr-8" : "md:pl-8"
+                }`}
             >
               <Card className="p-6">
                 <Skeleton className="h-4 w-1/3" />
@@ -448,7 +446,7 @@ export default async function HomePage() {
   const skillCategories = getSkillCategories(about?.skills);
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 flex flex-col gap-24 sm:gap-32">
+    <div className="container max-w-7xl px-4 mx-auto flex flex-col gap-24 sm:gap-32">
       <FramerMotionWrapper>
         <section className="flex gap-8 pt-12 md:grid-cols-2 md:items-center md:pt-20">
           <div className="">
@@ -489,6 +487,9 @@ export default async function HomePage() {
             )}
 
             <div className="mt-8 flex gap-4">
+              {intro?.resume?.url && (
+                <ResumePreviewModal resumeUrl={intro.resume.url} />
+              )}
               {intro?.githubUrl && (
                 <Button asChild variant="outline">
                   <Link href={intro.githubUrl} target="_blank">

@@ -10,7 +10,7 @@ export interface IProject extends Document {
     url: string;
     public_id: string;
   };
-  category: string;
+  category: string[];
   repositoryUrl?: string;
   liveUrl?: string;
   createdAt: Date;
@@ -29,11 +29,18 @@ const ProjectSchema: Schema = new Schema(
       url: { type: String, required: true },
       public_id: { type: String, required: true },
     },
-    category: { type: String, required: true },
+    category: [{ type: String, required: true }],
     repositoryUrl: { type: String },
     liveUrl: { type: String },
   },
   { timestamps: true }
 );
+
+// Prevent Mongoose OverwriteModelError in development
+if (process.env.NODE_ENV === 'development') {
+  if (mongoose.models.Project) {
+    delete mongoose.models.Project;
+  }
+}
 
 export default mongoose.models.Project || mongoose.model<IProject>('Project', ProjectSchema);

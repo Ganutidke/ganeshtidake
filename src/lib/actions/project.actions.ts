@@ -10,7 +10,7 @@ export interface ProjectParams {
   title: string;
   description: string;
   tags: string;
-  category: string;
+  category: string[];
   repositoryUrl?: string;
   liveUrl?: string;
   coverImage: string; // base64
@@ -79,7 +79,7 @@ export async function updateProject(id: string, data: UpdateProjectParams) {
         public_id: uploadResponse.public_id,
       };
     }
-    
+
     const updateData = {
       title: data.title,
       description: data.description,
@@ -119,10 +119,18 @@ export async function getProjects(params: { query?: string, category?: string } 
     }
 
     if (category && category !== 'All') {
-      filter.category = category;
+      const categories = category.split(',').filter(Boolean);
+      if (categories.length > 0) {
+        filter.category = { $in: categories };
+      }
     }
 
-    const projects = await Project.find(filter).sort({ createdAt: -1 }).lean();
+    // Optimize: Exclude description field to reduce payload size
+    const projects = await Project.find(filter)
+      .select('-description')
+      .sort({ createdAt: -1 })
+      .lean();
+
     return JSON.parse(JSON.stringify(projects));
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -173,17 +181,19 @@ export async function deleteProject(id: string) {
   }
 }
 
-export async function getRelatedProjects({ projectId, category }: { projectId: string, category: string }): Promise<PopulatedProject[]> {
+
+export async function getRelatedProjects({ projectId, category }: { projectId: string, category: string[] }): Promise<PopulatedProject[]> {
   try {
     await connectDB();
 
     const relatedProjects = await Project.find({
-      category,
+      category: { $in: category },
       _id: { $ne: projectId },
     })
-    .sort({ createdAt: -1 })
-    .limit(3)
-    .lean();
+      .select('-description')
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .lean();
 
     return JSON.parse(JSON.stringify(relatedProjects));
   } catch (error) {

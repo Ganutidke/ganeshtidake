@@ -2,8 +2,9 @@ import { getProjects } from "@/lib/actions/project.actions";
 import { getBlogs } from "@/lib/actions/blog.actions";
 import { getCertificates } from "@/lib/actions/certificate.actions";
 import { MetadataRoute } from "next";
+import { BASE_URL } from "@/lib/utils";
 
-const baseUrl = "https://ganeshtidake.site";
+const baseUrl = BASE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch dynamic data

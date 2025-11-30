@@ -9,6 +9,7 @@ import {
 import BlogPostClient from "@/components/site/blog-post-client";
 import type { IBlog } from "@/models/blog.model";
 import { getIntro } from "@/lib/actions/intro.actions";
+import { BASE_URL } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -35,12 +36,12 @@ export async function generateMetadata({
     blog.excerpt ||
     blog.content?.slice(0, 160).replace(/<[^>]+>/g, "") ||
     "A detailed post about modern web development and technology trends.";
-    console.log("published at", blog.createdAt);
+  console.log("published at", blog.createdAt);
   return {
     title: `${blog.title}`,
     description: cleanDescription,
     alternates: {
-      canonical: `https://ganeshtidake.site/blog/${blog.slug}`,
+      canonical: `${BASE_URL}/blog/${blog.slug}`,
     },
     keywords: blog.tags?.length
       ? blog.tags
@@ -48,7 +49,7 @@ export async function generateMetadata({
     openGraph: {
       title: blog.title,
       description: cleanDescription,
-      url: `https://ganeshtidake.site/blog/${blog.slug}`,
+      url: `${BASE_URL}/blog/${blog.slug}`,
       siteName: "Ganesh Tidake Blog",
       type: "article",
       publishedTime: blog.createdAt

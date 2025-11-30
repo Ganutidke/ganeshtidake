@@ -1,47 +1,58 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useDebouncedCallback } from "use-debounce";
+import { useState, useMemo } from "react";
 import { Search as SearchIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import FramerMotionWrapper from "./framer-motion-wrapper";
 import type { IProjectCategory } from "@/models/project-category.model";
+import type { PopulatedProject } from "@/models/project.model";
+import ProjectCard from "./project-card";
+import { motion, AnimatePresence } from "framer-motion";
+import PagePlaceholder from "./page-placeholder";
 
 interface ProjectsPageClientProps {
   categories: IProjectCategory[];
-  children: React.ReactNode;
+  initialProjects: PopulatedProject[];
 }
 
 export default function ProjectsPageClient({
   categories,
-  children,
+  initialProjects,
 }: ProjectsPageClientProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const currentCategory = searchParams.get("category") || "All";
-
-  const handleSearch = useDebouncedCallback((term: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (term) {
-      params.set("query", term);
-    } else {
-      params.delete("query");
-    }
-    router.replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  const [activeCategories, setActiveCategories] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleCategoryChange = (category: string) => {
-    const params = new URLSearchParams(searchParams);
     if (category === "All") {
-      params.delete("category");
+      setActiveCategories([]);
     } else {
-      params.set("category", category);
+      setActiveCategories((prev) =>
+        prev.includes(category)
+          ? prev.filter((c) => c !== category)
+          : [...prev, category]
+      );
     }
-    router.replace(`${pathname}?${params.toString()}`);
   };
+
+  const filteredProjects = useMemo(() => {
+    return initialProjects.filter((project) => {
+      // Filter by search query
+      const matchesSearch =
+        project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.tags.some((tag) =>
+          tag.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+      // Filter by categories
+      const matchesCategory =
+        activeCategories.length === 0 ||
+        activeCategories.some((cat) => project.category.includes(cat));
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [initialProjects, searchQuery, activeCategories]);
 
   const allCategory = { _id: "all", name: "All" };
   const allCategories = [allCategory, ...categories];
@@ -66,34 +77,70 @@ export default function ProjectsPageClient({
             type="search"
             placeholder="Search for projects..."
             className="pl-10 h-11"
-            onChange={(e) => handleSearch(e.target.value)}
-            defaultValue={searchParams.get("query")?.toString()}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </FramerMotionWrapper>
 
       <FramerMotionWrapper delay={0.2}>
         <div className="flex justify-center flex-wrap gap-2 mt-8">
-          {allCategories.map((category) => (
-            <Button
-              key={category._id}
-              variant={
-                currentCategory === category.name ? "default" : "outline"
-              }
-              onClick={() => handleCategoryChange(category.name)}
-              className={cn(
-                "rounded-full",
-                currentCategory === category.name &&
-                  "bg-primary text-primary-foreground"
-              )}
-            >
-              {category.name}
-            </Button>
-          ))}
+          {allCategories.map((category) => {
+            const isActive =
+              category.name === "All"
+                ? activeCategories.length === 0
+                : activeCategories.includes(category.name);
+            return (
+              <Button
+                key={category._id}
+                variant={isActive ? "default" : "outline"}
+                onClick={() => handleCategoryChange(category.name)}
+                className={cn(
+                  "rounded-full transition-all duration-300",
+                  isActive && "bg-primary text-primary-foreground"
+                )}
+              >
+                {category.name}
+              </Button>
+            );
+          })}
         </div>
       </FramerMotionWrapper>
 
-      {children}
+      <div className="mt-12 min-h-[400px]">
+        {filteredProjects.length > 0 ? (
+          <motion.div
+            layout
+            className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            <AnimatePresence>
+              {filteredProjects.map((project) => (
+                <motion.div
+                  layout
+                  key={project._id as string}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ProjectCard project={project} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-12"
+          >
+            <PagePlaceholder
+              title="No projects found"
+              description="Try adjusting your search or filter."
+            />
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }
