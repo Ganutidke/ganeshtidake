@@ -129,8 +129,11 @@ export async function getBlogs(params: { query?: string } = {}) {
         { tags: { $regex: query, $options: 'i' } },
       ];
     }
-    
-    const blogs = await Blog.find(filter).sort({ createdAt: -1 }).lean();
+
+    const blogs = await Blog.find(filter)
+      .select('-content')
+      .sort({ createdAt: -1 })
+      .lean();
     return JSON.parse(JSON.stringify(blogs)) as IBlog[];
   } catch (error) {
     console.error('Error fetching blogs:', error);
@@ -174,7 +177,7 @@ export async function deleteBlog(id: string) {
     if (blogToDelete.coverImage && blogToDelete.coverImage.public_id) {
       await cloudinary.uploader.destroy(blogToDelete.coverImage.public_id);
     }
-    
+
     await Blog.findByIdAndDelete(id);
 
     revalidatePath('/');
@@ -207,10 +210,10 @@ export async function getRelatedBlogs({ blogId, tags }: { blogId: string, tags: 
       tags: { $in: tags },
       _id: { $ne: blogId },
     })
-    .sort({ createdAt: -1 })
-    .limit(3)
-    .lean();
-    
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .lean();
+
     return JSON.parse(JSON.stringify(relatedBlogs));
   } catch (error) {
     console.error('Error fetching related blogs:', error);
